@@ -1,0 +1,177 @@
+body {
+	
+	margin: 0;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+}	
+
+h1{
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+
+#wrapper{
+	background-color: #e6ecf0;
+	padding-right: 10%;
+	padding-left:10%;
+	padding-top: 100px;
+}
+.zoom{
+	 display: inline-block; /* change the default display type to inline-block */
+    overflow: hidden;      /* hide the overflow */
+    float: left;
+}
+
+/*book informations*/
+#book-info{
+	padding: 20px;
+	border: 2px solid white;
+	overflow: auto;
+	background-color: white;
+	border-style: outset;
+}
+
+.zoom img{
+	width: 170px;
+	height: 250px;
+	-webkit-transform: scale(1);
+	transform: scale(1);
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+
+.zoom img:hover {
+	-webkit-transform: scale(1.3);
+	transform: scale(1.3);
+}
+
+.book-information{
+	margin-left: 20px;
+	float:left;
+	display: block;
+	width: 600px;
+	height: 200px;
+}
+
+.book-information p{
+	line-height: 20px;
+	max-height: 200px;
+}
+
+.book-nav ul{
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+.book-nav ul li {
+	padding-top: 10px;
+	margin-right: 20px;
+	font-size: 150%;
+	font-weight: bold;
+
+	/* Add properties below */
+	list-style: none;
+	display: inline-block;
+	
+
+}
+
+/*chapter informations*/
+#chapters{
+	margin-top: 5px;
+	background-color: white;
+	border-style: outset;
+	display: block;
+	overflow: auto;
+}
+
+#chapterTable{
+	width: 95%;
+	margin-right: 5%;
+	border-collapse: collapse;
+}
+#chapterTable tr{
+	border-bottom: 1px solid grey;
+}
+
+#chapterTable td{
+}
+
+.chapter{
+	
+}
+.chapter p{
+	font-size: 120%;
+	margin-bottom: 3px;
+	display: inline-block;
+	padding: 2px;
+}
+
+/*author information*/
+#authorInfo{
+	margin-left: 2%;
+	margin-top: 5px;
+	background-color: white;
+	border-style: outset;
+	display: block;
+	overflow: auto;
+}
+.authorPic{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:10px;
+	display: block;
+	width:10vw;
+	height:10vw;
+	border-radius: 50%;
+}
+#authorInfo h3{
+	text-align: center;
+}
+
+#authorDetail{
+	border-bottom: 1px solid grey;
+	border-top: 1px solid grey;
+}
+#authorDetail ul{
+	justify-content: center;
+  	display: flex;
+  	padding: 0px;
+}
+
+#authorDetail ul li img{
+	border-radius: 50%;
+	width:100px;
+	height: 100px;
+}
+#authorDetail ul li p{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	text-align: center;
+	font-size: 16px;
+}
+#authorDetail ul li {
+	padding-top: 10px;
+	margin-right: 20px;
+	font-size: 150%;
+	font-weight: bold;
+
+	/* Add properties below */
+	list-style: none;
+	display: inline-block;
+	
+
+}
+
+.otherBook{
+	margin:0 auto 10px;
+    display: block;
+}
+
+#comments{
+	margin-top: 5px;
+	background-color: white;
+	border-style: outset;
+	display: block;
+	min-height: 200px;
+	overflow: auto;
+}
