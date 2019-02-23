@@ -1,0 +1,15 @@
+body {
+	margin: 0;
+	font-family: "Times New Roman", Times, serif;
+}	
+
+h1{
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+#wrapper{
+	background-color: #e6ecf0;
+	padding-right: 10%;
+	padding-left:10%;
+	padding-top: 100px;
+}

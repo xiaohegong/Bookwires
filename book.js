@@ -1,34 +1,13 @@
 'use strict';
 const log = console.log;
-// const Chapter = require('./Chapter');
-// class Chapter{
-// 	constructor(num,chapterName){
-// 		this.num = num;
-// 		this.chapterName = chapterName;
-// 	}
-// 	getNum(){
-// 		log("num:"+this.num)
-// 		return this.num;
-// 	}
-// 	getName(){
-// 		return this.chapterName;
-// 	}
 
-// 	getDescription(){
-// 		return 'chapter ' + this.num + ' : ' + this.chapterName;
-// 	}
-// }
 
 const bookNav = document.getElementsByClassName('book-nav');
-log(bookNav);
-
 const chapters = document.getElementById("chapters");
-log(chapters);
-
 const chapterTable = document.getElementById("chapterTable");
 
 // Let's create a new chapter
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 4; i++) {
 	const nextLine = document.createElement('tr')
 	
 	for(let j = 0; j < 3; j++){
@@ -87,10 +66,15 @@ const booknameContainer = document.createElement('h3')
 booknameContainer.appendChild(bookname)
 otherBook.appendChild(booknameContainer)
 
-const bookdesription = document.createTextNode('as')
+const bookdesription = document.createTextNode('as qwd  asd f ew dcvdsvewsd  w dsf w f d fesf ')
 const bookdesriptionContainer = document.createElement('p')
 bookdesriptionContainer.appendChild(bookdesription)
 otherBook.appendChild(bookdesriptionContainer)
+
+
+//create comments
+const commentsArea = document.getElementById('commentsArea')
+const newComments = document.createElement('div')
 
 
 
