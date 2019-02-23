@@ -1,0 +1,19 @@
+#bookLogo {
+    /* Add properties below */
+    width: 50px;
+    margin-left: 20px;
+}
+
+
+#menuBar {
+    float: right;
+}
+
+.searchBar {
+    font-size: 16px;
+    width: 70%;
+    margin-left: 40px;
+    margin-right: 50px;
+    height: 30px;
+    color: #596262;
+}

@@ -1,80 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-    <title>BOOK</title>
-    <link rel="stylesheet" type="text/css" href="book.css">
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="homepage.css">
     <link rel="stylesheet" type="text/css" href="overallStyle.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-	<div id = "wrapper"> 
-		<div class = "container">
-			
-			<div id = "book-info">
-				<div class = "zoom"><img src="img/book_img.jpg" alt="img"></div>
-				
-				
-				<div class = "book-information">
-					<h1>Time Raiders</h1>
-					<a href="google.ca">Author: Wu Xie</a>
-					<p>I begin tucking him into bed and he tells me, “Daddy check for monsters under my bed.” I look underneath for his amusement and see him, another him, under the bed, staring back at me quivering and whispering, “Daddy there’s somebody on my bed.”</p>
 
-					<div class='book-nav'>
-			 			<ul>
-				 			<li><a href="">READ</a></li>
-				 			<li><a href="">SAVE</a></li>
-			 			</ul>
-		 			</div>
-				</div>
-			</div>
-		
-		
+<!-- The header -->
+<div id="header">
+    <!-- Twitter logo goes in here -->
+    <img id='bookLogo' src="img/book.png"/>
 
-		  <div class="row">
-		  	<div class = "col">
-		  		<div id = "chapters">
-					<h3>CHAPTERS</h3>
-					<table id = 'chapterTable'></table>
-				</div>
-				<div id = 'comments'>
-					<h2>Comments</h2>
-					<div id = 'commentsArea'>
-					</div>
-				</div>
-		  	</div>	
+    <div id="menuBar">
+        <a class="navButton" href="">Log in</a>
+        <a class="navButton" href="">Sign up</a>
+    </div>
+    <input class="searchBar" type="search" placeholder="Search books">
+</div>
 
-		  	<div class = "col-3">
-			  	<div id = "authorInfo">
-					<div id = "authorDetail">
-						<ul>
-				 			<li><img src="img/book.jpg"><p>books</p>
-				 			</li>
-				 			<li><img src="img/active.jpg"><p>active</p></li>
-			 			</ul>
-					</div>
+<div>
 
-					<div>
-						<h2>Other Book</h2>
-						
-						<div id = 'authorOtherBook'></div>
-					
-					</div>
-				
-				</div>
-		  	</div>
-		  </div>
-		</div>
-		
-	</div>
+</div>
 
-	<script type="text/javascript" src="./Chapter.js"></script>
-	<script type="text/javascript" src="book.js"></script>
 
-	<!-- bootstrap import -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="homepage.js"></script>
 
+<!-- bootstrap import for grid -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
