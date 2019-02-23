@@ -1,24 +1,23 @@
 'use strict';
 const log = console.log;
-
 // const Chapter = require('./Chapter');
-class Chapter{
-	constructor(num,chapterName){
-		this.num = num;
-		this.chapterName = chapterName;
-	}
-	getNum(){
-		log("num:"+this.num)
-		return this.num;
-	}
-	getName(){
-		return this.chapterName;
-	}
+// class Chapter{
+// 	constructor(num,chapterName){
+// 		this.num = num;
+// 		this.chapterName = chapterName;
+// 	}
+// 	getNum(){
+// 		log("num:"+this.num)
+// 		return this.num;
+// 	}
+// 	getName(){
+// 		return this.chapterName;
+// 	}
 
-	getDescription(){
-		return 'chapter ' + this.num + ' : ' + this.chapterName;
-	}
-}
+// 	getDescription(){
+// 		return 'chapter ' + this.num + ' : ' + this.chapterName;
+// 	}
+// }
 
 const bookNav = document.getElementsByClassName('book-nav');
 log(bookNav);
@@ -65,11 +64,35 @@ author.insertBefore(nameContainer,authorDetail)
 //other book written by this author
 const otherBook = document.getElementById('authorOtherBook')
 const bookImageContainer = document.createElement('div');
-bookImageContainer.className = 'zoom otherBook';
+bookImageContainer.className = 'otherBookContainer';
+const leftArrow  =document.createElement('img');
+leftArrow.src = 'img/left.png'
+leftArrow.className = 'arrow'
+bookImageContainer.appendChild(leftArrow)
+
+
 const bookImage  =document.createElement('img');
+bookImage.className = "otherBook"
 bookImage.src = 'img/wanderingEarth.jpg'
 bookImageContainer.appendChild(bookImage)
+
+const rightArrow  =document.createElement('img');
+rightArrow.src = 'img/right.png'
+rightArrow.className = 'arrow'
+bookImageContainer.appendChild(rightArrow)
 otherBook.appendChild(bookImageContainer)
+
+const bookname = document.createTextNode('BOOK NAME')
+const booknameContainer = document.createElement('h3')
+booknameContainer.appendChild(bookname)
+otherBook.appendChild(booknameContainer)
+
+const bookdesription = document.createTextNode('as')
+const bookdesriptionContainer = document.createElement('p')
+bookdesriptionContainer.appendChild(bookdesription)
+otherBook.appendChild(bookdesriptionContainer)
+
+
 
 
 
