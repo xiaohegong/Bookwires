@@ -1,0 +1,73 @@
+#middleBox{
+	margin-left:10%;
+	margin-right:10%;
+	margin-top:30px;
+}
+
+#topLineBox{
+	position:relative;
+	width:100%;
+	min-width:315px;
+}
+
+#bottomLineBox{
+	position:relative;
+	width:100%;
+	min-width:315px;
+}
+
+#topLeftButtonBox{
+	position:absolute;
+	top:0px;
+	left:20px;
+	height:180px;
+	width:200px;
+}
+
+#bottomLeftButtonBox{
+	position:absolute;
+	top:0px;
+	left:20px;
+	height:180px;
+	width:200px;
+}
+
+#chapterNameBox{
+	padding: 30px 0;
+	text-align:center;
+	height:100px;
+	width:400px;
+	margin:0px auto;
+}
+
+#contentButtomBox{
+	padding: 40px 0;
+	text-align:center;
+	height:100px;
+	width:400px;
+	margin:0px auto;
+}
+
+#topRightButtonBox{
+	position:absolute;
+    top:0px;
+    right:20px;
+    height:180px;
+    width:200px;
+}
+
+#bottomRightButtonBox{
+	position:absolute;
+    top:0px;
+    right:20px;
+    height:180px;
+    width:200px;
+}
+
+#mainText{
+	padding-top:10px;
+	padding-left:50px;
+	padding-right:50px;
+	padding-bottom:5px;
+	border: 1px solid black;
+}
