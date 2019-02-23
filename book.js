@@ -75,6 +75,25 @@ otherBook.appendChild(bookdesriptionContainer)
 //create comments
 const commentsArea = document.getElementById('commentsArea')
 const newComments = document.createElement('div')
+commentsArea.appendChild(newComments);
+newComments.className = 'comment'
+const CommentUserImage = document.createElement('img')
+CommentUserImage.src = "img/profile.png";
+CommentUserImage.className = 'CommentUserImage';
+newComments.appendChild(CommentUserImage);
+
+const CommentUserNameContainer = document.createElement('h5')
+CommentUserNameContainer.className = 'CommentUserName'
+const CommentUserName = document.createTextNode("Qiling Zhang")
+CommentUserNameContainer.appendChild(CommentUserName)
+newComments.appendChild(CommentUserNameContainer)
+
+const UserCommentContainer = document.createElement('p')
+const UserComment = document.createTextNode("good book good book good book good book good book good book good book")
+UserCommentContainer.appendChild(UserComment)
+newComments.appendChild(UserCommentContainer)
+
+
 
 
 
