@@ -1,55 +1,67 @@
-class Book{
-	constructor(bookTitle,author,date,image,genre){
-		this.bookTitle = bookTitle;
-		this.author = author;
-		this.rate = 0;
-		this.publishedDate = date;
-		this.image = image;
-		this.genre = genre;
-		this.NumberOfFollowers = 0;
-		this.comment = []
-		this.chapters = []
-	}
+class Book {
+    constructor(bookTitle, author, date, image, genre) {
+        this.bookTitle = bookTitle;
+        this.author = author;
+        this.rate = 0;
+        this.publishedDate = date;
+        this.image = image;
+        this.genre = genre;
+        this.description = "A good book";
+        this.NumberOfFollowers = 0;
+        this.comment = [];
+        this.chapters = [];
+    }
 
-	// get the book title
-	getbookTitle(){
-		return this.bookTitle;
-	}
+    // get the book title
+    getBookTitle() {
+        return this.bookTitle;
+    }
 
 	getAuthor(){
 		return this.author.getName()
 	}
+    getImage() {
+        return this.image;
+    }
 
-	getImage(){
-		return this.Image
-	}
+    getGenre() {
+        return this.genre;
+    }
 
-	addChapter(chapter){
-		this chapters.push(chapter)
-	}
+    getDescription() {
+        return this.description;
+    }
+
+    addChapter(chapter) {
+        this.chapters.push(chapter);
+    }
 }
 
-class Chapter{
-  constructor(num,chapterName){
-		this.num = num;
-		this.chapterName = chapterName;
-	}
-	setContent(con){
-		this.content = con;
-	}
-	getContent(){
-		return this.content;
-	}
-	getNum(){
-		return this.num;
-	}
-	getName(){
-		return this.chapterName;
-	}
+class Chapter {
+    constructor(num, chapterName) {
+        this.num = num;
+        this.chapterName = chapterName;
+    }
 
-	getDescription(){
-		return 'chapter ' + this.num + ' : ' + this.chapterName;
-	}
+    setContent(con) {
+        this.content = con;
+    }
+
+    getContent() {
+        return this.content;
+    }
+
+    getNum() {
+        return this.num;
+    }
+
+    getName() {
+        return this.chapterName;
+    }
+
+    getDescription() {
+        return 'chapter ' + this.num + ' : ' + this.chapterName;
+    }
 }
 
 class user{
@@ -79,3 +91,4 @@ fakeUser = []
 fakeUser.push(new user("Xie Wu", 0))
 fakeUser.push(new user("Cixin Liu", 1))
 fakeUser.push(new user("JK_Rowling", 2))
+
