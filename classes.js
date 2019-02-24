@@ -17,7 +17,7 @@ class Book{
 	}
 
 	getAuthor(){
-		return this.author
+		return this.author.getName()
 	}
 
 	getImage(){
@@ -62,10 +62,20 @@ class user{
 		this.followers = 0;
 		this.following = [];
 	}
+
+	getName(){
+		return this.name;
+	}
 }
 
 //fake data
 fakeBooks = []
-fakeBooks.push(new Book('Harry Potter', 'JK_Rowling','1999/10/1','img/harryPotter.jpg','fantasy'))
-fakeBooks.push(new Book('Time Raiders', 'Xie Wu','2002/4/5','img/TimeRaiders.jpg','fantasy'))
-fakeBooks.push(new Book('Wandering Earth', 'Cixin Liu','2008/8/8','img/WanderingEarth.jpg','Sci-fi'))
+fakeBooks.push(new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'))
+fakeBooks.push(new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'))
+fakeBooks.push(new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'))
+fakeBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'))
+
+fakeUser = []
+fakeUser.push(new user("Xie Wu", 0))
+fakeUser.push(new user("Cixin Liu", 1))
+fakeUser.push(new user("JK_Rowling", 2))
