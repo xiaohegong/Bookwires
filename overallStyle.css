@@ -1,6 +1,7 @@
 body {
     margin: 0;
-    font-family: "Times New Roman", Times, serif;
+    background-color: #eae7dc !important;
+    font-family: "Times New Roman", Times, serif !important;
 }
 
 h1 {
@@ -9,8 +10,8 @@ h1 {
 }
 
 #wrapper {
-    background-color: #e6ecf0;
+
     padding-right: 10%;
     padding-left: 10%;
-    padding-top: 100px;
+    margin-top: 100px;
 }
