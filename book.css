@@ -181,7 +181,10 @@
 .comment{
 	padding-left: 5px;
 	padding-right: 5px;
+	padding-bottom: 10px;
+	padding-top: 10px;
 	border-bottom: 1px solid grey;
+	border-top: 1px solid grey;
 }
 
 .CommentUserImage{

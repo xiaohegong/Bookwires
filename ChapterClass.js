@@ -21,12 +21,6 @@ class Chapter{
 	}
 }
 
-class Book{
-	constructor(bookName,author){
-		this.bookName = bookName;
-		this.author = author;
-	}
-}
 
 class user{
 	constructor(name,id){
