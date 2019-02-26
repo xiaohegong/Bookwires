@@ -6,15 +6,16 @@ const bookNav = document.getElementsByClassName('book-nav');
 const chapters = document.getElementById("chapters");
 const chapterTable = document.getElementById("chapterTable");
 
+// testing book
+const book = fakeBooks[1]
 // Let's create a new chapter
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 2; i++) {
     const nextLine = document.createElement('tr');
 
     for (let j = 0; j < 3; j++) {
         const newPost = document.createElement('td');
         newPost.className = 'Chapter';
-        const chapterOne = new Chapter('' + (i * 3 + j + 1), 'hello');
-        const newPostTitle = document.createTextNode(chapterOne.getDescription());
+        const newPostTitle = document.createTextNode(book.getChapter(i * 3 + j).getDescription());
         const newPostTitleContainer = document.createElement('p');
         newPostTitleContainer.appendChild(newPostTitle);
         newPost.appendChild(newPostTitleContainer);
@@ -33,7 +34,7 @@ authorImage.src = 'img/profile.png';
 author.insertBefore(authorImage, authorDetail);
 // author.appendChild(authorImage);
 
-const name = document.createTextNode('Xie Wu');
+const name = document.createTextNode(book.getAuthor());
 const nameContainer = document.createElement('h3');
 nameContainer.appendChild(name);
 author.insertBefore(nameContainer, authorDetail);
