@@ -1,0 +1,36 @@
+#profileimg {
+    border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border: solid black;
+}
+
+.profileimgcontent {
+    width: 250px;
+    margin: 0 auto;
+}
+.profiletextcontainer{
+    text-align: center;
+    height: 200px;
+    border: solid black;
+}
+.containment {
+    margin-top: 30px;
+}
+
+.profileheader {
+    text-align: center;
+}
+
+.statscontainer {
+    border: solid black;
+}
+
+.statbox {
+    width: 32%;
+    display: inline-block;
+    font-size: 25px;
+    padding-left: 10px;
+    text-align: center;
+}
