@@ -9,10 +9,13 @@ class Book {
         this.genre = genre;
         this.description = "A good book";
         this.NumberOfFollowers = 0;
-        this.comment = [];
+        this.comments = [];
         this.chapters = [];
     }
 
+    getAuthorOtherBook(){
+        return author.writtenBook;
+    }
     // get the book title
     getBookTitle() {
         return this.bookTitle;
@@ -38,7 +41,18 @@ class Book {
     }
 
     getChapter(i){
-    	return this.chapters[i]
+    	return this.chapters[i];
+    }
+    getTotalChapter(){
+    	return this.chapters.length;
+    }
+
+    setDscription(content){
+    	this.description = content;
+    }
+
+    newComment(comment){
+        this.comments.push(comment);
     }
 }
 
@@ -78,32 +92,59 @@ class user{
 		this.writtenBook = [];
 		this.followers = 0;
 		this.following = [];
-		this.image = []
 	}
 
 	getName(){
 		return this.name;
 	}
+    getImage(){
+        return this.image;
+    }
+    setImage(src){
+        this.image = src;
+    }
+    newBook(book){
+        this.writtenBook.push(book);
+    }
 }
 
+class Comment{
+    constructor(user,content){
+        this.user = user;
+        this.content = content;
+    }
+    getUser(){
+        return this.user;
+    }
+    getContent(){
+        return this.content;
+    }
+}
+function newBook(author,book){
+    fakeBooks.push(book)
+    author.newBook(book)
+}
 //fake data
 
 const fakeUser = []
 fakeUser.push(new user("Xie Wu", 0))
 fakeUser.push(new user("Cixin Liu", 1))
 fakeUser.push(new user("JK_Rowling", 2))
+fakeUser[0].setImage("img/XieWu.png")
 
 const fakeBooks = []
-fakeBooks.push(new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'))
-fakeBooks.push(new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'))
-fakeBooks.push(new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'))
-fakeBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'))
+newBook(fakeUser[2],new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'))
+newBook(fakeUser[0],new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'))
+newBook(fakeUser[1],new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'))
+newBook(fakeUser[1],new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'))
 fakeBooks[1].addChapter(new Chapter(1,'1'))
 fakeBooks[1].addChapter(new Chapter(2,'2'))
 fakeBooks[1].addChapter(new Chapter(3,'3'))
 fakeBooks[1].addChapter(new Chapter(4,'4'))
 fakeBooks[1].addChapter(new Chapter(5,'5'))
 fakeBooks[1].addChapter(new Chapter(6,'6'))
-
+fakeBooks[1].addChapter(new Chapter(7,'7'))
+fakeBooks[1].newComment(new Comment(fakeUser[0],'this is a good book'))
+fakeBooks[1].setDscription('I begin tucking him into bed and he tells me, “Daddy check for monsters under my bed.” I look underneath for his amusement and see him, another him, under the bed, staring back at me quivering and whispering, “Daddy there’s somebody on my bed.”')
 
 
