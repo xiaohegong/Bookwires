@@ -1,0 +1,16 @@
+#TextBox{
+	width:45%;
+	text-align:center;
+	height:50%;
+	float: left;
+}
+
+#LoginBox{	
+	text-align:center;
+	margin-left:40%;
+	width:50%;
+}
+
+#Text{
+	font-size:150%;
+}
