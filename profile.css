@@ -101,3 +101,15 @@
     border: solid black;
     border-top: none;
 }
+
+.nav-container ul li:hover{
+    background: #dbe4f1;
+  }
+
+  .nav-container ul li.active{
+    background: #dbe4f1;
+  }
+
+.nav-container ul li.active a{
+    color: #0056b3;
+  }
