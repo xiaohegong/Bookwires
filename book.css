@@ -161,6 +161,13 @@
     
 }
 
+#posterSlider {
+    width: 90%;
+    height: 50px;
+    margin: 10px;
+    display: inline-block;
+}
+
 .arrow{
 	margin-left: 5px;
 	margin-right: 5px;
@@ -189,8 +196,8 @@
 
 .CommentUserImage{
 	float: left;
-	width:5vw;
-	height:5vw;
+	width:70px;
+	height:70px;
 	display: block;
 	border-radius: 50%;
 	margin-right: 10px;
@@ -200,4 +207,8 @@
 	display: block;
 	color:blue;
 
+}
+
+.center{
+	text-align: center;
 }

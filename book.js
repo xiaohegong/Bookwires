@@ -65,35 +65,18 @@ author.insertBefore(nameContainer, authorDetail);
 // author.appendChild(nameContainer);
 
 //other book written by this author
-const otherBook = document.getElementById('authorOtherBook');
-const bookImageContainer = document.createElement('div');
-bookImageContainer.className = 'otherBookContainer';
-const leftArrow = document.createElement('img');
-leftArrow.src = 'img/left.png';
-leftArrow.className = 'arrow';
-bookImageContainer.appendChild(leftArrow);
+const slider = document.getElementsByClassName("carousel-inner")
 
-
-const bookImage = document.createElement('img');
-bookImage.className = "otherBook";
-bookImage.src = 'img/wanderingEarth.jpg';
-bookImageContainer.appendChild(bookImage);
-
-const rightArrow = document.createElement('img');
-rightArrow.src = 'img/right.png';
-rightArrow.className = 'arrow';
-bookImageContainer.appendChild(rightArrow);
-otherBook.appendChild(bookImageContainer);
-
-const bookname = document.createTextNode('BOOK NAME');
-const otherbooknameContainer = document.createElement('h3');
-otherbooknameContainer.appendChild(bookname);
-otherBook.appendChild(otherbooknameContainer);
-
-const otherbookdesription = document.createTextNode('as qwd  asd f ew dcvdsvewsd  w dsf w f d fesf ');
-const otherbookdesriptionContainer = document.createElement('p');
-otherbookdesriptionContainer.appendChild(otherbookdesription);
-otherBook.appendChild(otherbookdesriptionContainer);
+for(let i = 0; i < 3; i++){
+	const bookImage = document.createElement('img');
+	bookImage.src = 'img/wanderingEarth.jpg';
+	slider[0].children[i].appendChild(bookImage);
+	const bookname = document.createTextNode('BOOK NAME');
+	const otherbooknameContainer = document.createElement('h3');
+	otherbooknameContainer.className = 'center';
+	otherbooknameContainer.appendChild(bookname)
+	slider[0].children[i].appendChild(otherbooknameContainer);
+}
 
 
 //create comments
