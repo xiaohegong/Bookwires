@@ -97,7 +97,7 @@
     display: block;
 }
 
-
 .nav-container ul li{
-    display: block;
+    border: solid black;
+    border-top: none;
 }
