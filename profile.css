@@ -34,3 +34,70 @@
     padding-left: 10px;
     text-align: center;
 }
+
+#book-shelf {
+    margin-top: 30px;
+    border: solid gray;
+    border-width: 5px;
+    background: url("img/wood.jpg");
+    background-size: cover;
+    background-repeat: repeat-y;
+    
+}
+
+#book-shelf h1 {
+    margin: 10px;
+    text-align: center;
+}
+
+.shelf-search {
+    width: 70%;
+    margin-left: 15%;
+}
+
+.rows-container {
+    margin-top: 30px;
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+    margin-bottom: 20px;
+}
+
+
+.book-row {
+    display: flex;
+    justify-content: space-between;
+    height: 30%;
+    padding-left: 0px;
+    border-bottom: black 4px;
+}
+
+.book-row li{
+	list-style: none;
+    height: 80%;
+    display: block;
+    margin: 7px;
+    box-shadow: 5px 5px 14px 4px rgba(42,42,42,0.79);
+}
+
+.book-row li img{
+    height: 100%;
+    width: 100%;
+}
+
+
+.rows-container {
+    height: 600px;
+}
+
+.shelf-navs {
+    width: 7.5%;
+}
+
+.nav-container ul{
+    display: block;
+}
+
+
+.nav-container ul li{
+    display: block;
+}
