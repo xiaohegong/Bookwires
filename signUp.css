@@ -1,0 +1,22 @@
+#mainSignUpBox{
+	margin-top:50px;
+}
+
+#SignUpInfo{
+	width:20%;
+	margin-left:40%;
+}
+
+#TextBox{
+	text-align:center;
+	width:60%;
+	margin-left:20%;
+}
+
+.littleText{
+	font-size:9px;
+}
+
+.headerText{
+	font-size:150%;
+}
