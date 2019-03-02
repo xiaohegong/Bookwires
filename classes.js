@@ -156,6 +156,7 @@ fakeUser.push(userCreater("Xie Wu","wuxie@gmail.com","123456"))
 fakeUser.push(userCreater("Cixin Liu","liucixin@gmail.com","123456"))
 fakeUser.push(userCreater("JK_Rowling","jkR@gmail.com","123456"))
 fakeUser[0].setImage("img/XieWu.png")
+fakeUser[2].setImage("img/jk.jpg")
 
 const fakeBooks = []
 newBook(fakeUser[2],new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'))
