@@ -1,20 +1,55 @@
 'use strict';
 const log = console.log;
 
+// testing book
+const book = fakeBooks[1];
 
+
+const commentBox = document.getElementById('commentBox')
+function cancelComment(){
+	commentBox.value = ""
+}
+function enterComment(){
+	const newComments = document.createElement('div');
+	const comment = new Comment(fakeUser[0],commentBox.value)
+	book.newComment(comment)
+	commentBox.value = ""
+	commentsArea.appendChild(newComments);
+	newComments.className = 'comment';
+	const CommentUserImage = document.createElement('img');
+	CommentUserImage.src = comment.user.getImage();
+	CommentUserImage.className = 'CommentUserImage';
+	newComments.appendChild(CommentUserImage);
+
+	const CommentUserNameContainer = document.createElement('h5');
+	CommentUserNameContainer.className = 'CommentUserName';
+	const CommentUserName = document.createTextNode(comment.user.getName());
+	CommentUserNameContainer.appendChild(CommentUserName);
+	newComments.appendChild(CommentUserNameContainer);
+
+	const UserCommentContainer = document.createElement('p');
+	const UserComment = document.createTextNode(comment.getContent());
+	UserCommentContainer.appendChild(UserComment);
+	newComments.appendChild(UserCommentContainer);
+}
 const bookNav = document.getElementsByClassName('book-nav');
 const chapters = document.getElementById("chapters");
 const chapterTable = document.getElementById("chapterTable");
 const bookInformation = document.getElementById("bookInformation");
 
-// testing book
-const book = fakeBooks[1];
+
+
 // Let's create a new chapter
 (function(){
 	const authorTitle = document.createTextNode(book.getBookTitle());
 	const authorName = document.createTextNode(book.getAuthor());
 	const bookdesription = document.createTextNode(book.getDescription());
 	const bookNameContainer = document.createElement('h1');
+	const zoom = document.getElementsByClassName("zoom")[0];
+	const bookImage = document.createElement('img');
+	bookImage.src = book.getImage();
+	zoom.appendChild(bookImage)
+
 	bookNameContainer.appendChild(authorTitle);
 	const AuthorNameContainer = document.createElement('h3');
 	AuthorNameContainer.appendChild(authorName);
@@ -37,7 +72,8 @@ while (i < book.getTotalChapter()) {
         const newPost = document.createElement('td');
         newPost.className = 'Chapter';
         const newPostTitle = document.createTextNode(book.getChapter(i).getDescription());
-        const newPostTitleContainer = document.createElement('p');
+        const newPostTitleContainer = document.createElement('a');
+        newPostTitleContainer.href = "ReadingPage.html"
         newPostTitleContainer.appendChild(newPostTitle);
         newPost.appendChild(newPostTitleContainer);
         nextLine.appendChild(newPost);
@@ -70,6 +106,7 @@ const slider = document.getElementsByClassName("carousel-inner")
 for(let i = 0; i < 3; i++){
 	const bookImage = document.createElement('img');
 	bookImage.src = 'img/wanderingEarth.jpg';
+	bookImage.className = 'otherBookImg'
 	slider[0].children[i].appendChild(bookImage);
 	const bookname = document.createTextNode('BOOK NAME');
 	const otherbooknameContainer = document.createElement('h3');
@@ -81,8 +118,9 @@ for(let i = 0; i < 3; i++){
 
 //create comments
 const commentsArea = document.getElementById('commentsArea');
-const newComments = document.createElement('div');
+
 for(let i = 0; i < book.comments.length;i++){
+	const newComments = document.createElement('div');
 	const comment = book.comments[i];
 	commentsArea.appendChild(newComments);
 	newComments.className = 'comment';
