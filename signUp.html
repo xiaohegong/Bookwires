@@ -22,25 +22,23 @@
 			
 			<div id="mailBox">
 				<p class="littleText">Mail address</p>
-				<input id='passWord' type="text" placeholder="mailAddress">
+				<input id='mail' type="text" placeholder="mailAddress">
 			</div>
 			
 			<div id="passWordBox">
 				<p class="littleText">passWord</p>
 				<input id='passWord' type="text" placeholder="passWord">	
 				<p class="littleText">confirm passWord</p>
-				<input id='passWord' type="text" placeholder="passWord again">
+				<input id='passWordConfirm' type="text" placeholder="passWord again">
 			</div>
 			<br>
 			
-			<input type="submit" value="Login">
+			<input id='signUpButton' type="button" onclick="tryToSignUp()" value="Sign Up Now!">
 			
 			<p class="littleText">Already have a account?</p><a class="littleText" href="LoginPage.html">Sign in</a>
-
-			
-			
-			
 		</form>
 		
 	</div>
+	<script type="text/javascript" src="./signUp.js"></script>	
+	<script type="text/javascript" src="./classes.js"></script>
 </body>

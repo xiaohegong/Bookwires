@@ -1,8 +1,7 @@
 const log = console.log;
-const LoginButton = document.getElementById('loginButton')
-LoginButton.addEventListener("submit",tryToLogin)
 
 function tryToLogin() {
+	log(fakeUser)
 	const userNameInput = document.getElementById('userName')
 	const userName = userNameInput.value
 	
@@ -24,5 +23,7 @@ function tryToLogin() {
 	if(!foundUser){
 		alert("This account do not exist")
 	}
+	
+	
 }
 
