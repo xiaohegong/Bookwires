@@ -92,6 +92,8 @@ class user{
 		this.writtenBook = [];
 		this.followers = 0;
 		this.following = [];
+		this.mailAddress = "";
+		this.passWord = "";
 	}
 
 	getName(){
@@ -106,6 +108,12 @@ class user{
     newBook(book){
         this.writtenBook.push(book);
     }
+	setPassWord(passWord){
+		this.passWord = passWord;
+	}
+	setMailAdd(address){
+		this.mailAddress = address;
+	}
 }
 
 class Comment{
@@ -124,12 +132,21 @@ function newBook(author,book){
     fakeBooks.push(book)
     author.newBook(book)
 }
-//fake data
 
+let numberOfUsers = 0;
+function userCreater(name,mailAddress,passWord){
+	const rawUser = new user(name, numberOfUsers)
+	rawUser.setMailAdd(mailAddress)
+	rawUser.setPassWord(passWord)
+	numberOfUsers += 1
+	return rawUser
+}
+
+//fake data
 const fakeUser = []
-fakeUser.push(new user("Xie Wu", 0))
-fakeUser.push(new user("Cixin Liu", 1))
-fakeUser.push(new user("JK_Rowling", 2))
+fakeUser.push(userCreater("Xie Wu","wuxie@gmail.com","123456"))
+fakeUser.push(userCreater("Cixin Liu","liucixin@gmail.com","123456"))
+fakeUser.push(userCreater("JK_Rowling","jkR@gmail.com","123456"))
 fakeUser[0].setImage("img/XieWu.png")
 
 const fakeBooks = []
@@ -147,4 +164,5 @@ fakeBooks[1].addChapter(new Chapter(7,'7'))
 fakeBooks[1].newComment(new Comment(fakeUser[0],'this is a good book'))
 fakeBooks[1].setDscription('I begin tucking him into bed and he tells me, “Daddy check for monsters under my bed.” I look underneath for his amusement and see him, another him, under the bed, staring back at me quivering and whispering, “Daddy there’s somebody on my bed.”')
 
-
+//currentUserId shows the current login user's id. 0 means user0 has logined, -1 means no one hsa logined yet.
+let currentUserId = -1;
