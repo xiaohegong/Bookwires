@@ -117,8 +117,8 @@
 
 #authorDetail ul li img{
 	border-radius: 50%;
-	width:100px;
-	height: 100px;
+	width:5vw;
+	height: 5vw;
 }
 #authorDetail ul li p{
 	margin-top: 0px;
@@ -139,28 +139,6 @@
 
 }
 
-.otherBook{
-	float: left;
-   
-	width: 120px;
-	height: 180px;
-    
-}
-
-#authorOtherBook p{
-	text-align: center;
-	padding-right: 5px;
-	padding-left: 5px;
-    
-}
-.otherBookContainer{
-	display: flex;
-	margin-bottom: 10px;
-    flex-wrap: wrap; /* Optional. only if you want the items to wrap */
-    justify-content: center; /* For horizontal alignment */
-    
-}
-
 #posterSlider {
     width: 90%;
     height: 50px;
@@ -168,14 +146,15 @@
     display: inline-block;
 }
 
-.arrow{
-	margin-left: 5px;
-	margin-right: 5px;
-	width:25px;
-	height:25px;
-	margin-top:80px;
-	float: left;
+.otherBookImg{
+	display: block;
+margin-left: auto;
+margin-right: auto;
+	height:100px;
+	width:100px;
 }
+
+
 
 #comments{
 	margin-top: 5px;
@@ -183,8 +162,13 @@
 	border-style: outset;
 	display: block;
 	min-height: 200px;
-	overflow: auto;
 }
+
+#comments h2{
+	display: inline-block;
+	margin-left: 10px;
+}
+    
 .comment{
 	padding-left: 5px;
 	padding-right: 5px;
@@ -211,4 +195,25 @@
 
 .center{
 	text-align: center;
+}
+
+#commentForm div{
+	margin-top: 5px;
+	margin-right: 5%;
+}
+
+.commentButton{
+	float: right;
+	margin-right: 10px;
+}
+
+#commentForm textarea{
+	margin-left: 5%;
+	width: 90%;
+	padding: 15px;
+	margin: 5px 0 0 10px;
+	border: none;
+	background: #f1f1f1;
+	resize: none;
+	min-height: 50px;
 }
