@@ -17,6 +17,10 @@ function enterComment(){
 	
 }
 
+function saveToshelf(){
+	book.save(fakeUser[0]);
+}
+
 function addCommentToTable(comment){
 	const newComments = document.createElement('div');
 	commentsArea.appendChild(newComments);

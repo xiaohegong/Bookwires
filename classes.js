@@ -62,8 +62,25 @@ class Book {
     newComment(comment){
         this.comments.push(comment);
     }
-}
 
+    save(user){
+        user.addToBookShelf(new readingBook(book));
+    }
+}
+class readingBook{
+    constructor(book){
+        this.book = book;
+        this.currentCurrentReading = 0;
+    }
+
+    nextChapter(){
+        this.currentCurrentReading += 1;
+    }
+
+    jumpToChapter(n){
+        this.currentCurrentReading = n;
+    }
+}
 class Chapter {
     constructor(num, chapterName) {
         this.num = num;
@@ -98,6 +115,7 @@ class user{
 		this.token = 0;
 		this.bookshelf = [];
 		this.writtenBook = [];
+        this.topThreeBook = [];
 		this.followers = 0;
 		this.following = [];
 		this.mailAddress = "";
@@ -112,6 +130,9 @@ class user{
     }
     setImage(src){
         this.image = src;
+    }
+    addToBookShelf(book){
+        this.bookshelf.push(book);
     }
     newBook(book){
         this.writtenBook.push(book);
