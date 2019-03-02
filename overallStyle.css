@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #eae7dc !important;
+    background-color: #fcfcf4 !important;
     font-family: "Palatino", Times, serif !important;
 }
 
@@ -16,9 +16,35 @@ h1 {
     margin-top: 100px;
 }
 
+.lightBlue {
+    color: #bdcdce;
+}
+
+.darkBlue {
+    color: #124559;
+}
+
+.darkGreen {
+    color: #bdcebe;
+}
+
+.darkerGreen{
+    color: #91ad93;
+}
+
+.darkGreenBackground {
+    background-color: #bdcebe;
+}
+
+.lightGreenBackground {
+    background-color: #fcfcf4;
+}
+
+
+
 /* -----------------------Theme color codes   -----------------------   */
 /* Background color: #eae7dc */
-/* Light brown (used for emphasis) : #d8c3a5 */
-/* Dark grey font color: #2b2b2b */
+/* Light purple (used for emphasis) : #e4dbda */
+/* Darker purple font color: #cebebd */
 /* Light grey font color: #8e8d8a */
 /* Decorating red color: (lighter) #e98074, (brighter) #e85a4f */

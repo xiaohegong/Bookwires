@@ -20,17 +20,18 @@
     width: 200px;
     height: 60px;
     margin-top: 10px;
-
+    margin-left: 40px;
+    float: left;
 }
 
 #menuBar a {
     float: left;
     font-size: 16px;
-    color: grey;
+    color: #67898a;
     text-align: center;
     padding: 8px;
     text-decoration: none;
-    border: 2px solid #d8c3a5;
+    border: 2px solid #67898a;
     margin: 5px;
     font-weight: bold;
 }
@@ -38,7 +39,8 @@
 
 /* Add a red background color to navbar links on hover */
 #menuBar a:hover {
-    background-color: #d8c3a5;
+    background-color: #254e58;
+    border: 2px solid #254e58;
     color: white;
 }
 
@@ -47,11 +49,10 @@
     width: 44%;
     height: 40px;
     margin: 10px;
-    margin-left: 160px;
+    margin-left: 100px;
     float: left;
-    border: 2px solid #d8c3a5;
+    border: 2px solid #bdcebe;
     display: block;
-    background-color: #d8c3a5;
 }
 
 ::placeholder {
@@ -78,13 +79,11 @@
     float: left;
     margin: 20px;
     margin-top: 10px;
-    width: 23%;
-    background-color: #d8c3a5;
+    width: 15%;
     clear: left;
 }
 
 .sec {
-    background-color: #eae7dc;
     margin-left: -20px;
     margin-right: -20px;
 }
@@ -96,8 +95,6 @@
     text-decoration: none;
     font-weight: bold;
     font-size: 16px;
-    margin-bottom: 21px;
-    margin-top: 20px;
 }
 
 #categories a {
@@ -105,7 +102,6 @@
 }
 
 .break {
-    background-color: #eae7dc;
     height: 40px;
     margin-left: -15px;
     margin-right: -15px;
@@ -114,7 +110,6 @@
 #authorRec {
     text-align: left;
     margin: 10px;
-    color: white;
     text-decoration: none;
     font-size: 16px;
     margin-bottom: 21px;
@@ -137,15 +132,16 @@
 
 #center {
     float: left;
-    width: 50%;
+    width: 55%;
     margin-top: 20px;
+    margin-left: 30px;
 }
 
 h4 {
     width: 95%;
     margin: 10px;
     display: inline-block;
-    border-bottom: 1px solid #d8c3a5;
+    border-bottom: 1px solid #124559;
     color: #2b2b2b;
 }
 
@@ -189,7 +185,7 @@ h4 {
 }
 
 .shelf {
-    border-bottom: 30px solid #8e8d8a;
+    border-bottom: 30px solid #AEC3B0;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
     top: -15px;

@@ -3,7 +3,7 @@ class Book {
     constructor(bookTitle, author, date, image, genre) {
         this.bookTitle = bookTitle;
         this.author = author;
-        this.rate = 0;
+        this.rating = 0;
         this.publishedDate = date;
         this.image = image;
         this.genre = genre;
@@ -11,6 +11,10 @@ class Book {
         this.NumberOfFollowers = 0;
         this.comments = [];
         this.chapters = [];
+    }
+
+    getRating(){
+        return this.rating;
     }
 
     getAuthorOtherBook(){
@@ -47,8 +51,12 @@ class Book {
     	return this.chapters.length;
     }
 
-    setDscription(content){
+    setDescription(content){
     	this.description = content;
+    }
+
+    setRating(rate){
+        this.rating = rate;
     }
 
     newComment(comment){
@@ -162,7 +170,11 @@ fakeBooks[1].addChapter(new Chapter(5,'5'))
 fakeBooks[1].addChapter(new Chapter(6,'6'))
 fakeBooks[1].addChapter(new Chapter(7,'7'))
 fakeBooks[1].newComment(new Comment(fakeUser[0],'this is a good book'))
-fakeBooks[1].setDscription('I begin tucking him into bed and he tells me, “Daddy check for monsters under my bed.” I look underneath for his amusement and see him, another him, under the bed, staring back at me quivering and whispering, “Daddy there’s somebody on my bed.”')
+fakeBooks[1].setDescription('I begin tucking him into bed and he tells me, “Daddy check for monsters under my bed.” I look underneath for his amusement and see him, another him, under the bed, staring back at me quivering and whispering, “Daddy there’s somebody on my bed.”')
+
+fakeBooks[0].setRating(4);
+fakeBooks[1].setRating(5);
+
 
 //currentUserId shows the current login user's id. 0 means user0 has logined, -1 means no one hsa logined yet.
 let currentUserId = -1;

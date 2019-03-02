@@ -32,25 +32,29 @@ for (let i = 0; i < numberOfBooks; i++) {
     span.className = "bookDisplayText";
     span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
 
-    const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre())
+    const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre());
     const p = document.createElement("p");
     p.className = "displayInfo";
     p.appendChild(info);
     span.appendChild(p);
 
-    const description = document.createTextNode(book.getDescription());
-    const p2 = document.createElement("p");
-    p2.className = "displayDesc";
-    p2.appendChild(description);
-    span.appendChild(p2);
+
+    const rating = makeStars(book.getRating());
+    span.appendChild(rating);
+
+    // const description = document.createTextNode(book.getDescription());
+    // const p2 = document.createElement("p");
+    // p2.className = "displayDesc";
+    // p2.appendChild(description);
+    // span.appendChild(p2);
 
     divider.appendChild(img);
     divider.appendChild(span);
-    booksRanking.appendChild(divider)
+    booksRanking.appendChild(divider);
 }
 
 // Another for loop to add more place holder books
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 2; i++) {
     let book = fakeBooks[3];
 
     const divider = document.createElement("div");
@@ -62,21 +66,36 @@ for (let i = 0; i < 4; i++) {
     span.className = "bookDisplayText";
     span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
 
-    const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre())
+    const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre());
     const p = document.createElement("p");
     p.className = "displayInfo";
     p.appendChild(info);
     span.appendChild(p);
 
-    const description = document.createTextNode(book.getDescription());
-    const p2 = document.createElement("p");
-    p2.className = "displayDesc";
-    p2.appendChild(description);
-    span.appendChild(p2);
+    const rating = makeStars(book.getRating());
+    span.appendChild(rating);
 
     divider.appendChild(img);
     divider.appendChild(span);
-    booksRanking.appendChild(divider)
+    booksRanking.appendChild(divider);
 }
 
+function makeStars(num) {
+    if (num > 5 || num < 0) {
+        return;
+    }
 
+    const div = document.createElement("div");
+    for (let i = 0; i < 5; i++) {
+        const span = document.createElement("span");
+        if (parseInt(num) > 0) {
+            span.className = "fa fa-star darkerGreen";
+            num -= 1;
+        } else {
+            span.className = "fa fa-star";
+        }
+        div.appendChild(span);
+    }
+
+    return div;
+}
