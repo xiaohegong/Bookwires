@@ -3,7 +3,18 @@
 const authors = document.querySelector("#authorRec");
 const booksDisplayed = document.querySelector("#books");
 const booksRanking = document.querySelector("#ranking");
+const loginButton = document.getElementById("menuBar").children[0];
+const signUpButton = document.getElementById("menuBar").children[1];
 
+signUpButton.onclick = function (e) {
+    e.preventDefault();
+    signUpForm.style.display = 'block';
+};
+
+loginButton.onclick = function (e) {
+    e.preventDefault();
+    log.style.display = 'block';
+};
 
 let numberOfBooks = fakeBooks.length; // total number of books
 

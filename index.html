@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="overallStyle.css">
-    <link rel="stylesheet" type="text/css" href="homepage.css">
     <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="overallStyle.css">
+    <link rel="stylesheet" type="text/css" href="homepage.css">
+    <link rel="stylesheet" type="text/css" href="signUp.css">
 
 </head>
 <body>
@@ -18,13 +19,13 @@
 <!-- The header -->
 <div id="header">
     <!-- Twitter logo goes in here -->
-    <img id='bookLogo' src="img/book.png"/>
-    <span id="title">Bookwires</span>
+    <a href="index.html"><img id='bookLogo' src="img/book.png"/>
+        <span id="title">Bookwires</span></a>
     <input class="searchBar darkGreenBackground" type="search" placeholder=" Search books...">
     <a href=""><img id="searchLogo" src="img/search.png"></a>
-    <div id="menuBar" class="">
-        <a href="LoginPage.html">Log in</a>
-        <a href="SignUp.html">Sign up</a>
+    <div id="menuBar">
+        <a href="">Log in</a>
+        <a href="">Sign up</a>
     </div>
 </div>
 
@@ -143,10 +144,47 @@
     </div>
 </div>
 
+<div id="signUpForm" class="modal">
+    <span id="close" class="close" title="Close Modal">&times;</span>
 
+    <!-- Modal Content -->
+    <form class="modal-content animate">
+        <div class="imgContainer">
+            <img src="img/avatar.png" class="avatar">
+        </div>
+
+        <div id='SignUpInfo'>
+            <div id="nameBox">
+                <span class="littleText">User Name</span>
+                <input id='userName' type="text" placeholder="User name">
+            </div>
+
+            <div id="mailBox">
+                <span class="littleText">Email Address</span>
+                <input id='mail' type="text" placeholder="Email address">
+            </div>
+
+            <div id="passWordBox">
+                <span class="littleText">Password</span>
+                <input id='passWord' type="password" placeholder="Enter a password">
+                <span class="littleText">Confirm password</span>
+                <input id='passWordConfirm' type="password" placeholder="Enter your password again">
+            </div>
+            <br>
+
+            <button id='signUpButton' type="submit">Sign Up Now!</button>
+
+            <div>
+                <span class="littleText center">Already have a account?  </span>
+                <a id="toSignIn" class="littleText" href="LoginPage.html">Sign in</a>
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/javascript" src="classes.js"></script>
 <script type="text/javascript" src="homepage.js"></script>
-
+<script type="text/javascript" src="signUp.js"></script>
+<script type="text/javascript" src="loginPage.js"></script>
 
 <!-- bootstrap import for grid -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
