@@ -10,10 +10,15 @@ function cancelComment(){
 	commentBox.value = ""
 }
 function enterComment(){
-	const newComments = document.createElement('div');
 	const comment = new Comment(fakeUser[0],commentBox.value)
 	book.newComment(comment)
 	commentBox.value = ""
+	addCommentToTable(comment)
+	
+}
+
+function addCommentToTable(comment){
+	const newComments = document.createElement('div');
 	commentsArea.appendChild(newComments);
 	newComments.className = 'comment';
 	const CommentUserImage = document.createElement('img');
@@ -105,7 +110,7 @@ const slider = document.getElementsByClassName("carousel-inner")
 
 for(let i = 0; i < 3; i++){
 	const bookImage = document.createElement('img');
-	bookImage.src = 'img/wanderingEarth.jpg';
+	bookImage.src = 'img/WanderingEarth.jpg';
 	bookImage.className = 'otherBookImg'
 	slider[0].children[i].appendChild(bookImage);
 	const bookname = document.createTextNode('BOOK NAME');
@@ -120,25 +125,8 @@ for(let i = 0; i < 3; i++){
 const commentsArea = document.getElementById('commentsArea');
 
 for(let i = 0; i < book.comments.length;i++){
-	const newComments = document.createElement('div');
 	const comment = book.comments[i];
-	commentsArea.appendChild(newComments);
-	newComments.className = 'comment';
-	const CommentUserImage = document.createElement('img');
-	CommentUserImage.src = comment.user.getImage();
-	CommentUserImage.className = 'CommentUserImage';
-	newComments.appendChild(CommentUserImage);
-
-	const CommentUserNameContainer = document.createElement('h5');
-	CommentUserNameContainer.className = 'CommentUserName';
-	const CommentUserName = document.createTextNode(comment.user.getName());
-	CommentUserNameContainer.appendChild(CommentUserName);
-	newComments.appendChild(CommentUserNameContainer);
-
-	const UserCommentContainer = document.createElement('p');
-	const UserComment = document.createTextNode(comment.getContent());
-	UserCommentContainer.appendChild(UserComment);
-	newComments.appendChild(UserCommentContainer);
+	addCommentToTable(comment)
 }
 
 

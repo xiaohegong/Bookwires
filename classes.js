@@ -162,6 +162,7 @@ newBook(fakeUser[2],new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryP
 newBook(fakeUser[0],new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'))
 newBook(fakeUser[1],new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'))
 newBook(fakeUser[1],new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'))
+
 fakeBooks[1].addChapter(new Chapter(1,'1'))
 fakeBooks[1].addChapter(new Chapter(2,'2'))
 fakeBooks[1].addChapter(new Chapter(3,'3'))
