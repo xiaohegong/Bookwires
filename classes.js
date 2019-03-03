@@ -62,8 +62,25 @@ class Book {
     newComment(comment){
         this.comments.push(comment);
     }
-}
 
+    save(user){
+        user.addToBookShelf(new readingBook(book));
+    }
+}
+class readingBook{
+    constructor(book){
+        this.book = book;
+        this.currentCurrentReading = 0;
+    }
+
+    nextChapter(){
+        this.currentCurrentReading += 1;
+    }
+
+    jumpToChapter(n){
+        this.currentCurrentReading = n;
+    }
+}
 class Chapter {
     constructor(num, chapterName) {
         this.num = num;
@@ -98,6 +115,7 @@ class user{
 		this.token = 0;
 		this.bookshelf = [];
 		this.writtenBook = [];
+        this.topThreeBook = [];
 		this.followers = 0;
 		this.following = [];
 		this.mailAddress = "";
@@ -112,6 +130,9 @@ class user{
     }
     setImage(src){
         this.image = src;
+    }
+    addToBookShelf(book){
+        this.bookshelf.push(book);
     }
     newBook(book){
         this.writtenBook.push(book);
@@ -156,12 +177,14 @@ fakeUser.push(userCreater("Xie Wu","wuxie@gmail.com","123456"))
 fakeUser.push(userCreater("Cixin Liu","liucixin@gmail.com","123456"))
 fakeUser.push(userCreater("JK_Rowling","jkR@gmail.com","123456"))
 fakeUser[0].setImage("img/XieWu.png")
+fakeUser[2].setImage("img/jk.jpg")
 
 const fakeBooks = []
 newBook(fakeUser[2],new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'))
 newBook(fakeUser[0],new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'))
 newBook(fakeUser[1],new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'))
 newBook(fakeUser[1],new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'))
+
 fakeBooks[1].addChapter(new Chapter(1,'1'))
 fakeBooks[1].addChapter(new Chapter(2,'2'))
 fakeBooks[1].addChapter(new Chapter(3,'3'))

@@ -94,6 +94,8 @@
 }
 
 .nav-container ul{
+    border-top: solid black;
+    margin-top: 10px;
     display: block;
 }
 
