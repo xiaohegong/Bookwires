@@ -73,10 +73,6 @@ h1 {
     display: block;
 }
 
-::placeholder {
-    margin: 2px;
-    color: white;
-}
 
 #searchLogo {
     width: 30px;
