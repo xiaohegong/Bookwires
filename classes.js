@@ -40,6 +40,13 @@ class Book {
         return this.description;
     }
 
+    getShortDescription(){
+        if(this.description.length > 200){
+            return this.description.substring(0,200);
+        }
+        return this.description;
+    }
+
     addChapter(chapter) {
         this.chapters.push(chapter);
     }

@@ -39,10 +39,13 @@ for (let i = 0; i < numberOfBooks; i++) {
 
     // Add books to the ranking section
     const divider = document.createElement("div");
-    divider.className = "col-xs-8 col-md-4 bookDisplay";
+    divider.className = "bookDisplay";
+    const imgContainer = document.createElement('a')
+    imgContainer.setAttribute('href','book.html')
     const img = document.createElement("img");
     img.src = book.getImage();
     img.className = "bookDisplayImg";
+    imgContainer.appendChild(img);
     const span = document.createElement("span");
     span.className = "bookDisplayText";
     span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
@@ -62,9 +65,13 @@ for (let i = 0; i < numberOfBooks; i++) {
     // p2.className = "displayDesc";
     // p2.appendChild(description);
     // span.appendChild(p2);
+    const descriptionContainer = document.createElement('p')
+    descriptionContainer.appendChild(document.createTextNode(book.getShortDescription()))
+    span.appendChild(descriptionContainer);
 
-    divider.appendChild(img);
+    divider.appendChild(imgContainer);
     divider.appendChild(span);
+
 
     booksRanking.appendChild(divider);
 }
