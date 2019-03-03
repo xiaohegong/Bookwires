@@ -1,0 +1,53 @@
+#leftSideBar {
+    float: left;
+    margin: 20px;
+    margin-top: 10px;
+    width: 15%;
+    clear: left;
+}
+
+.category {
+    text-align: center;
+    margin: 10px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#categories a {
+    text-decoration: none;
+}
+
+
+#ranking {
+    margin: 10px;
+}
+
+.bookDisplay {
+    clear: right;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.bookDisplayImg {
+    width: 50px;
+    height: 70px;
+    display: block;
+    float: left
+}
+
+.bookDisplayText {
+    float: left;
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+.displayInfo {
+    color: #8e8d8a;
+    font-size: 12px;
+}
+
+.displayDesc {
+    font-size: 11px;
+}

@@ -11,9 +11,9 @@ h1 {
 
 #wrapper {
 
-    padding-right: 10%;
-    padding-left: 10%;
-    margin-top: 100px;
+    padding-right: 5%;
+    padding-left: 5%;
+    margin-top: 20px;
 }
 
 
@@ -21,7 +21,7 @@ h1 {
 #bookLogo {
     /* Add properties below */
     width: 50px;
-    margin-left: 20px;
+    margin-left: 70px;
     float: left;
 }
 
