@@ -72,6 +72,7 @@ class Book {
 
     save(user){
         user.addToBookShelf(new readingBook(book));
+        this.NumberOfFollowers += 1;
     }
 }
 class readingBook{
