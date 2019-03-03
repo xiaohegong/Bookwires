@@ -16,10 +16,10 @@ toSignUp.onclick = function (e) {
 
 loginSubmit.onclick = function (e) {
     e.preventDefault();
-    const userNameInput = document.getElementById('userName');
+    const userNameInput = document.getElementById('loginUserName');
     const userName = userNameInput.value;
 
-    const userPassWordInput = document.getElementById('passWord');
+    const userPassWordInput = document.getElementById('loginPassword');
     const passWord = userPassWordInput.value;
 
     let foundUser = 0;
