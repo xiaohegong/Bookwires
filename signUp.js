@@ -1,7 +1,7 @@
 const log = console.log;
 
 const signUpForm = document.getElementById('signUpForm');
-const signUpButton = document.getElementById("signUpButton");
+const signUpSubmit = document.getElementById("signUpButton");
 const close = document.getElementById("close");
 const toSignIn = document.getElementById("toSignIn");
 
@@ -10,17 +10,17 @@ window.onclick = function (event) {
     event.preventDefault();
     if (event.target === signUpForm) {
         signUpForm.style.display = "none";
+    } else if (event.target === logInForm){
+        logInForm.style.display = "none";
     }
 };
-
-signUpButton.onclick = tryToSignUp();
 
 close.onclick = function () {
     signUpForm.style.display = "none";
 };
 
-
-function tryToSignUp() {
+signUpSubmit.onclick = function tryToSignUp(e) {
+    e.preventDefault();
     const userNameInput = document.getElementById("userName");
     const passWordInput = document.getElementById("passWord");
     const userMailInput = document.getElementById("mail");
@@ -44,9 +44,9 @@ function tryToSignUp() {
     }
 
     fakeUser.push(userCreater(userName, userMail, passWord));
-    log(fakeUser);
-    alert("New account created, sign up completed");
-}
+    log("New account created, sign up completed");
+    signUpForm.style.display = "none";
+};
 
 toSignIn.onclick = function (e) {
     e.preventDefault();

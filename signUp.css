@@ -2,7 +2,7 @@
     font-size: 14px;
 }
 
-#signUpButton {
+button[type=button] {
     font-size: 14px;
     color: #67898a;
     text-align: center;

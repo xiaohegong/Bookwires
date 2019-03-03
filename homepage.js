@@ -3,8 +3,9 @@
 const authors = document.querySelector("#authorRec");
 const booksDisplayed = document.querySelector("#books");
 const booksRanking = document.querySelector("#ranking");
-const loginButton = document.getElementById("menuBar").children[0];
-const signUpButton = document.getElementById("menuBar").children[1];
+const menu = document.getElementById("menuBar");
+const loginButton = menu.children[0];
+const signUpButton = menu.children[1];
 
 signUpButton.onclick = function (e) {
     e.preventDefault();
@@ -13,7 +14,7 @@ signUpButton.onclick = function (e) {
 
 loginButton.onclick = function (e) {
     e.preventDefault();
-    log.style.display = 'block';
+    logInForm.style.display = 'block';
 };
 
 let numberOfBooks = fakeBooks.length; // total number of books
@@ -109,4 +110,14 @@ function makeStars(num) {
     }
 
     return div;
+}
+
+function userLoggedIn(username) {
+    menu.removeChild(menu.children[0]);
+    menu.removeChild(menu.children[0]);
+    const welcomeText = document.createTextNode("Welcome " + username + "!");
+    const span = document.createElement("span");
+    span.appendChild(welcomeText);
+    span.className = "welcomeMsg";
+    menu.appendChild(span);
 }

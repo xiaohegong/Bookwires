@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="overallStyle.css">
     <link rel="stylesheet" type="text/css" href="homepage.css">
     <link rel="stylesheet" type="text/css" href="signUp.css">
+    <link rel="stylesheet" type="text/css" href="LoginPage.css">
 
 </head>
 <body>
@@ -172,11 +173,37 @@
             </div>
             <br>
 
-            <button id='signUpButton' type="submit">Sign Up Now!</button>
+            <button id='signUpButton' type="button">Sign Up Now!</button>
 
             <div>
                 <span class="littleText center">Already have a account?  </span>
                 <a id="toSignIn" class="littleText" href="LoginPage.html">Sign in</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="logInForm" class="modal">
+    <span id="close2" class="close" title="Close Modal">&times;</span>
+
+    <!-- Modal Content -->
+    <form class="modal-content animate">
+        <div class="imgContainer">
+            <img src="img/avatar.png" class="avatar">
+        </div>
+
+        <div >
+            <div id="LoginBox">
+                <form id='LoginInfo'>
+                    <input id='loginUserName' type="text" placeholder="Username"><br><br>
+                    <input id='loginPassword' type="password" placeholder="Enter your password"><br><br>
+                    <button id='loginButton' type="button">Login</button>
+                    <div>
+                        <span class="littleText center">Don't have an account? </span>
+                        <a id="toSignUp" class="littleText" href="">Sign up</a>
+                    </div>
+                    <br><br>
+                </form>
             </div>
         </div>
     </form>

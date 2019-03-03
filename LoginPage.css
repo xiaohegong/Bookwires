@@ -6,10 +6,20 @@
 }
 
 #LoginBox{
-	margin-left:60%;
+	margin-left:25%;
 	width:50%;
 }
 
 #Text{
-	font-size:150%;
+	font-size:50%;
+}
+
+#loginButton {
+	margin-left: 40%;
+}
+
+.welcomeMsg {
+	font-size: 15px;
+	display: inline-block;
+	padding: 10px;
 }
