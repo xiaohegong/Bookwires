@@ -53,6 +53,7 @@
 .shelf-search {
     width: 70%;
     margin-left: 15%;
+    display: inline-block;
 }
 
 .rows-container {
@@ -74,9 +75,11 @@
 .book-row li{
 	list-style: none;
     height: 80%;
+    width: 17%;
     display: block;
     margin: 7px;
     box-shadow: 5px 5px 14px 4px rgba(42,42,42,0.79);
+    cursor: pointer;
 }
 
 .book-row li img{
@@ -87,6 +90,10 @@
 
 .rows-container {
     height: 600px;
+}
+
+#book-shelf {
+    height: 730px;;
 }
 
 .shelf-navs {
@@ -127,4 +134,37 @@
 
 #cancelbutton {
     display: none;
+}
+
+#following{
+    height: 600px;
+    border: solid gray;
+    border-width: 5px;
+    padding-top: 10px;
+}
+
+#following-list {
+    padding: 0px;
+    list-style: none;
+}
+
+.following-container {
+    height: 100px;
+    border: 1px solid black;
+}
+
+.following-container img{
+    height: 100%;
+    float: left;
+}
+
+.following-container button{
+    float: right;
+    vertical-align: middle;
+}
+
+.following-info {
+    margin-left: 10px;
+    float: left;
+    vertical-align: middle;
 }

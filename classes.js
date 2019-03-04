@@ -211,7 +211,6 @@ fakeBooks[1].setRating(5);
 // sample user to use for Proifle page
 const sampleUser = userCreater("Charles Barkowski","cbarkowski@domain.com","woof");
 sampleUser.setImage("img/dog.jpeg");
-sampleUser.bookshelf = fakeBooks;
 sampleUser.followers = 20;
 sampleUser.description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque blanditiis, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe."
 
@@ -222,33 +221,33 @@ let currentUserId = -1;
 
 //Following functions(help functions) are used to find books in the (fake)Books list. 
 //basic version
-function searchBooksByTitle(title){
-	return fakeBooks.filter((fBook) => fBook.bookTitle == title)
+function searchBooksByTitle(title, inputList = fakeBooks){
+	return inputList.filter((fBook) => fBook.bookTitle == title)
 }
 
 //advanced version, the input can be anything: name, author or genre
-function fuzzyBookSearch(input){
+function fuzzyBookSearch(input, inputList = fakeBooks){
 	const outputList = [];
 	//name search, similarity limit is .75
-	for(let index = 0; index<fakeBooks.length; index++){
-		if(stringCompByLevenshteinDistance(input,fakeBooks[index].getBookTitle()) > 0.75){
-			outputList.push(fakeBooks[index])
-			console.log('Book found by title, similarity is '+stringCompByLevenshteinDistance(input,fakeBooks[index].getBookTitle()))
+	for(let index = 0; index<inputList.length; index++){
+		if(stringCompByLevenshteinDistance(input,inputList[index].getBookTitle()) > 0.75){
+			outputList.push(inputList[index])
+			console.log('Book found by title, similarity is '+stringCompByLevenshteinDistance(input,inputList[index].getBookTitle()))
 		}
 	}
 	//author search, similarity limit is .8
-	for(let index = 0; index<fakeBooks.length; index++){
-		if(stringCompByLevenshteinDistance(input,fakeBooks[index].getAuthor()) > 0.8){
-			outputList.push(fakeBooks[index])
-			console.log('Book found by author, similarity is '+stringCompByLevenshteinDistance(input,fakeBooks[index].getAuthor()))
+	for(let index = 0; index<inputList.length; index++){
+		if(stringCompByLevenshteinDistance(input,inputList[index].getAuthor()) > 0.8){
+			outputList.push(inputList[index])
+			console.log('Book found by author, similarity is '+stringCompByLevenshteinDistance(input,inputList[index].getAuthor()))
 		}
 	}
 	
 	//genre search, similarity limit is 1
-	for(let index = 0; index<fakeBooks.length; index++){
-		if(stringCompByLevenshteinDistance(input,fakeBooks[index].getGenre()) == 1){
-			outputList.push(fakeBooks[index])
-			console.log('Book found by genre, similarity is '+stringCompByLevenshteinDistance(input,fakeBooks[index].getGenre()))
+	for(let index = 0; index<inputList.length; index++){
+		if(stringCompByLevenshteinDistance(input,inputList[index].getGenre()) == 1){
+			outputList.push(inputList[index])
+			console.log('Book found by genre, similarity is '+stringCompByLevenshteinDistance(input,inputList[index].getGenre()))
 		}
 	}
 	return outputList
