@@ -184,6 +184,8 @@ const fakeUser = []
 fakeUser.push(userCreater("Xie Wu","wuxie@gmail.com","123456"))
 fakeUser.push(userCreater("Cixin Liu","liucixin@gmail.com","123456"))
 fakeUser.push(userCreater("JK_Rowling","jkR@gmail.com","123456"))
+fakeUser.push(userCreater("admin","liucixin@gmail.com","admin"))
+fakeUser.push(userCreater("user","jkR@gmail.com","user"))
 fakeUser[0].setImage("img/XieWu.png")
 fakeUser[2].setImage("img/jk.jpg")
 

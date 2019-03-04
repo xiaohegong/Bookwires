@@ -18,6 +18,9 @@ h1 {
 
 
 /* ------------   Header css styling -----------*/
+#header{
+    height:100px;
+}
 #bookLogo {
     /* Add properties below */
     width: 50px;
