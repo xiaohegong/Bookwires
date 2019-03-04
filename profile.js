@@ -309,12 +309,16 @@ function cancelChanges(e){
     e.preventDefault();
 
     username.readOnly = true;
+    username.value = '';
     username.placeholder = sampleUser.name;
     emailaddress.readOnly = true;
     emailaddress.placeholder = sampleUser.mailAddress;
+    emailaddress.value = '';
     descriptionEditable.readOnly = true;
+    descriptionEditable.value = '';
     descriptionEditable.placeholder = sampleUser.description;
     pass.readOnly = true;
+    pass.value = '';
 
     confirmButton.disabled= true;
     confirmButton.className = "btn btn-secondary";

@@ -220,7 +220,7 @@ fakeBooks[1].setRating(5);
 const sampleUser = userCreater("Charles Barkowski","cbarkowski@domain.com","woof");
 sampleUser.setImage("img/dog.jpeg");
 sampleUser.followers = 20;
-sampleUser.description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque blanditiis, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe."
+sampleUser.description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe."
 
 
 //currentUserId shows the current login user's id. 0 means user0 has logined, -1 means no one hsa logined yet.
