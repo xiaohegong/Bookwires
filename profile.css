@@ -124,3 +124,7 @@
 #main-content-containter div.fade{
     display: none;
 }
+
+#cancelbutton {
+    display: none;
+}

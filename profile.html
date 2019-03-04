@@ -54,15 +54,15 @@
                 <div class="statscontainer">
                         <div class="statbox">
                             <strong>Followers</strong>
-                            <span>0</span>
+                            <span id="followerCount">0</span>
                         </div>
                         <div class="statbox">
                             <strong>Following</strong>
-                            <span>200</span>
+                            <span id="followingCount">200</span>
                         </div>
                         <div class="statbox">
                             <strong>Books Written</strong>
-                            <span>5</span>
+                            <span id="writenCount">5</span>
                         </div>
                 </div>
                 <div id="main-content-containter">
@@ -162,32 +162,32 @@
                         <h2>Profile Information</h2>
                         <div class="form-group">
                             <label>Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="cbarkowski@domain.com" readonly>
+                            <input type="email" class="form-control" id="emailaddress" placeholder="cbarkowski@domain.com" readonly>
                         </div>
 
                         <div class="form-group">
-                            <label>First Name</label>
-                            <input class="form-control" id="firstName" placeholder="Charles" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input class="form-control" id="lastName" placeholder="Barkowski" readonly>
+                            <label>Username</label>
+                            <input class="form-control" id="username" placeholder="Charles Barkowski" readonly>
                         </div>
 
                         <div class="form-group">
                             <label>Password</label>
                             <input type="password" class="form-control" id="password" readonly>
                         </div>
-                        <button class="btn btn-primary">Edit</button>
-                        <button type="button" class="btn btn-secondary" disabled>Confirm</button>
+                        <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" id="description" rows="3" readonly></textarea>
+                        </div>
+                        <button id="editbutton" class="btn btn-primary">Edit</button>
+                        <button id="cancelbutton" class="btn btn-danger">Cancel</button>
+                        <button id="confirmbutton" type="button" class="btn btn-secondary" disabled>Confirm</button>
                     </div><div id="followers">
                     </div></div>
             </div>
         </div>
         <!-- Content here -->
     </div>
-
+    <script type="text/javascript" src="classes.js"></script>
     <script type="text/javascript" src="profile.js"></script>
 
 
