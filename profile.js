@@ -5,10 +5,13 @@ for(let p=0; p<7; p++){
     sampleBooks.push(new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'));
     sampleBooks.push(new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'));
     sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
+    sampleUser.following.push(sampleUser);
     
 }
 sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
 sampleUser.bookshelf = sampleBooks;
+
+
 
 
 const emailaddress = document.querySelector("#emailaddress");
@@ -106,7 +109,6 @@ function setUpCarousel(bookList){
                 newLi.onclick = function () {
                     location.href = "book.html";
                 };
-                // newImg.addEventListener('click', goToBookPage);
 
                 newLi.appendChild(newImg);
                 newCarouselUl.appendChild(newLi);
@@ -155,10 +157,25 @@ function setUpShelf(e){
 function setUpSettings(e){
     e.preventDefault();
     changeActive(settingsButton, document.querySelector("#settings"));
+    
+}
+
+function removeFollowerTotal(e){
+    e.preventDefault();
+    const elem = e.target.parentNode;
+    const name = elem.querySelector("h3").innerHTML;
+
+    elem.parentNode.removeChild(elem);
+    sampleUser.removeFollowing(name);
 }
 
 function setUpFollowingList(e){
     e.preventDefault();
+    const followList = document.querySelector("#following-list");
+    while (followList.firstChild) {
+        followList.removeChild(followList.firstChild);
+    }
+
     changeActive(followingButton, document.querySelector("#following"));
     for(let i=0;i<sampleUser.following.length;i++){
         const newFollowCont = document.createElement("li");
@@ -166,23 +183,44 @@ function setUpFollowingList(e){
 
         const followingImg = document.createElement("img");
         followingImg.src = sampleUser.following[i].image;
+        newFollowCont.appendChild(followingImg);
+        followingImg.onclick = function () {
+            location.href = "profile.html";
+        };
 
         const followingInfo = document.createElement("div");
-        followingImg.className = "following-info";
+        followingInfo.className = "following-info";
+        newFollowCont.appendChild(followingInfo);
 
         const followingName = document.createElement("h3");
-        followingName = innerHTML = sampleUser.following[i].name;
+        followingName.innerHTML = sampleUser.following[i].name;
+        followingInfo.appendChild(followingName);
+        followingName.onclick = function () {
+            location.href = "profile.html";
+        };
 
         const followingWritten = document.createElement("h4");
         followingWritten.innerHTML = "Books Written: "
 
         const followingWrittenCount = document.createElement("span");
         followingWrittenCount.innerHTML = sampleUser.following[i].writtenBook.length;
+        followingWritten.appendChild(followingWrittenCount);
 
-        const unFollowButton = document.createElement("span");
+        followingInfo.appendChild(followingWritten);
+
+        const unFollowButton = document.createElement("button");
+        unFollowButton.className = "btn btn-danger";
         unFollowButton.innerHTML = "Unfollow";
+        unFollowButton.onclick = removeFollowerTotal;
+
+        newFollowCont.appendChild(unFollowButton);
+        followList.appendChild(newFollowCont);
     }
 }
+
+
+
+
 
 function updateShelf(e){
     e.preventDefault();

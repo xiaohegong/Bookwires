@@ -150,7 +150,15 @@ class user{
 	}
 	setMailAdd(address){
 		this.mailAddress = address;
-	}
+    }
+    removeFollowing(nameToRemove){
+        for(let j=0;j<this.following.length; j++){
+            if(this.following[j].name === nameToRemove){
+                this.following.splice(j, 1);
+                break;
+            }
+        }
+    }
 }
 
 class Comment{
