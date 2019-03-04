@@ -224,7 +224,7 @@ margin-right: auto;
 
 .rating { 
   border: none;
-  float: left;
+  float: right;
 }
 
 .rating > input { display: none; } 
@@ -235,7 +235,6 @@ margin-right: auto;
   display: inline-block;
   width: 10px;
   height: 10px;
-  content: "\9733";
 }
 
 
