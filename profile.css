@@ -25,6 +25,7 @@
 
 .statscontainer {
     border: solid black;
+    margin-bottom: 30px;
 }
 
 .statbox {
@@ -36,7 +37,6 @@
 }
 
 #book-shelf {
-    margin-top: 30px;
     border: solid gray;
     border-width: 5px;
     background: url("img/wood.jpg");
@@ -81,7 +81,7 @@
 
 .book-row li img{
     height: 100%;
-    width: 100px;
+    width: 100%;
 }
 
 
@@ -100,16 +100,27 @@
 .nav-container ul li{
     border: solid black;
     border-top: none;
+    display: block;
+    padding: .5rem 1rem;
 }
 
 .nav-container ul li:hover{
     background: #dbe4f1;
+    cursor: pointer;
   }
 
-  .nav-container ul li.active{
+.nav-container ul li.active{
     background: #dbe4f1;
-  }
+}
 
-.nav-container ul li.active a{
+.nav-container ul li.active{
     color: #0056b3;
   }
+
+#main-content-containter div.active{
+    display: block;
+}
+
+#main-content-containter div.fade{
+    display: none;
+}

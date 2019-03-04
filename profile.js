@@ -1,40 +1,50 @@
 'use strict';
-const log = console.log;
 
-const books = fakeBooks;
-
-
-const overallContainer = document.getElementsByClassName("carousel-item active")
-log(overallContainer)
-
-function switchToUser(){
-	log('USer')
+class User{
+    constructor(email, firstName, lastName, password, profileImagePath, description) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.profileImagePath = profileImagePath;
+        this.description = description;
+        this.books
+      }
 }
-switchToBook();
-function switchToBook(){
-	const rowsContainer = document.createElement('div');
-	rowsContainer.className = "rows-container"
-	let i = 0;
-	while (i < books.length) {
-    const row = document.createElement('ul');
-    row.className = 'book-row'
 
-    for (let j = 0; j < 5; j++) {
-    	if(i >= books.length){
-    		break;
-    	}
-        const bookContainer = document.createElement('li');
-        const bookImg  =document.createElement('img')
-        bookImg.src = books[i].getImage();
-        bookContainer.appendChild(bookImg)
-        row.appendChild(bookContainer)
-        i++;
+const user = new User("cbarkowski@domain.com", "Charles", "Barkowski", "woof", "img/dog.jpeg", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque blanditiis, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe.");
+
+function setUpUserPage(){
+    const profileHeader = document.querySelector(".profileheader");
+}
+
+const mainContent = document.querySelector("#main-content-containter");
+const navSettings = document.querySelector(".nav").children;
+
+const shelfButton = navSettings[0];
+
+shelfButton.addEventListener('click', setUpShelf);
+
+
+
+function setUpShelf(e){
+    e.preventDefault();
+    changeActive(shelfButton);
+
+    // clear search bar
+
+    mainContent.firstChild.style.display = 'none';
+    setTimeout(function(){
+        mainContent.firstChild.style.display = 'block';
+    }, 1000);
+    
+
+
+}
+
+function changeActive(elem){
+    for(let i=0; i<navSettings.clientHeight; i++){
+        navSettings[i].className = '';
     }
-    rowsContainer.appendChild(row);
-
-	}
-	overallContainer[0].appendChild(rowsContainer)
-}
-function switchToSetting(){
-	log('set')
+    elem.className = "active";
 }
