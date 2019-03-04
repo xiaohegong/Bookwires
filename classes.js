@@ -219,6 +219,7 @@ fakeBooks[1].setRating(5);
 
 // sample user to use for Proifle page
 const sampleUser = userCreater("Charles Barkowski","cbarkowski@domain.com","woof");
+fakeUser.push(sampleUser);
 sampleUser.setImage("img/dog.jpeg");
 sampleUser.followers = 20;
 sampleUser.description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe."
