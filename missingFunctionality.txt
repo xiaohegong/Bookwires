@@ -1,0 +1,6 @@
+-user can follow authors
+-unfollow books
+-view others profile (might be optional)
+-rate a books
+-search
+-admin delete book and user
