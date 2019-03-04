@@ -211,3 +211,82 @@ fakeBooks[1].setRating(5);
 
 //currentUserId shows the current login user's id. 0 means user0 has logined, -1 means no one hsa logined yet.
 let currentUserId = -1;
+
+
+//Following functions(help functions) are used to find books in the (fake)Books list. 
+//basic version
+function searchBooksByTitle(title){
+	return fakeBooks.filter((fBook) => fBook.bookTitle == title)
+}
+
+//advanced version, the input can be anything: name, author or genre
+function fuzzyBookSearch(input){
+	const outputList = [];
+	//name search, similarity limit is .75
+	for(let index = 0; index<fakeBooks.length; index++){
+		if(stringCompByLevenshteinDistance(input,fakeBooks[index].getBookTitle()) > 0.75){
+			outputList.push(fakeBooks[index])
+			console.log('Book found by title, similarity is '+stringCompByLevenshteinDistance(input,fakeBooks[index].getBookTitle()))
+		}
+	}
+	//author search, similarity limit is .8
+	for(let index = 0; index<fakeBooks.length; index++){
+		if(stringCompByLevenshteinDistance(input,fakeBooks[index].getAuthor()) > 0.8){
+			outputList.push(fakeBooks[index])
+			console.log('Book found by author, similarity is '+stringCompByLevenshteinDistance(input,fakeBooks[index].getAuthor()))
+		}
+	}
+	
+	//genre search, similarity limit is 1
+	for(let index = 0; index<fakeBooks.length; index++){
+		if(stringCompByLevenshteinDistance(input,fakeBooks[index].getGenre()) == 1){
+			outputList.push(fakeBooks[index])
+			console.log('Book found by genre, similarity is '+stringCompByLevenshteinDistance(input,fakeBooks[index].getGenre()))
+		}
+	}
+	return outputList
+}
+	
+
+//help function of fuzzyBookSearch()
+function stringCompByLevenshteinDistance(s1,s2){
+	let longer = s1;
+	let shorter = s2;
+	if (s1.length < s2.length) {
+		longer = s2;
+		shorter = s1;
+	}
+	var longerLength = longer.length;
+	if (longerLength == 0) {
+		return 1.0;
+	}
+	return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+}
+
+//help function of stringCompByLevenshteinDistance()
+function editDistance(s1, s2) {
+	s1 = s1.toLowerCase();
+	s2 = s2.toLowerCase();
+	var costs = new Array();
+	for (var i = 0; i <= s1.length; i++) {
+    var lastValue = i;
+    for (var j = 0; j <= s2.length; j++) {
+      if (i == 0)
+        costs[j] = j;
+      else {
+        if (j > 0) {
+          var newValue = costs[j - 1];
+          if (s1.charAt(i - 1) != s2.charAt(j - 1))
+            newValue = Math.min(Math.min(newValue, lastValue),
+              costs[j]) + 1;
+          costs[j - 1] = lastValue;
+          lastValue = newValue;
+        }
+      }
+    }
+    if (i > 0)
+      costs[s2.length] = lastValue;
+  }
+  return costs[s2.length];
+}
+
