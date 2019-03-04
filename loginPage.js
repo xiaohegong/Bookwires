@@ -24,6 +24,7 @@ loginSubmit.onclick = function (e) {
 
     let foundUser = 0;
     for (let i = 1; i <= numberOfUsers; i++) {
+
         if (fakeUser[i - 1].name == userName) {
             foundUser = 1;
             if (fakeUser[i - 1].passWord == passWord) {
