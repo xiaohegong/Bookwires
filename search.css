@@ -6,10 +6,15 @@
     clear: left;
 }
 
+.sec {
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
 .category {
     text-align: center;
     margin: 10px;
-    color: black;
+    color: white;
     text-decoration: none;
     font-weight: bold;
     font-size: 16px;
@@ -17,6 +22,20 @@
 
 #categories a {
     text-decoration: none;
+}
+
+.break {
+    height: 40px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+h4 {
+    width: 95%;
+    margin: 10px;
+    display: inline-block;
+    border-bottom: 1px solid #124559;
+    color: #2b2b2b;
 }
 
 
