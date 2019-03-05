@@ -73,7 +73,6 @@ function setUpCarousel(bookList){
 
     const indList = document.createElement("ol");
     indList.className = "carousel-indicators";
-    carouselInner.appendChild(indList);
 
 
     for(let i=0; i < Math.ceil(bookList.length / 15); i++){
@@ -115,9 +114,9 @@ function setUpCarousel(bookList){
                 // ADD HOVER OPTIONS
             }
         }
-
-        carouselInner.appendChild(newCarousel);
         indList.appendChild(newCarIndicator);
+        carouselInner.appendChild(indList);
+        carouselInner.appendChild(newCarousel);
         
     }
 }

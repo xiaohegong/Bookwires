@@ -36,23 +36,18 @@
                     <div class="nav-container">
                         <ul class="nav">
                             <li class="active">
-                                <a  onclick="switchToBook()" class="nav-link active" href="#">
+                                <a  onclick="switchToBook()" id = "bookNav" class="nav-link active" href="#">
                                     <i class="fas fa-book"></i>
                                     Books
                                 </a>
                             </li>
                             <li>
-                                <a onclick="switchToUser()" class="nav-link" href="#">
+                                <a onclick="switchToUser()" id = "userNav" class="nav-link" href="#">
                                     <i class="fas fa-pencil-alt"></i>
                                     Users
                                 </a>
                             </li>
-                            <li>
-                                <a onclick="switchToSetting()" class="nav-link" href="#">
-                                    <i class="fas fa-cog"></i>
-                                    Settings
-                                </a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -82,7 +77,8 @@
                         </ol>
                     <div class="carousel-inner">
                        
-                        <div class="carousel-item active">
+                        <div id ="InfoContainer">
+                            
                            
                             
                         </div>
@@ -108,9 +104,10 @@
     </div>
 
 
-
     <script type="text/javascript" src="./classes.js"></script>
     <script type="text/javascript" src="admin.js"></script>
+
+
 
 
     <!--  Bootstrap JS -->

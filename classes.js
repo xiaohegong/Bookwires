@@ -1,4 +1,5 @@
 'use strict';
+// everything in this file is server calls
 class Book {
     constructor(bookTitle, author, date, image, genre) {
         this.bookTitle = bookTitle;
@@ -188,7 +189,7 @@ function userCreater(name,mailAddress,passWord){
 }
 
 //fake data
-const fakeUser = []
+let fakeUser = []
 fakeUser.push(userCreater("Xie Wu","wuxie@gmail.com","123456"))
 fakeUser.push(userCreater("Cixin Liu","liucixin@gmail.com","123456"))
 fakeUser.push(userCreater("JK_Rowling","jkR@gmail.com","123456"))
@@ -197,7 +198,7 @@ fakeUser.push(userCreater("user","jkR@gmail.com","user"))
 fakeUser[0].setImage("img/XieWu.png")
 fakeUser[2].setImage("img/jk.jpg")
 
-const fakeBooks = []
+let fakeBooks = []
 newBook(fakeUser[2],new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'))
 newBook(fakeUser[0],new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'))
 newBook(fakeUser[1],new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'))
@@ -218,6 +219,7 @@ fakeBooks[1].setRating(5);
 
 // sample user to use for Proifle page
 const sampleUser = userCreater("Charles Barkowski","cbarkowski@domain.com","woof");
+fakeUser.push(sampleUser);
 sampleUser.setImage("img/dog.jpeg");
 sampleUser.followers = 20;
 sampleUser.description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe."
@@ -228,6 +230,14 @@ let currentUserId = -1;
 
 
 //Following functions(help functions) are used to find books in the (fake)Books list. 
+
+function removeBook(title, inputList = fakeBooks){
+    return inputList.filter((fBook) => fBook.bookTitle != title)
+}
+
+function removeUser(name, inputList = fakeUser){
+    return inputList.filter((fUser) => fUser.name != name)
+}
 //basic version
 function searchBooksByTitle(title, inputList = fakeBooks){
 	return inputList.filter((fBook) => fBook.bookTitle == title)
