@@ -43,8 +43,7 @@ signUpSubmit.onclick = function tryToSignUp(e) {
         }
     }
 
-    fakeUser.push(userCreater(userName, userMail, passWord));
-    log("New account created, sign up completed");
+    fakeUser.push(userCreator(userName, userMail, passWord));
     signUpForm.style.display = "none";
 };
 

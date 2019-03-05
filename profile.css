@@ -253,3 +253,7 @@
 #not-list-group li:hover{
     cursor: pointer;
 }
+
+#bookLogo{
+    margin-left: 120px;
+}

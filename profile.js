@@ -106,6 +106,8 @@ chapterCloseButton.addEventListener("click", clearChapterFields);
 const chapterSubmitButton = document.querySelector("#chapter-submit");
 chapterSubmitButton.addEventListener("click", submitNewChapter);
 
+const newBookButton = document.querySelector("#new-book-button");
+
 
 // Sets up the carousel with all the books required for My Bookshelf and Authored view
 // each carousel page has a maximum of 15 books. There are a maximum of 3 rows, 
@@ -473,11 +475,16 @@ function changeAuthentification(e){
         followButton.style.display = "none";
         followingButton.style.display = "block";
         settingsButton.style.display = "block";
+        notificationButton.style.display = "block";
+        newBookButton.style.display = "block";
+    
     }
     else{
         followButton.style.display = "inline-block";
         followingButton.style.display = "none";
         settingsButton.style.display = "none";
+        notificationButton.style.display = "none";
+        newBookButton.style.display = "none";
 
         if(viewingUser.isFollowing(sampleUser.name)){
             followButton.classList.add("btn-danger"); 
@@ -576,13 +583,6 @@ function editBook(e){
     
 
 }
-
-// function createNewChapter(e){
-//     // e.preventDefault();
-//     console.log("ASdSAD");
-
-    
-// }
 
 function submitNewChapter(e){
     if(edit===true){
