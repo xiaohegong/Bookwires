@@ -3,20 +3,42 @@ To Ta:
 	To start using our app, you need to start from the homepage(index.html).
 	About HomePage:
 		1.You can click all the images of books to go to the book page of the selected books.
-		2.You can use the search bar at the very top of the page, Genres at the left, popular author at the button-right. These links will all lead to another 'search result' page, but since 
-		  we don't have server right now, the 'search page' always be the same.
-		3.You can log in using the login button, we have already create 3 fake user for you to try login button. That's: "Xie Wu"&"Cixin Liu"&"JK_Rowling", and all the password is 123456.
+		2.You can use the search bar at the very top of the page, Genres at the left.  all of them goes the 'search page'
+		and its layout is always be the same because we don't have server right now.
+		3.You can log in using the login button, we have already create 3 fake user for you to try login button.
+		    That's: "Xie Wu"&"Cixin Liu"&"JK_Rowling", and all the password is 123456.
 		  Also you have an account of 'admin', password 'admin'; 'user' password 'user'  
 		4.You can sign up using the sign up button, to create a new account and use that account to sign in. But since now our data is fake, your new created data will disappear if you switch
 		  to another page.
 		5.Click the logo at the upper-left will go back to the user page
+		6. click on the author on the right-bottom take you to the author page, where you can view their information.
+		7. after login in. there is a welcome button that you can click. it would take you to profile page if you are a user and take you to
+		admin page if you are a admin.
 		
 	About BookPage:
 		1.Read button will link to the Reading page.
 		2.Save button will save this book to the current login user's bookshelf. You can go to the console to check it out by input:fakeUser[0].bookshelf. Because by defalut now is Xie Wu
 		  Logged in.
 		3.Chapters for this book. Now all the buttons lead to a same page(Reading page).
-		4.You can add comment to this book, all the comment will under the name of Xie Wu by defalut.
-		
+		4.You can add comment to this book, all the comment will under the name of Xie Wu by default.
+		5.You can rate a book on the top right corner.
+
+	About SearchPage:
+	    1. All categories on the right can be clicked and it would update the books in the middle.
+	    2.The search on the top is working correctly, it output book based on what you enter, it can take in book name,author name and genre.
+        3. Every book in the middle takes you to the book page.
+
+    About adminPage:
+        1. admin can switch bewteen books and users, book page shows all the books and user page show all the users. All books and users
+        can be deleted.
+
+    About profilePage:
+        1. You can switch between layout by clicking the side bar.
+        2. bookshelf displays all the books you saved and you can remove them.
+        3. following displays all user that you are currently following and you can unfollow them by clicking the unfollow button
+        4. setting displays your personal information, and clicking the edit button allow you to change your email, username, password and
+        desription.
+        5. change authentication button on the left bottom allow to see a different view. the visitor view, it displays what visitor sees, which
+        hide the following and settings.
 	About ReadingPage:
 		The easist page. Having 4 buttons go to next/previous chapter, and a button can go back to the content of the book.
