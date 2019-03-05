@@ -4,20 +4,28 @@ const log = console.log;
 // testing book
 const book = fakeBooks[1];
 const save = document.getElementById("save");
-
 const commentBox = document.getElementById('commentBox');
+const enterBtn = document.getElementById("enterBtn");
+const cancelBtn = document.getElementById("cancelBtn");
 
-function cancelComment() {
+// Check whether this is the admin's view
+const isAdmin = function () {
+    return window.location.pathname.includes("admin");
+};
+
+// Call back function for cancel button
+cancelBtn.onclick = function cancelComment() {
     commentBox.value = "";
-}
+};
 
-function enterComment() {
+
+// Call back function for enter button
+enterBtn.onclick = function enterComment() {
     const comment = new Comment(fakeUser[0], commentBox.value);
     book.newComment(comment);
     commentBox.value = "";
     addCommentToTable(comment);
-
-}
+};
 
 save.onclick = function saveToShelf() {
     book.save(fakeUser[0]);
@@ -42,6 +50,17 @@ function addCommentToTable(comment) {
     const UserComment = document.createTextNode(comment.getContent());
     UserCommentContainer.appendChild(UserComment);
     newComments.appendChild(UserCommentContainer);
+
+    if (isAdmin()) {
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = "delete";
+        deleteButton.className = "btn btn-info deleteButton";
+        deleteButton.onclick = function () {
+            deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
+        };
+        newComments.appendChild(deleteButton);
+        newComments.appendChild(UserCommentContainer);
+    }
 }
 
 const chapters = document.getElementById("chapters");
@@ -127,7 +146,6 @@ for (let i = 0; i < 3; i++) {
     otherbooknameContainer.appendChild(bookname);
     slider[0].children[i].appendChild(otherbooknameContainer);
 }
-
 
 //create comments
 const commentsArea = document.getElementById('commentsArea');
