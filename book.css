@@ -270,6 +270,19 @@
     border-color: #cebebd;
 }
 
+.deleteButton {
+    float: right;
+    margin-right: 50px;
+    margin-bottom: 20px;
+    background-color: #AEC3B0;
+    border-color: #AEC3B0;
+}
+
+.deleteButton:hover {
+    background-color: #cebebd;
+    border-color: #cebebd;
+}
+
 #commentForm textarea {
     width: 90%;
     padding: 15px;
