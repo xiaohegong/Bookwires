@@ -263,7 +263,7 @@ function fuzzyBookSearch(input, inputList = fakeBooks){
 }
 	
 
-//help function of fuzzyBookSearch()
+//help function of fuzzyBookSearch(),reference from:https://stackoverflow.com/questions/10473745/compare-strings-javascript-return-of-likely
 function stringCompByLevenshteinDistance(s1,s2){
 	let longer = s1;
 	let shorter = s2;
@@ -278,7 +278,7 @@ function stringCompByLevenshteinDistance(s1,s2){
 	return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
 }
 
-//help function of stringCompByLevenshteinDistance()
+//help function of stringCompByLevenshteinDistance(),from https://stackoverflow.com/questions/10473745/compare-strings-javascript-return-of-likely
 function editDistance(s1, s2) {
 	s1 = s1.toLowerCase();
 	s2 = s2.toLowerCase();
