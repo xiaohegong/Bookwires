@@ -18,12 +18,7 @@
         <!-- Twitter logo goes in here -->
         <a href="index.html"><img id='bookLogo' src="img/book.png"/>
             <span id="title">Bookwires</span></a>
-        <input class="searchBar" type="search" placeholder=" Search books...">
-        <a href=""><img id="searchLogo" src="img/search.png"></a>
-        <div id="menuBar">
-            <a href="">Log in</a>
-            <a href="">Sign up</a>
-        </div>
+
     </div>
     <div class="container">
 
@@ -84,9 +79,9 @@
                         <form id='commentForm'>
                             <textarea id='commentBox' placeholder="Leave a comment..." name="msg" required></textarea>
                             <div>
-                                <button onclick="enterComment()" type="button" class="btn btn-info commentButton">comment
+                                <button id="enterBtn" type="button" class="btn btn-info commentButton">comment
                                 </button>
-                                <button onclick="cancelComment()" type="button" class="btn btn-info commentButton">cancel
+                                <button id="cancelBtn" type="button" class="btn btn-info commentButton">cancel
                                 </button>
                             </div>
 

@@ -1,5 +1,6 @@
 'use strict';
-
+/* -----------------------  Classes definitions  -------------------- */
+// The book class
 class Book {
     constructor(bookTitle, author, date, image, genre) {
         this.bookTitle = bookTitle;
@@ -18,7 +19,7 @@ class Book {
         return this.rating;
     }
 
-    getAuthorOtherBook() {
+    getAuthorOtherBooks() {
         return author.writtenBook;
     }
 
@@ -156,6 +157,10 @@ class user {
         return this.image;
     }
 
+    getWrittenBook() {
+        return this.writtenBook;
+    }
+
     setImage(src) {
         this.image = src;
     }
@@ -202,7 +207,7 @@ class user {
         }
     }
 
-    removeBookfromBookshelf(bookToRemove) {
+    removeBookFromBookshelf(bookToRemove) {
         for (let j = 0; j < this.bookshelf.length; j++) {
             if (this.bookshelf[j].bookTitle === bookToRemove.bookTitle && this.bookshelf[j].author === bookToRemove.author) {
                 this.bookshelf.splice(j, 1);
@@ -211,7 +216,7 @@ class user {
         }
     }
 
-    removeBookfromWritten(bookToRemove) {
+    removeBookFromWritten(bookToRemove) {
         for (let j = 0; j < this.writtenBook.length; j++) {
             if (this.writtenBook[j].bookTitle === bookToRemove.bookTitle && this.writtenBook[j].author === bookToRemove.author) {
                 this.writtenBook.splice(j, 1);
@@ -249,7 +254,7 @@ function newBook(author, book) {
 
 let numberOfUsers = 0;
 
-function userCreater(name, mailAddress, passWord, isAdmin) {
+function userCreator(name, mailAddress, passWord, isAdmin) {
     const rawUser = new user(name, numberOfUsers);
     rawUser.setMailAdd(mailAddress);
     rawUser.setPassWord(passWord);
@@ -258,14 +263,14 @@ function userCreater(name, mailAddress, passWord, isAdmin) {
     return rawUser;
 }
 
-//fake data
+/* -----------------------  fake data  -------------------- */
 const fakeUser = [];
-fakeUser.push(userCreater("Xie Wu", "wuxie@gmail.com", "123456", false));
-fakeUser.push(userCreater("Cixin Liu", "liucixin@gmail.com", "123456", false));
-fakeUser.push(userCreater("JK Rowling", "jkR@gmail.com", "123456", false));
-fakeUser.push(userCreater("admin", "liucixin@gmail.com", "admin", true));
-fakeUser.push(userCreater("user", "jkR@gmail.com", "user", false));
-fakeUser.push(userCreater("1", "1", "1", false));
+fakeUser.push(userCreator("Xie Wu", "wuxie@gmail.com", "123456", false));
+fakeUser.push(userCreator("Cixin Liu", "liucixin@gmail.com", "123456", false));
+fakeUser.push(userCreator("JK Rowling", "jkR@gmail.com", "123456", false));
+fakeUser.push(userCreator("admin", "liucixin@gmail.com", "admin", true));
+fakeUser.push(userCreator("user", "jkR@gmail.com", "user", false));
+fakeUser.push(userCreator("1", "1", "1", false));
 fakeUser[0].setImage("img/XieWu.png");
 fakeUser[2].setImage("img/jk.jpg");
 
@@ -280,17 +285,16 @@ for (let i = 1; i < 30; i++) {
     fakeBooks[1].addChapter(new Chapter(i, 'Chapter Name'));
 }
 
-fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
-fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
-fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
-fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
+for (let i = 0; i < 4; i++) {
+    fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
+}
 fakeBooks[1].setDescription('I begin tucking him into bed and he tells me, “Daddy check for monsters under my bed.” I look underneath for his amusement and see him, another him, under the bed, staring back at me quivering and whispering, “Daddy there’s somebody on my bed.”');
 
 fakeBooks[0].setRating(4);
 fakeBooks[1].setRating(5);
 
 // sample user to use for Proifle page
-const sampleUser = userCreater("Charles Barkowski", "cbarkowski@domain.com", "woof", false);
+const sampleUser = userCreator("Charles Barkowski", "cbarkowski@domain.com", "woof", false);
 fakeUser.push(sampleUser);
 sampleUser.setImage("img/dog.jpeg");
 sampleUser.followers = 20;
@@ -314,11 +318,11 @@ sampleUser.newMessages.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', 'i
 //currentUserId shows the current login user's id. 0 means user0 has logined, -1 means no one hsa logined yet.
 let currentUserId = -1;
 
-
+/* --------------------------  Algorithms Implementations  ----------------------- */
 //Following functions(help functions) are used to find books in the (fake)Books list. 
 //basic version
 function searchBooksByTitle(title, inputList = fakeBooks) {
-    return inputList.filter((fBook) => fBook.bookTitle == title);
+    return inputList.filter((fBook) => fBook.bookTitle === title);
 }
 
 function fuzzyUserSearch(input, inputList = fakeUser) {
@@ -360,7 +364,6 @@ function fuzzyBookSearch(input, inputList = fakeBooks) {
     return outputList;
 }
 
-
 //help function of fuzzyBookSearch(),reference from:https://stackoverflow.com/questions/10473745/compare-strings-javascript-return-of-likely
 function stringCompByLevenshteinDistance(s1, s2) {
     let longer = s1;
@@ -380,7 +383,7 @@ function stringCompByLevenshteinDistance(s1, s2) {
 function editDistance(s1, s2) {
     s1 = s1.toLowerCase();
     s2 = s2.toLowerCase();
-    let costs = new Array();
+    let costs = [];
     for (let i = 0; i <= s1.length; i++) {
         let lastValue = i;
         for (let j = 0; j <= s2.length; j++) {
@@ -403,11 +406,11 @@ function editDistance(s1, s2) {
     return costs[s2.length];
 }
 
-// a function to similuate when a book is deleted from the database
-function deleteBookForAllUsers(bookToRemove){
+// a function to simulate when a book is deleted from the database
+function deleteBookForAllUsers(bookToRemove) {
     //remove book from all user's bookshelf
-    for(let i=0;i<fakeUser.length;i++){
-        fakeUser[i].removeBookfromBookshelf(bookToRemove);
+    for (let i = 0; i < fakeUser.length; i++) {
+        fakeUser[i].removeBookFromBookshelf(bookToRemove);
     }
 
     // remove book from 'database':

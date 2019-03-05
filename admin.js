@@ -1,15 +1,16 @@
 'use strict';
 const log = console.log;
-
+let tempBook = fakeBooks;//server call that gets real info
+let tempUser = fakeUser;//server call that gets real info
 
 const booksRanking = document.querySelector("#InfoContainer");
 const bookNavButton = document.querySelector("#bookNav");
 bookNavButton.addEventListener('click', function () {
-    switchToBook(fakeBooks);
+    switchToBook(tempBook);
 }, false);
 const UserNavButton = document.querySelector("#userNav");
 UserNavButton.addEventListener('click', function () {
-    switchToUser(fakeUser);
+    switchToUser(tempUser);
 }, false);
 
 let curNav = bookNavButton;
@@ -71,7 +72,9 @@ function switchToBook(books) {
         imgContainer.appendChild(img);
         const span = document.createElement("span");
         span.className = "bookDisplayText";
-        span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
+        const titleContainer = document.createElement('p');
+        titleContainer.appendChild(document.createTextNode(book.getBookTitle()));
+        span.appendChild(titleContainer);
 
         const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre());
         const p = document.createElement("p");
@@ -80,6 +83,7 @@ function switchToBook(books) {
         span.appendChild(p);
 
         const button = getDeleteButton();
+        button.onclick = deleteBook;
 
         divider.appendChild(imgContainer);
         divider.appendChild(span);
@@ -142,6 +146,7 @@ function switchToUser(users) {
 
 
         const button = getDeleteButton();
+        button.onclick = deleteUser;
         divider.appendChild(imgContainer);
         divider.appendChild(span);
         divider.appendChild(button);
@@ -153,13 +158,23 @@ function switchToUser(users) {
 
 }
 
-switchToBook(fakeBooks);
+switchToBook(tempBook);
 
 
 function deleteBook(e) {
     e.preventDefault();
-    const name = e.target.parentElement.children[1].innerText;
-    // fakeBooks = removeBook(name);
+    const name = e.target.parentElement.children[1].children[0].innerText;
+    const statusBar = document.getElementsByClassName("statBox");
+    statusBar[0].children[1].innerHTML = parseInt(statusBar[0].children[1].innerHTML) + 1;
+    deleteBookForAllUsers(searchBooksByTitle(name));
+
+    function removeBook(name) {
+        return tempBook.filter((fBook) => fBook.bookTitle !== name);
+    }
+
+    tempBook = removeBook(name); //this is a server that support to remove a book from the database
+
+
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
 
 }
@@ -167,7 +182,20 @@ function deleteBook(e) {
 function deleteUser(e) {
     e.preventDefault();
     const name = e.target.parentElement.children[1].innerText;
-    // fakeUser = removeUser(name);
+    const statusBar = document.getElementsByClassName("statBox");
+    statusBar[1].children[1].innerHTML = parseInt(statusBar[1].children[1].innerHTML)+1;
+
+    function removeUser(name) {
+        const targetUser = tempUser.filter((user) => user.name === name);
+        const targetUserAuthoredBooks = targetUser[0].getWrittenBook();
+        targetUserAuthoredBooks.forEach(function(entry) {
+            tempBook = tempBook.filter((fBook) => fBook.bookTitle !== entry.getBookTitle());
+        });
+        log(tempBook);
+        return tempUser.filter((user) => user.name !== name);
+    }
+
+    tempUser = removeUser(name); // this is a server that support to remove user from the database
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
 
 }
@@ -177,6 +205,5 @@ function getDeleteButton() {
     button.type = "button";
     button.innerText = "Delete";
     button.className = "deleteBtn";
-    button.onclick = deleteBook;
     return button;
 }
