@@ -167,11 +167,17 @@ function setUpCarousel(bookList){
                     location.href = "book.html";
                 };
 
-                if(profileOwner && curNav===shelfButton){
+                if(profileOwner){
                     const bookDeleteButton = document.createElement("button");
                     bookDeleteButton.innerHTML = "x";
                     bookDeleteButton.className = "book-delete";
-                    bookDeleteButton.onclick = removeBookBookshelf;
+                    if(curNav===shelfButton){
+                        bookDeleteButton.onclick = removeBookBookshelf;
+                    }
+                    else{
+                        bookDeleteButton.onclick = removeWrittenBook;
+                    }
+                    
                     newLi.appendChild(bookDeleteButton);
                 }
 
@@ -416,7 +422,14 @@ function removeBookBookshelf(e){
     sampleUser.removeBookfromBookshelf(bookToRemove);
     e.target.parentNode.removeChild(e.target);
     setUpCarousel(sampleUser.bookshelf);
+}
 
+function removeWrittenBook(e){
+    e.preventDefault();
+    const bookToRemove = e.target.parentNode.bookReference;
+    sampleUser.removeBookfromWritten(bookToRemove);
+    e.target.parentNode.removeChild(e.target);
+    setUpCarousel(sampleUser.writtenBook);
 }
 
 function changeAuthentification(e){

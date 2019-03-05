@@ -198,6 +198,15 @@ class user {
             }
         }
     }
+
+    removeBookfromWritten(bookToRemove) {
+        for (let j = 0; j < this.writtenBook.length; j++) {
+            if (this.writtenBook[j].bookTitle === bookToRemove.bookTitle && this.writtenBook[j].author === bookToRemove.author) {
+                this.writtenBook.splice(j, 1);
+                break;
+            }
+        }
+    }
 }
 
 class Comment {
