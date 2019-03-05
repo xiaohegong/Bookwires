@@ -190,6 +190,7 @@ function deleteUser(e) {
         const targetUserAuthoredBooks = targetUser[0].getWrittenBook();
         targetUserAuthoredBooks.forEach(function(entry) {
             tempBook = tempBook.filter((fBook) => fBook.bookTitle !== entry.getBookTitle());
+            statusBar[0].children[1].innerHTML = parseInt(statusBar[0].children[1].innerHTML) + 1;
         });
         log(tempBook);
         return tempUser.filter((user) => user.name !== name);
