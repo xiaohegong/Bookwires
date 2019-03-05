@@ -1,5 +1,4 @@
 'use strict';
-// everything in this file is server calls
 class Book {
     constructor(bookTitle, author, date, image, genre) {
         this.bookTitle = bookTitle;
@@ -160,6 +159,15 @@ class user{
             }
         }
     }
+
+    removeBookfromBookshelf(bookToRemove){
+        for(let j=0;j<this.bookshelf.length; j++){
+            if(this.bookshelf[j].bookTitle === bookToRemove.bookTitle && this.bookshelf[j].author === bookToRemove.author){
+                this.bookshelf.splice(j, 1);
+                break;
+            }
+        }
+    }
 }
 
 class Comment{
@@ -189,7 +197,7 @@ function userCreater(name,mailAddress,passWord){
 }
 
 //fake data
-let fakeUser = []
+const fakeUser = []
 fakeUser.push(userCreater("Xie Wu","wuxie@gmail.com","123456"))
 fakeUser.push(userCreater("Cixin Liu","liucixin@gmail.com","123456"))
 fakeUser.push(userCreater("JK_Rowling","jkR@gmail.com","123456"))
@@ -199,7 +207,7 @@ fakeUser.push(userCreater("1","1","1"))
 fakeUser[0].setImage("img/XieWu.png")
 fakeUser[2].setImage("img/jk.jpg")
 
-let fakeBooks = []
+const fakeBooks = []
 newBook(fakeUser[2],new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'))
 newBook(fakeUser[0],new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'))
 newBook(fakeUser[1],new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'))
@@ -231,14 +239,6 @@ let currentUserId = -1;
 
 
 //Following functions(help functions) are used to find books in the (fake)Books list. 
-
-function removeBook(title, inputList = fakeBooks){
-    return inputList.filter((fBook) => fBook.bookTitle != title)
-}
-
-function removeUser(name, inputList = fakeUser){
-    return inputList.filter((fUser) => fUser.name != name)
-}
 //basic version
 function searchBooksByTitle(title, inputList = fakeBooks){
 	return inputList.filter((fBook) => fBook.bookTitle == title)
@@ -273,7 +273,7 @@ function fuzzyBookSearch(input, inputList = fakeBooks){
 }
 	
 
-//help function of fuzzyBookSearch()
+//help function of fuzzyBookSearch(),reference from:https://stackoverflow.com/questions/10473745/compare-strings-javascript-return-of-likely
 function stringCompByLevenshteinDistance(s1,s2){
 	let longer = s1;
 	let shorter = s2;
@@ -281,26 +281,26 @@ function stringCompByLevenshteinDistance(s1,s2){
 		longer = s2;
 		shorter = s1;
 	}
-	var longerLength = longer.length;
+	let longerLength = longer.length;
 	if (longerLength == 0) {
 		return 1.0;
 	}
 	return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
 }
 
-//help function of stringCompByLevenshteinDistance()
+//help function of stringCompByLevenshteinDistance(),from https://stackoverflow.com/questions/10473745/compare-strings-javascript-return-of-likely
 function editDistance(s1, s2) {
 	s1 = s1.toLowerCase();
 	s2 = s2.toLowerCase();
-	var costs = new Array();
-	for (var i = 0; i <= s1.length; i++) {
-    var lastValue = i;
-    for (var j = 0; j <= s2.length; j++) {
+	let costs = new Array();
+	for (let i = 0; i <= s1.length; i++) {
+    let lastValue = i;
+    for (let j = 0; j <= s2.length; j++) {
       if (i == 0)
         costs[j] = j;
       else {
         if (j > 0) {
-          var newValue = costs[j - 1];
+          let newValue = costs[j - 1];
           if (s1.charAt(i - 1) != s2.charAt(j - 1))
             newValue = Math.min(Math.min(newValue, lastValue),
               costs[j]) + 1;

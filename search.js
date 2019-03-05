@@ -22,6 +22,11 @@ function makeStars(num) {
     return div;
 }
 
+function searchBarSearch(){
+	const searchBar = document.getElementById('searchBar')
+	console.log(fuzzyBookSearch(searchBar.value))
+}
+
 for (let i = 0; i < numberOfBooks; i++) {
     let book = fakeBooks[i];
     // First, add authors

@@ -1,0 +1,22 @@
+To Ta:
+
+	To start using our app, you need to start from the homepage(index.html).
+	About HomePage:
+		1.You can click all the images of books to go to the book page of the selected books.
+		2.You can use the search bar at the very top of the page, Genres at the left, popular author at the button-right. These links will all lead to another 'search result' page, but since 
+		  we don't have server right now, the 'search page' always be the same.
+		3.You can log in using the login button, we have already create 3 fake user for you to try login button. That's: "Xie Wu"&"Cixin Liu"&"JK_Rowling", and all the password is 123456.
+		  Also you have an account of 'admin', password 'admin'; 'user' password 'user'  
+		4.You can sign up using the sign up button, to create a new account and use that account to sign in. But since now our data is fake, your new created data will disappear if you switch
+		  to another page.
+		5.Click the logo at the upper-left will go back to the user page
+		
+	About BookPage:
+		1.Read button will link to the Reading page.
+		2.Save button will save this book to the current login user's bookshelf. You can go to the console to check it out by input:fakeUser[0].bookshelf. Because by defalut now is Xie Wu
+		  Logged in.
+		3.Chapters for this book. Now all the buttons lead to a same page(Reading page).
+		4.You can add comment to this book, all the comment will under the name of Xie Wu by defalut.
+		
+	About ReadingPage:
+		The easist page. Having 4 buttons go to next/previous chapter, and a button can go back to the content of the book.
