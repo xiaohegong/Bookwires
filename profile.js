@@ -11,7 +11,7 @@ changeAuthButton.addEventListener('click', changeAuthentification);
 // create a user that is to be used if not the owner of the profile
 // this would require a server call to check if the current logged in user
 // is the owner or not
-const viewingUser = userCreater("sampleViewer","sv@domain.com","123");
+const viewingUser = userCreator("sampleViewer","sv@domain.com","123", false);
 
 // get settings form elements:
 const emailaddress = document.querySelector("#emailaddress");
