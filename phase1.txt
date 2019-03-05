@@ -31,5 +31,14 @@ To Ta:
     About adminPage:
         1. admin can switch bewteen books and users, book page shows all the books and user page show all the users. All books and users
         can be deleted.
+
+    About profilePage:
+        1. You can switch between layout by clicking the side bar.
+        2. bookshelf displays all the books you saved and you can remove them.
+        3. following displays all user that you are currently following and you can unfollow them by clicking the unfollow button
+        4. setting displays your personal information, and clicking the edit button allow you to change your email, username, password and
+        desription.
+        5. change authentication button on the left bottom allow to see a different view. the visitor view, it displays what visitor sees, which
+        hide the following and settings.
 	About ReadingPage:
 		The easist page. Having 4 buttons go to next/previous chapter, and a button can go back to the content of the book.

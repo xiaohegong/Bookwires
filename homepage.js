@@ -116,12 +116,18 @@ function makeStars(num) {
     return div;
 }
 
-function userLoggedIn(username) {
+function userLoggedIn(username, isAdmin) {
     menu.removeChild(menu.children[0]);
     menu.removeChild(menu.children[0]);
     const welcomeText = document.createTextNode("Welcome " + username + "!");
     const link = document.createElement("a");
-    link.href = "profile.html";
+
+    if (isAdmin) {
+        link.href = "admin.html";
+    } else {
+        link.href = "profile.html";
+    }
+
     link.appendChild(welcomeText);
     const span = document.createElement("span");
     span.appendChild(link);
