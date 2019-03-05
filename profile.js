@@ -488,12 +488,15 @@ function removeBookBookshelf(e){
     setUpCarousel(sampleUser.bookshelf);
 }
 
-/** Removes an html book element from the Authored Shelf as well as makes a call to remove it from the user*/
+/** Removes an html book element from the Authored Shelf as well as makes a call to remove it from the user
+ * Requires server call.
+*/
 function removeWrittenBook(e){
     e.preventDefault();
     const bookToRemove = e.target.parentNode.bookReference;
     sampleUser.removeBookFromWritten(bookToRemove);
     deleteBookForAllUsers(bookToRemove);
+    writtenCount.innerHTML = sampleUser.writtenBook.length;
     e.target.parentNode.removeChild(e.target);
     setUpCarousel(sampleUser.writtenBook);
 }
