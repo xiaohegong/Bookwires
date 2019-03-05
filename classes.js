@@ -159,6 +159,15 @@ class user{
             }
         }
     }
+
+    removeBookfromBookshelf(bookToRemove){
+        for(let j=0;j<this.bookshelf.length; j++){
+            if(this.bookshelf[j].bookTitle === bookToRemove.bookTitle && this.bookshelf[j].author === bookToRemove.author){
+                this.bookshelf.splice(j, 1);
+                break;
+            }
+        }
+    }
 }
 
 class Comment{
@@ -281,8 +290,8 @@ function stringCompByLevenshteinDistance(s1,s2){
 		longer = s2;
 		shorter = s1;
 	}
-	var longerLength = longer.length;
-	if (longerLength === 0) {
+	let longerLength = longer.length;
+	if (longerLength == 0) {
 		return 1.0;
 	}
 	return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
@@ -292,15 +301,15 @@ function stringCompByLevenshteinDistance(s1,s2){
 function editDistance(s1, s2) {
 	s1 = s1.toLowerCase();
 	s2 = s2.toLowerCase();
-	var costs = new Array();
-	for (var i = 0; i <= s1.length; i++) {
-    var lastValue = i;
-    for (var j = 0; j <= s2.length; j++) {
+	let costs = new Array();
+	for (let i = 0; i <= s1.length; i++) {
+    let lastValue = i;
+    for (let j = 0; j <= s2.length; j++) {
       if (i == 0)
         costs[j] = j;
       else {
         if (j > 0) {
-          var newValue = costs[j - 1];
+          let newValue = costs[j - 1];
           if (s1.charAt(i - 1) != s2.charAt(j - 1))
             newValue = Math.min(Math.min(newValue, lastValue),
               costs[j]) + 1;
