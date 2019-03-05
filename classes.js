@@ -120,6 +120,15 @@ class Chapter {
     getDescription() {
         return 'chapter ' + this.num + ' : ' + this.chapterName;
     }
+
+    deleteChapter(chapNum){
+        for (let j = 0; j < this.chapters.length; j++) {
+            if (this.chapters[j].num === chapNum) {
+                this.chapters.splice(j, 1);
+                break;
+            }
+        }
+    }
 }
 
 class user {
