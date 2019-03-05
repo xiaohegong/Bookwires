@@ -3,28 +3,28 @@
 <head>
     <meta charset="utf-8">
     <title>BOOK</title>
-    <link rel="stylesheet" type="text/css" href="book.css">
-    <link rel="stylesheet" type="text/css" href="overallStyle.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-   
+    <link rel="stylesheet" type="text/css" href="book.css">
+    <link rel="stylesheet" type="text/css" href="overallStyle.css">
+
 </head>
 <body>
 <div id="wrapper">
-      <div id="header">
-    <!-- Twitter logo goes in here -->
-    <a href="index.html"><img id='bookLogo' src="img/book.png"/>
-        <span id="title">Bookwires</span></a>
-    <input class="searchBar darkGreenBackground" type="search" placeholder=" Search books...">
-    <a href=""><img id="searchLogo" src="img/search.png"></a>
-    <div id="menuBar">
-        <a href="">Log in</a>
-        <a href="">Sign up</a>
+    <div id="header">
+        <!-- Twitter logo goes in here -->
+        <a href="index.html"><img id='bookLogo' src="img/book.png"/>
+            <span id="title">Bookwires</span></a>
+        <input class="searchBar" type="search" placeholder=" Search books...">
+        <a href=""><img id="searchLogo" src="img/search.png"></a>
+        <div id="menuBar">
+            <a href="">Log in</a>
+            <a href="">Sign up</a>
+        </div>
     </div>
-</div>
     <div class="container">
 
         <div id="book-info">
@@ -32,99 +32,123 @@
 
 
             <div id="bookInformation">
-               
+
 
                 <div class='book-nav'>
                     <ul>
                         <li><a href="ReadingPage.html">READ</a></li>
-                        <li><a onclick="saveToshelf()" href="#">SAVE</a></li>
+                        <li><a href="profile.html" id="save">SAVE</a></li>
                     </ul>
                 </div>
             </div>
-             <fieldset class="rating">
-    <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars">&#9733</label>
-    <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars">&#9733</label>
-    <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars">&#9733</label>
-    <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars">&#9733</label>
-    <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star">&#9733</label>
-   
-</fieldset>
+            <fieldset class="rating">
+                <input type="radio" id="star5" name="rating" value="5"/><label class="full" for="star5"
+                                                                               title="Awesome - 5 stars">&#9733</label>
+                <input type="radio" id="star4" name="rating" value="4"/><label class="full" for="star4"
+                                                                               title="Pretty good - 4 stars">&#9733</label>
+                <input type="radio" id="star3" name="rating" value="3"/><label class="full" for="star3"
+                                                                               title="Meh - 3 stars">&#9733</label>
+                <input type="radio" id="star2" name="rating" value="2"/><label class="full" for="star2"
+                                                                               title="Kinda bad - 2 stars">&#9733</label>
+                <input type="radio" id="star1" name="rating" value="1"/><label class="full" for="star1"
+                                                                               title="Sucks big time - 1 star">&#9733</label>
+
+            </fieldset>
             <!--reference from https://codepen.io/jamesbarnett/pen/vlpkh-->
         </div>
 
 
         <div class="row">
-            <div class="col">
-                <div id="chapters">
-                    <h3>CHAPTERS</h3>
-                    <table id='chapterTable'></table>
+            <div class="col leftCol">
+                <div class="menu">
+                    <ul>
+                        <li class="nav-link active-link">
+                            <a href="#">Chapters
+                            </a>
+                            <div class="underline">
+                            </div>
+
+                        </li>
+                        <li class="nav-link">
+                            <a href="#">Comments
+                            </a>
+                            <div class="underline"></div>
+                        </li>
+                    </ul>
                 </div>
-                <div id='comments'>
-                    <h2>Comments</h2>
-                    <form id='commentForm'>
-                    <textarea id = 'commentBox' placeholder="Type message.." name="msg" required></textarea>
-                    <div>
-                        <button onclick="enterComment()" type="button" class="btn btn-info commentButton">comment</button>
-                        <button onclick="cancelComment()" type="button" class="btn btn-info commentButton">cancel</button>
+                <div>
+                    <div id="chapters">
+                        <table id='chapterTable'></table>
                     </div>
-                    
-                    </form>
-                    <br><br>
-                    <div id='commentsArea'>
+                    <div id="comments">
+                        <form id='commentForm'>
+                            <textarea id='commentBox' placeholder="Leave a comment..." name="msg" required></textarea>
+                            <div>
+                                <button onclick="enterComment()" type="button" class="btn btn-info commentButton">comment
+                                </button>
+                                <button onclick="cancelComment()" type="button" class="btn btn-info commentButton">cancel
+                                </button>
+                            </div>
+
+                        </form>
+                        <br><br>
+                        <div id='commentsArea'>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
-            <div class="col-3">
+            <div class="col-3 rightCol">
                 <div id="authorInfo">
                     <div id="authorDetail">
                         <ul>
                             <li><img src="img/book.jpg">
-                                <p>books</p>
+                                <p>Books</p>
                                 <p>5</p>
                             </li>
                             <li><img src="img/active.jpg">
-                                <p>active</p>
+                                <p>Days</p>
                                 <p>23</p>
                             </li>
                         </ul>
                     </div>
 
-                    <div>
-                        <h2>Other Book</h2>
+                    <div class="sliderWrapper">
+                        <h2>Other Books</h2>
                         <div id="posterSlider">
 
-                                <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                        <li data-target="#myCarousel" data-slide-to="1"></li>
-                                        <li data-target="#myCarousel" data-slide-to="2"></li>
-                                    </ol>
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                                </ol>
 
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner">
-                                        <div class="item active">
-                                        </div>
-
-                                        <div class="item">
-                                        </div>
-
-                                        <div class="item">
-                                        </div>
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner">
+                                    <div class="item active">
                                     </div>
 
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                                        <span class="glyphicon glyphicon-chevron-left"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                                        <span class="glyphicon glyphicon-chevron-right"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
+                                    <div class="item">
+                                    </div>
+
+                                    <div class="item">
+                                    </div>
                                 </div>
+
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
                             </div>
+                        </div>
 
                         <div id='authorOtherBook'></div>
 
@@ -134,8 +158,10 @@
             </div>
         </div>
     </div>
+    <br><br>
 
 </div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <script type="text/javascript" src="./classes.js"></script>
 <script type="text/javascript" src="book.js"></script>
@@ -150,6 +176,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>

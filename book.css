@@ -1,86 +1,91 @@
-.zoom{
-	 display: inline-block; /* change the default display type to inline-block */
-    overflow: hidden;      /* hide the overflow */
+.zoom {
+    display: inline-block; /* change the default display type to inline-block */
+    overflow: hidden; /* hide the overflow */
     float: left;
 }
 
 /*book informations*/
-#book-info{
-	padding: 20px;
-	border: 2px solid white;
-	overflow: auto;
-	background-color: white;
-	border-style: outset;
+#book-info {
+    padding: 20px;
+    border-bottom: 1px solid grey;
+    overflow: auto;
+    background-color: white;
 }
 
-.zoom img{
-	width: 170px;
-	height: 250px;
-	-webkit-transform: scale(1);
-	transform: scale(1);
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
+.zoom img {
+    width: 170px;
+    height: 250px;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
 }
 
 .zoom img:hover {
-	-webkit-transform: scale(1.3);
-	transform: scale(1.3);
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
 }
 
-#bookInformation{
-	margin-left: 20px;
-	float:left;
-	display: block;
-	width: 600px;
-	height: 200px;
+#bookInformation {
+    margin-left: 20px;
+    float: left;
+    display: block;
+    width: 600px;
+    height: 200px;
 }
 
-#bookInformation p{
-	line-height: 20px;
-	max-height: 200px;
+#bookInformation p {
+    line-height: 20px;
+    max-height: 200px;
 }
 
-.book-nav ul{
-	margin-left: 0px;
-	padding-left: 0px;
+.book-nav ul {
+    margin-left: 0px;
+    padding-left: 0px;
 }
 
 .book-nav ul li {
-	padding-top: 10px;
-	margin-right: 20px;
-	font-size: 150%;
-	font-weight: bold;
+    padding-top: 10px;
+    margin-right: 20px;
+    font-size: 150%;
+    font-weight: bold;
 
-	/* Add properties below */
-	list-style: none;
-	display: inline-block;
-	
+    /* Add properties below */
+    list-style: none;
+    display: inline-block;
 
 }
 
-/*chapter informations*/
-#chapters{
-	margin-top: 5px;
-	background-color: white;
-	border-style: outset;
-	display: block;
-	overflow: auto;
+.book-nav ul li a{
+    color: #67898a;
 }
 
-#chapterTable{
-	width: 95%;
-	margin-right: 5%;
-	border-collapse: collapse;
-}
-#chapterTable tr{
-	border-bottom: 1px solid grey;
+/*chapter information*/
+#chapters {
+    padding: 20px;
+    background-color: white;
+    display: block;
+    overflow: auto;
+    min-height: 550px;
 }
 
-.chapter p{
-	font-size: 120%;
-	margin-bottom: 3px;
-	display: inline-block;
-	padding: 2px;
+#chapterTable {
+    width: 95%;
+    margin-right: 5%;
+    border-collapse: collapse;
+}
+
+#chapterTable tr {
+    border-bottom: 1px solid grey;
+    height:  50px;
+    padding: 50px;
+}
+
+.chapter p {
+    font-size: 120%;
+    margin-bottom: 3px;
+    display: inline-block;
+    padding: 2px;
 }
 
 /*author information*/
@@ -88,168 +93,242 @@
 	margin-left: 2%;
 	margin-top: 5px;
 	background-color: white;
-	border-style: outset;
 	display: block;
 	overflow: auto;
 }
-.authorPic{
-	margin-left: auto;
-	margin-right: auto;
-	margin-top:10px;
-	display: block;
-	width:10vw;
-	height:10vw;
-	border-radius: 50%;
-}
-#authorInfo h3{
-	text-align: center;
+
+.authorPic {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    display: block;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
 }
 
-#authorDetail{
-	border-bottom: 1px solid grey;
-	border-top: 1px solid grey;
-}
-#authorDetail ul{
-	justify-content: center;
-  	display: flex;
-  	padding: 0px;
+#authorInfo h3 {
+    text-align: center;
 }
 
-#authorDetail ul li img{
-	border-radius: 50%;
-	width:5vw;
-	height: 5vw;
+#authorDetail {
+    border-bottom: 1px solid grey;
+    border-top: 1px solid grey;
 }
-#authorDetail ul li p{
-	margin-top: 0px;
-	margin-bottom: 0px;
-	text-align: center;
-	font-size: 16px;
+
+#authorDetail ul {
+    justify-content: center;
+    display: flex;
+    padding: 0px;
 }
+
+#authorDetail ul li img {
+    border-radius: 50%;
+    width: 5vw;
+    height: 5vw;
+}
+
+#authorDetail ul li p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 16px;
+}
+
 #authorDetail ul li {
-	padding-top: 10px;
-	margin-right: 20px;
-	font-size: 150%;
-	font-weight: bold;
-
-	/* Add properties below */
-	list-style: none;
-	display: inline-block;
-	
-
+    padding-top: 10px;
+    margin-right: 20px;
+    font-size: 150%;
+    font-weight: bold;
+    margin-left: 10px;
+    list-style: none;
+    display: inline-block;
 }
+
+.menu {
+    text-align: center;
+    padding: 10px;
+    font-size: 0;
+    background: white;
+}
+
+.menu ul {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.menu ul li {
+    display: inline-block;
+    font-size: 16px;
+}
+
+.menu ul li a {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    transition: color 0.5s;
+}
+
+.menu ul li .underline {
+    height: 3px;
+    background-color: transparent;
+    width: 0%;
+    transition: width 0.2s, background-color 0.5s;
+    margin: 0 auto;
+}
+
+.menu ul li.active-link .underline {
+    width: 100%;
+    background-color: #91ad93;
+}
+
+.menu ul li:hover .underline {
+    background-color: #91ad93;
+    width: 100%;
+}
+
 
 #posterSlider {
     width: 90%;
     height: 50px;
     margin: 10px;
+    padding: 10px;
     display: inline-block;
 }
 
-.otherBookImg{
-	display: block;
-margin-left: auto;
-margin-right: auto;
-	height:100px;
-	width:100px;
+.sliderWrapper {
+    margin:10px;
+}
+
+.otherBookImg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+    width: 100px;
 }
 
 
-
-#comments{
-	margin-top: 5px;
-	background-color: white;
-	border-style: outset;
-	display: block;
-	min-height: 200px;
-}
-
-#comments h2{
-	display: inline-block;
-	margin-left: 10px;
-}
-    
-.comment{
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-bottom: 10px;
-	padding-top: 10px;
-	border-bottom: 1px solid grey;
-	border-top: 1px solid grey;
-}
-
-.CommentUserImage{
-	float: left;
-	width:70px;
-	height:70px;
-	display: block;
-	border-radius: 50%;
-	margin-right: 10px;
-
-}
-.CommentUserName{
-	display: block;
-	color:blue;
+#comments {
+    background: white;
+    min-height: 550px;
+    display: none;
 
 }
 
-.center{
-	text-align: center;
+#comments h2 {
+    display: inline-block;
+    margin-left: 10px;
 }
 
-#commentForm div{
-	margin-top: 5px;
-	margin-right: 5%;
+.comment {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
-.commentButton{
-	float: right;
-	margin-right: 10px;
+.CommentUserImage {
+    float: left;
+    width: 70px;
+    height: 70px;
+    display: block;
+    border-radius: 50%;
+    margin-right: 10px;
+
 }
 
-#commentForm textarea{
-	margin-left: 5%;
-	width: 90%;
-	padding: 15px;
-	margin: 5px 0 0 10px;
-	border: none;
-	background: #f1f1f1;
-	resize: none;
-	min-height: 50px;
+.CommentUserName {
+    display: block;
+    color: #54989d;
+
 }
 
+.center {
+    text-align: center;
+}
 
+#commentForm div {
+    margin-top: 5px;
+    margin-right: 5%;
+}
 
+.commentButton {
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    background-color: #AEC3B0;
+    border-color: #AEC3B0;
+}
+
+.commentButton:hover {
+    background-color: #cebebd;
+    border-color: #cebebd;
+}
+
+#commentForm textarea {
+    width: 90%;
+    padding: 15px;
+    margin: 30px;
+    border: none;
+    background: #f1f1f1;
+    resize: none;
+    min-height: 50px;
+}
+
+.leftCol {
+    padding: 0;
+    width: 500px;
+}
+
+.rightCol {
+    margin-left: -20px;
+    margin-top: -5px;
+    width: 100px;
+}
 /****** Style Star Rating Widget *****/
 
-.rating { 
-  border: none;
-  float: right;
+.rating {
+    border: none;
+    float: right;
 }
 
-.rating > input { display: none; } 
-.rating > label:before { 
-  margin: 5px;
-  font-size: 1.25em;
-  font-family: FontAwesome;
-  display: inline-block;
-  width: 10px;
-  height: 10px;
+.rating > input {
+    display: none;
+}
+
+.rating > label:before {
+    margin: 5px;
+    font-size: 1.25em;
+    font-family: FontAwesome;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
 }
 
 
-.rating > label { 
-  color: #ddd; 
- float: right; 
+.rating > label {
+    color: #ddd;
+    float: right;
 }
 
 /***** CSS Magic to Highlight Stars on Hover *****/
 
 .rating > input:checked ~ label, /* show gold star when clicked */
 .rating:not(:checked) > label:hover, /* hover current star */
-.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+.rating:not(:checked) > label:hover ~ label {
+    color: #FFD700;
+}
+
+/* hover previous stars in list */
 
 .rating > input:checked + label:hover, /* hover current star when changing rating */
 .rating > input:checked ~ label:hover,
 .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+.rating > input:checked ~ label:hover ~ label {
+    color: #FFED85;
+}

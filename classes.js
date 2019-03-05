@@ -118,7 +118,7 @@ class Chapter {
     }
 
     getDescription() {
-        return 'chapter ' + this.num + ' : ' + this.chapterName;
+        return 'Chapter ' + this.num + ' : ' + this.chapterName;
     }
 }
 
@@ -239,14 +239,27 @@ newBook(fakeUser[0], new Book('Time Raiders', fakeUser[0], '2002/4/5', 'img/Time
 newBook(fakeUser[1], new Book('Wandering Earth', fakeUser[1], '2008/8/8', 'img/WanderingEarth.jpg', 'Sci-fi'));
 newBook(fakeUser[1], new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', 'img/threebody.jpg', 'Sci-fi'));
 
-fakeBooks[1].addChapter(new Chapter(1, '1'));
-fakeBooks[1].addChapter(new Chapter(2, '2'));
-fakeBooks[1].addChapter(new Chapter(3, '3'));
-fakeBooks[1].addChapter(new Chapter(4, '4'));
-fakeBooks[1].addChapter(new Chapter(5, '5'));
-fakeBooks[1].addChapter(new Chapter(6, '6'));
-fakeBooks[1].addChapter(new Chapter(7, '7'));
-fakeBooks[1].newComment(new Comment(fakeUser[0], 'this is a good book'));
+for (let i = 1; i < 30; i++){
+    fakeBooks[1].addChapter(new Chapter(i, 'Chapter Name'));
+}
+
+// fakeBooks[1].addChapter(new Chapter(1, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(2, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(3, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(4, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(5, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(6, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(7, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(8, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(9, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(10, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(11, 'Chapter Name'));
+// fakeBooks[1].addChapter(new Chapter(12, 'Chapter Name'));
+
+fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
+fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
+fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
+fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
 fakeBooks[1].setDescription('I begin tucking him into bed and he tells me, “Daddy check for monsters under my bed.” I look underneath for his amusement and see him, another him, under the bed, staring back at me quivering and whispering, “Daddy there’s somebody on my bed.”');
 
 fakeBooks[0].setRating(4);
