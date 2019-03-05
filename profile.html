@@ -26,28 +26,24 @@
                     <div class="nav-container">
                         <ul class="nav">
                             <li id="navShelf" class="active">
-                                <!-- <a class="nav-link active" href="#"> -->
                                     <i class="fas fa-book"></i>
                                     Bookshelf
-                                <!-- </a> -->
                             </li>
                             <li id="navAuthored">
-                                <!-- <a class="nav-link" href="#"> -->
                                     <i class="fas fa-pencil-alt"></i>
                                     Authored
-                                <!-- </a> -->
                             </li>
                             <li id="navFollowing">
-                                <!-- <a class="nav-link" href="#"> -->
                                     <i class="fas fa-users"></i>
                                     Following
-                                <!-- </a> -->
+                            </li>
+                            <li id="navNotifications">
+                                    <i class="fas fa-envelope"></i>
+                                    Notifications
                             </li>
                             <li id="navSettings">
-                                <!-- <a class="nav-link" href="#"> -->
                                     <i class="fas fa-cog"></i>
                                     Settings
-                                <!-- </a> -->
                             </li>
                         </ul>
                     </div>
@@ -112,8 +108,7 @@
                         <button id="confirmbutton" type="button" class="btn btn-secondary" disabled>Confirm</button>
                     </div><div id="following" class="container fade">
                         <ul id="following-list"></ul>
-
-                    </div></div>
+                    </div><div id="notifications" class="container fade"><h2>Notifications</h2><ul id="not-list-group" class="list-group"></ul><button id="clear" class="btn btn-secondary">Clear</button></div></div>
             </div>
         </div>
         <button id="change-auth">Change Authentication (for T.A use to switch between context)</button>
@@ -141,7 +136,7 @@
                 <div id="chapter-list">
                     <label>Chapter List</label>
                     <button class="btn btn-secondary" id="add-chapter" data-toggle="modal" data-target="#chapter-modal">New Chapter</button>
-                    <ul class="list-group"></ul>
+                    <ul id="chap-list-group" class="list-group"></ul>
                 </div>
                 <button id="book-cancelbutton" class="btn btn-danger" data-dismiss="modal" data-target=".book-modal">Cancel</button>
                 <button id="book-submitbutton" type="button" class="btn btn-primary" data-dismiss="modal" data-target=".book-modal">Submit</button>

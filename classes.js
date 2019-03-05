@@ -144,6 +144,8 @@ class user {
         this.mailAddress = "";
         this.passWord = "";
         this.image = null;
+        this.newMessages = [];
+        this.oldMessages = [];
     }
 
     getName() {
@@ -217,6 +219,12 @@ class user {
             }
         }
     }
+
+    moveNewMsgToOld(){
+        while (this.newMessages.length > 0){
+            this.oldMessages.push(this.newMessages.pop());
+        }
+    }
 }
 
 class Comment {
@@ -287,7 +295,21 @@ fakeUser.push(sampleUser);
 sampleUser.setImage("img/dog.jpeg");
 sampleUser.followers = 20;
 sampleUser.description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe.";
-
+//create sample bookshelf and followerlist for testing purposes
+// this requires an actual server call to get the user whose profile it is
+const sampleBooks = []
+for(let p=0; p<7; p++){
+    sampleBooks.push(new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'));
+    sampleBooks.push(new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'));
+    sampleBooks.push(new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'));
+    sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
+    sampleUser.following.push(sampleUser);
+    
+}
+sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
+sampleUser.bookshelf = sampleBooks;
+sampleUser.newMessages.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
+sampleUser.newMessages.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', 'img/TimeRaiders.jpg', 'fantasy'));
 
 //currentUserId shows the current login user's id. 0 means user0 has logined, -1 means no one hsa logined yet.
 let currentUserId = -1;

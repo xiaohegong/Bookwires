@@ -1,18 +1,6 @@
 'use strict';
 
-//create sample bookshelf and followerlist for testing purposes
-// this requires an actual server call to get the user whose profile it is
-const sampleBooks = []
-for(let p=0; p<7; p++){
-    sampleBooks.push(new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'));
-    sampleBooks.push(new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'));
-    sampleBooks.push(new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'));
-    sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
-    sampleUser.following.push(sampleUser);
-    
-}
-sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
-sampleUser.bookshelf = sampleBooks;
+
 
 // variable to keep track if the viewer is the owner of the profile
 let profileOwner = true;
@@ -51,7 +39,7 @@ const chapterModal = document.querySelector("#chapter-modal");
 const chapterNumField = document.querySelector("#chapter-num");
 const chapterNameField = document.querySelector("#chapter-name");
 const chapterContentField = document.querySelector("#chapter-content");
-const chapterListGroup = document.querySelector(".list-group");
+const chapterListGroup = document.querySelector("#chap-list-group");
 
 // get navigation bar selectors and create click events:
 const navSettings = document.querySelector(".nav").children;
@@ -67,6 +55,12 @@ authoredButton.addEventListener('click', setUpAuthorShelf);
 // Following:
 const followingButton = document.querySelector("#navFollowing");
 followingButton.addEventListener('click', setUpFollowingList);
+// notifications:
+const notiListGroup = document.querySelector("#not-list-group");
+const notificationButton = document.querySelector("#navNotifications");
+notificationButton.addEventListener('click', setUpNotificationList);
+const notClearButton = document.querySelector("#clear");
+notClearButton.addEventListener("click", clearNotifications);
 
 // handle searching in bookshelf
 const searchBox = document.querySelector(".shelf-search");
@@ -346,6 +340,43 @@ function setUpAuthorShelf(e){
     document.querySelector("#book-shelf").querySelector("h1").innerHTML = "Authored Books"
 }
 
+function setUpNotificationList(e){
+    e.preventDefault();
+
+    while(notiListGroup.firstChild){
+        notiListGroup.removeChild(notiListGroup.firstChild);
+    }    
+    changeActive(notificationButton, document.querySelector("#notifications"));
+    for(let i=0;i<sampleUser.newMessages.length; i++){
+        const bookNot = sampleUser.newMessages[i];
+        const notificationElement = document.createElement("li");
+        notificationElement.className = "list-group-item";
+        const notText = document.createTextNode("New Chapter for " + bookNot.bookTitle + " by " + bookNot.author.name);
+        notificationElement.appendChild(notText);
+        notificationElement.bookReference = bookNot;
+        notificationElement.onclick = function () {
+            location.href = "book.html";
+        };
+
+        notiListGroup.appendChild(notificationElement);
+    }
+
+    for(let i=0;i<sampleUser.oldMessages.length; i++){
+        const bookNot = sampleUser.newMessages[i];
+        const notificationElement = document.createElement("li");
+        notificationElement.className = "list-group-item";
+        const notText = document.createTextNode("New Chapter for " + bookNot.bookTitle + " by " + bookNot.author.name);
+        notificationElement.appendChild(notText);
+        notificationElement.bookReference = bookNot;
+        notificationElement.onclick = function () {
+            location.href = "book.html";
+        };
+
+        notiListGroup.appendChild(notificationElement);
+    }
+    
+}
+
 
 function changeEditable(e){
     e.preventDefault();
@@ -610,4 +641,12 @@ function followOrUnfollow(e){
         sampleUser.followers -= 1;
     }
     followers.innerHTML = sampleUser.followers;
+}
+function clearNotifications(e){
+    e.preventDefault();
+    while(notiListGroup.firstChild){
+        notiListGroup.removeChild(notiListGroup.firstChild);
+    }
+    sampleUser.newMessages=[];
+    sampleUser.oldMessages = [];
 }

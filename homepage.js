@@ -7,6 +7,9 @@ const menu = document.getElementById("menuBar");
 const loginButton = menu.children[0];
 const signUpButton = menu.children[1];
 
+const toast = document.querySelector(".toast");
+const toastBody = document.querySelector(".toast-body");
+
 // Set up callback functions for sign up
 signUpButton.onclick = function (e) {
     e.preventDefault();
@@ -147,4 +150,15 @@ function userLoggedIn(username, isAdmin) {
     span2.className = "welcomeMsg";
     span2.id = "quit";
     menu.appendChild(span2);
+
+    if(sampleUser.newMessages.length > 0){
+        toastBody.innerHTML = "You have " + sampleUser.newMessages.length + " new notifications."
+        toast.setAttribute("data-autohide", "false");
+        toast.style.display = "block";
+        $(document).ready(function(){
+            $('.toast').toast('show');
+          });
+        
+        sampleUser.moveNewMsgToOld();
+    }
 }

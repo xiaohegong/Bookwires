@@ -135,3 +135,28 @@ h4 {
     width: 20%;
     clear: right;
 }
+
+.toast {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    height: 120px;
+    width: 300px;
+    display: none;
+    font-size: medium;
+    background: white;
+}
+
+#toast-button {
+    right: 0;
+    top:0;
+    border: none;
+}
+
+#toast-button span{
+    color: black;
+}
+
+.toast-header {
+    height: 60px;
+}

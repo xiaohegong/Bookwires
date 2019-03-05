@@ -246,3 +246,10 @@
 .modal {
     overflow-y: auto;
 }
+
+#notifications button{
+    margin-top: 10px;
+}
+#not-list-group li:hover{
+    cursor: pointer;
+}
