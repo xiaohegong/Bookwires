@@ -154,6 +154,10 @@ class user {
         return this.image;
     }
 
+    getWrittenBook(){
+        return this.writtenBook;
+    }
+
     setImage(src) {
         this.image = src;
     }
