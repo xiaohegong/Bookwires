@@ -248,22 +248,10 @@ newBook(fakeUser[0], new Book('Time Raiders', fakeUser[0], '2002/4/5', 'img/Time
 newBook(fakeUser[1], new Book('Wandering Earth', fakeUser[1], '2008/8/8', 'img/WanderingEarth.jpg', 'Sci-fi'));
 newBook(fakeUser[1], new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', 'img/threebody.jpg', 'Sci-fi'));
 
+// Add many new chapters for visualization
 for (let i = 1; i < 30; i++){
     fakeBooks[1].addChapter(new Chapter(i, 'Chapter Name'));
 }
-
-// fakeBooks[1].addChapter(new Chapter(1, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(2, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(3, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(4, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(5, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(6, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(7, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(8, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(9, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(10, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(11, 'Chapter Name'));
-// fakeBooks[1].addChapter(new Chapter(12, 'Chapter Name'));
 
 fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
 fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));

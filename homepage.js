@@ -7,11 +7,13 @@ const menu = document.getElementById("menuBar");
 const loginButton = menu.children[0];
 const signUpButton = menu.children[1];
 
+// Set up callback functions for sign up
 signUpButton.onclick = function (e) {
     e.preventDefault();
     signUpForm.style.display = 'block';
 };
 
+// Set up callback functions for log in
 loginButton.onclick = function (e) {
     e.preventDefault();
     logInForm.style.display = 'block';
@@ -44,6 +46,7 @@ for (let i = 0; i < numberOfBooks; i++) {
     img.className = "bookDisplayImg";
     link.appendChild(img);
 
+    // Add book info to the block
     const span = document.createElement("span");
     span.className = "bookDisplayText";
     span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
@@ -54,22 +57,16 @@ for (let i = 0; i < numberOfBooks; i++) {
     p.appendChild(info);
     span.appendChild(p);
 
-
+    // Append star ratings to the block
     const rating = makeStars(book.getRating());
     span.appendChild(rating);
-
-    // const description = document.createTextNode(book.getDescription());
-    // const p2 = document.createElement("p");
-    // p2.className = "displayDesc";
-    // p2.appendChild(description);
-    // span.appendChild(p2);
 
     divider.appendChild(link);
     divider.appendChild(span);
     booksRanking.appendChild(divider);
 }
 
-// Another for loop to add more place holder books
+// Another for loop to add more place holder books, similar procedure with above
 for (let i = 0; i < 2; i++) {
     let book = fakeBooks[3];
 
@@ -96,6 +93,7 @@ for (let i = 0; i < 2; i++) {
     booksRanking.appendChild(divider);
 }
 
+// A function that makes a div that contains num many stars
 function makeStars(num) {
     if (num > 5 || num < 0) {
         return;
@@ -116,24 +114,30 @@ function makeStars(num) {
     return div;
 }
 
+// Handles DOM set up when user is logged in by adding welcome messages and quit button.
+// Removes the old log in and sign up button and direct to correct pages
 function userLoggedIn(username, isAdmin) {
+    // Remove old buttons
     menu.removeChild(menu.children[0]);
     menu.removeChild(menu.children[0]);
     const welcomeText = document.createTextNode("Welcome " + username + "!");
     const link = document.createElement("a");
 
+    // Check user type to direct to correct pages
     if (isAdmin) {
         link.href = "admin.html";
     } else {
         link.href = "profile.html";
     }
 
+    // Create the welcome message
     link.appendChild(welcomeText);
     const span = document.createElement("span");
     span.appendChild(link);
     span.className = "welcomeMsg";
     menu.appendChild(span);
 
+    // Create the quit button
     const quitText = document.createTextNode("Quit");
     const quit = document.createElement("a");
     quit.href = "index.html";

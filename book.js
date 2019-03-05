@@ -134,15 +134,13 @@ for (let i = 0; i < book.comments.length; i++) {
     addCommentToTable(comment);
 }
 
-
+// Code for animated menu bar
 const comments = document.getElementById("comments");
-
 $('.nav-link').on('click', function() {
     $('.active-link').removeClass('active-link');
     $(this).addClass('active-link');
-    let a= document.createElement("a");
 
-    if ($(this).children()[0].innerText == "Comments"){
+    if ($(this).children()[0].innerText === "Comments"){
         changeDisplayedText(comments, chapters);
     } else{
         changeDisplayedText(chapters, comments);
@@ -150,7 +148,7 @@ $('.nav-link').on('click', function() {
 
 });
 
-
+// Set the displayed text in the box by menu selection
 function changeDisplayedText(selected, unselected) {
     selected.style.display = "block";
     unselected.style.display = "none";
