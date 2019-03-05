@@ -79,7 +79,7 @@ class Book {
         this.NumberOfFollowers += 1;
     }
 
-    deleteChapter(chapNum){
+    deleteChapter(chapNum) {
         for (let j = 0; j < this.chapters.length; j++) {
             if (this.chapters[j].num === chapNum) {
                 this.chapters.splice(j, 1);
@@ -143,6 +143,7 @@ class user {
         this.following = [];
         this.mailAddress = "";
         this.passWord = "";
+        this.image = null;
     }
 
     getName() {
@@ -157,7 +158,7 @@ class user {
         this.image = src;
     }
 
-    isAdmin(){
+    isAdmin() {
         return this.admin;
     }
 
@@ -177,7 +178,7 @@ class user {
         this.mailAddress = address;
     }
 
-    setIsAdmin(isAdmin){
+    setIsAdmin(isAdmin) {
         this.admin = isAdmin;
     }
 
@@ -235,7 +236,7 @@ function userCreater(name, mailAddress, passWord, isAdmin) {
 const fakeUser = [];
 fakeUser.push(userCreater("Xie Wu", "wuxie@gmail.com", "123456", false));
 fakeUser.push(userCreater("Cixin Liu", "liucixin@gmail.com", "123456", false));
-fakeUser.push(userCreater("JK_Rowling", "jkR@gmail.com", "123456", false));
+fakeUser.push(userCreater("JK Rowling", "jkR@gmail.com", "123456", false));
 fakeUser.push(userCreater("admin", "liucixin@gmail.com", "admin", true));
 fakeUser.push(userCreater("user", "jkR@gmail.com", "user", false));
 fakeUser.push(userCreater("1", "1", "1", false));
@@ -249,7 +250,7 @@ newBook(fakeUser[1], new Book('Wandering Earth', fakeUser[1], '2008/8/8', 'img/W
 newBook(fakeUser[1], new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', 'img/threebody.jpg', 'Sci-fi'));
 
 // Add many new chapters for visualization
-for (let i = 1; i < 30; i++){
+for (let i = 1; i < 30; i++) {
     fakeBooks[1].addChapter(new Chapter(i, 'Chapter Name'));
 }
 
@@ -279,7 +280,8 @@ let currentUserId = -1;
 function searchBooksByTitle(title, inputList = fakeBooks) {
     return inputList.filter((fBook) => fBook.bookTitle == title);
 }
-function fuzzyUserSearch(input, inputList = fakeUser){
+
+function fuzzyUserSearch(input, inputList = fakeUser) {
     const outputList = [];
     for (let index = 0; index < inputList.length; index++) {
         if (stringCompByLevenshteinDistance(input, inputList[index].getName()) > 0.8) {
@@ -289,6 +291,7 @@ function fuzzyUserSearch(input, inputList = fakeUser){
     }
     return outputList;
 }
+
 //advanced version, the input can be anything: name, author or genre
 function fuzzyBookSearch(input, inputList = fakeBooks) {
     const outputList = [];
