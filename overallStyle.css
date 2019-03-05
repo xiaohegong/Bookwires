@@ -24,7 +24,7 @@ h1 {
 #bookLogo {
     /* Add properties below */
     width: 50px;
-    margin-left: 70px;
+    margin-left: 20px;
     float: left;
 }
 
@@ -76,10 +76,6 @@ h1 {
     display: block;
 }
 
-::placeholder {
-    margin: 2px;
-    color: white;
-}
 
 #searchLogo {
     width: 30px;

@@ -2,6 +2,7 @@ const logInForm = document.getElementById("logInForm");
 const closeBox = document.getElementById("close2");
 const toSignUp = document.getElementById("toSignUp");
 const loginSubmit = document.getElementById("loginButton");
+const quit = document.getElementById("quit");
 
 closeBox.onclick = function (e) {
     e.preventDefault();
@@ -14,6 +15,7 @@ toSignUp.onclick = function (e) {
     logInForm.style.display = "none";
 };
 
+
 loginSubmit.onclick = function (e) {
     e.preventDefault();
     const userNameInput = document.getElementById('loginUserName');
@@ -24,7 +26,6 @@ loginSubmit.onclick = function (e) {
 
     let foundUser = 0;
     for (let i = 1; i <= numberOfUsers; i++) {
-
         if (fakeUser[i - 1].name == userName) {
             foundUser = 1;
             if (fakeUser[i - 1].passWord == passWord) {
@@ -43,3 +44,10 @@ loginSubmit.onclick = function (e) {
     logInForm.style.display = "none";
 };
 
+// if (quit != null){
+//     log("hi")
+//     quit.onclick = function (e) {
+//         e.preventDefault();
+//         window.location.reload();
+//     };
+// }
