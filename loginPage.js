@@ -25,9 +25,11 @@ loginSubmit.onclick = function (e) {
     const passWord = userPassWordInput.value;
 
     let foundUser = 0;
+    let isAdmin = false;
     for (let i = 1; i <= numberOfUsers; i++) {
         if (fakeUser[i - 1].name == userName) {
             foundUser = 1;
+            isAdmin = fakeUser[i - 1].isAdmin();
             if (fakeUser[i - 1].passWord == passWord) {
                 currentUserId = i;
             } else {
@@ -40,14 +42,6 @@ loginSubmit.onclick = function (e) {
         alert("This account do not exist");
         return;
     }
-    userLoggedIn(userName);
+    userLoggedIn(userName, isAdmin);
     logInForm.style.display = "none";
 };
-
-// if (quit != null){
-//     log("hi")
-//     quit.onclick = function (e) {
-//         e.preventDefault();
-//         window.location.reload();
-//     };
-// }
