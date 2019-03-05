@@ -6,7 +6,6 @@
 
 /*book informations*/
 #book-info {
-    clear:both;
     padding: 20px;
     border-bottom: 1px solid grey;
     overflow: auto;
