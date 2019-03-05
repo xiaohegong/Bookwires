@@ -181,6 +181,15 @@ class user {
         this.admin = isAdmin;
     }
 
+    isFollowing(userName) {
+        for (let j = 0; j < this.following.length; j++) {
+            if (this.following[j].name === userName) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     removeFollowing(nameToRemove) {
         for (let j = 0; j < this.following.length; j++) {
             if (this.following[j].name === nameToRemove) {
@@ -367,5 +376,21 @@ function editDistance(s1, s2) {
             costs[s2.length] = lastValue;
     }
     return costs[s2.length];
+}
+
+// a function to similuate when a book is deleted from the database
+function deleteBookForAllUsers(bookToRemove){
+    //remove book from all user's bookshelf
+    for(let i=0;i<fakeUser.length;i++){
+        fakeUser[i].removeBookfromBookshelf(bookToRemove);
+    }
+
+    // remove book from 'database':
+    for (let j = 0; j < fakeBooks; j++) {
+        if (fakeBooks[j].bookTitle === bookToRemove.bookTitle && fakeBooks[j].author === bookToRemove.author) {
+            fakeBooks.splice(j, 1);
+            break;
+        }
+    }
 }
 
