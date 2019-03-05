@@ -192,11 +192,10 @@ function deleteUser(e) {
             tempBook = tempBook.filter((fBook) => fBook.bookTitle !== entry.getBookTitle());
         });
         log(tempBook);
-        return tempUser.filter((user) => user.bookTitle !== name);
+        return tempUser.filter((user) => user.name !== name);
     }
 
     tempUser = removeUser(name); // this is a server that support to remove user from the database
-
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
 
 }
