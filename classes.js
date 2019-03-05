@@ -195,6 +195,7 @@ fakeUser.push(userCreater("Cixin Liu","liucixin@gmail.com","123456"))
 fakeUser.push(userCreater("JK_Rowling","jkR@gmail.com","123456"))
 fakeUser.push(userCreater("admin","liucixin@gmail.com","admin"))
 fakeUser.push(userCreater("user","jkR@gmail.com","user"))
+fakeUser.push(userCreater("1","1","1"))
 fakeUser[0].setImage("img/XieWu.png")
 fakeUser[2].setImage("img/jk.jpg")
 

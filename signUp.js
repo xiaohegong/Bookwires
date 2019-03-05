@@ -1,5 +1,5 @@
-const log = console.log;
-
+// const log = console.log;
+//
 const signUpForm = document.getElementById('signUpForm');
 const signUpSubmit = document.getElementById("signUpButton");
 const close = document.getElementById("close");
@@ -7,7 +7,6 @@ const toSignIn = document.getElementById("toSignIn");
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
-    event.preventDefault();
     if (event.target === signUpForm) {
         signUpForm.style.display = "none";
     } else if (event.target === logInForm){
@@ -15,7 +14,8 @@ window.onclick = function (event) {
     }
 };
 
-close.onclick = function () {
+close.onclick = function (e) {
+    e.preventDefault();
     signUpForm.style.display = "none";
 };
 

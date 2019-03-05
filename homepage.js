@@ -23,7 +23,7 @@ for (let i = 0; i < numberOfBooks; i++) {
     let book = fakeBooks[i];
     // First, add authors
     const anchor = document.createElement("a");
-    anchor.setAttribute("href", "");
+    anchor.href = "profile.html";
     const parag = document.createElement("p");
     parag.className = "author";
     const author = document.createTextNode(book.getAuthor());
@@ -32,14 +32,18 @@ for (let i = 0; i < numberOfBooks; i++) {
     authors.appendChild(anchor);
 
     // Then add book image to the book shelf
-    booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.src = book.getImage();
+    booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = book.getImage();
 
     // Add books to the ranking section
     const divider = document.createElement("div");
     divider.className = "bookDisplay";
+    const link = document.createElement("a");
+    link.href = "book.html";
     const img = document.createElement("img");
     img.src = book.getImage();
     img.className = "bookDisplayImg";
+    link.appendChild(img);
+
     const span = document.createElement("span");
     span.className = "bookDisplayText";
     span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
@@ -60,7 +64,7 @@ for (let i = 0; i < numberOfBooks; i++) {
     // p2.appendChild(description);
     // span.appendChild(p2);
 
-    divider.appendChild(img);
+    divider.appendChild(link);
     divider.appendChild(span);
     booksRanking.appendChild(divider);
 }
@@ -116,8 +120,21 @@ function userLoggedIn(username) {
     menu.removeChild(menu.children[0]);
     menu.removeChild(menu.children[0]);
     const welcomeText = document.createTextNode("Welcome " + username + "!");
+    const link = document.createElement("a");
+    link.href = "profile.html";
+    link.appendChild(welcomeText);
     const span = document.createElement("span");
-    span.appendChild(welcomeText);
+    span.appendChild(link);
     span.className = "welcomeMsg";
     menu.appendChild(span);
+
+    const quitText = document.createTextNode("Quit");
+    const quit = document.createElement("a");
+    quit.href = "index.html";
+    quit.appendChild(quitText);
+    const span2 = document.createElement("span");
+    span2.appendChild(quit);
+    span2.className = "welcomeMsg";
+    span2.id = "quit";
+    menu.appendChild(span2);
 }
