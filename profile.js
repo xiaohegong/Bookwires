@@ -94,6 +94,7 @@ let edit = false;
 
 // follow button:
 const followButton = document.querySelector("#follow-button");
+followButton.addEventListener('click', followOrUnfollow);
 
 // book creation buttons:
 const bookCancelButton = document.querySelector("#book-cancelbutton");
@@ -167,11 +168,17 @@ function setUpCarousel(bookList){
                     location.href = "book.html";
                 };
 
-                if(profileOwner && curNav===shelfButton){
+                if(profileOwner){
                     const bookDeleteButton = document.createElement("button");
                     bookDeleteButton.innerHTML = "x";
                     bookDeleteButton.className = "book-delete";
-                    bookDeleteButton.onclick = removeBookBookshelf;
+                    if(curNav===shelfButton){
+                        bookDeleteButton.onclick = removeBookBookshelf;
+                    }
+                    else{
+                        bookDeleteButton.onclick = removeWrittenBook;
+                    }
+                    
                     newLi.appendChild(bookDeleteButton);
                 }
 
@@ -416,7 +423,15 @@ function removeBookBookshelf(e){
     sampleUser.removeBookfromBookshelf(bookToRemove);
     e.target.parentNode.removeChild(e.target);
     setUpCarousel(sampleUser.bookshelf);
+}
 
+function removeWrittenBook(e){
+    e.preventDefault();
+    const bookToRemove = e.target.parentNode.bookReference;
+    sampleUser.removeBookfromWritten(bookToRemove);
+    deleteBookForAllUsers(bookToRemove);
+    e.target.parentNode.removeChild(e.target);
+    setUpCarousel(sampleUser.writtenBook);
 }
 
 function changeAuthentification(e){
@@ -432,6 +447,17 @@ function changeAuthentification(e){
         followButton.style.display = "inline-block";
         followingButton.style.display = "none";
         settingsButton.style.display = "none";
+
+        if(viewingUser.isFollowing(sampleUser.name)){
+            followButton.classList.add("btn-danger"); 
+            followButton.classList.remove("btn-success"); 
+            followButton.innerHTML = "UnFollow";
+        }
+        else{
+            followButton.classList.add("btn-success"); 
+            followButton.classList.remove("btn-danger"); 
+            followButton.innerHTML = "Follow";
+        }
     }
 
     curNav.click();
@@ -565,4 +591,23 @@ function deleteBookChapter(e){
 function setEdit(e){
     edit = true;
     chapterModal.chapReference = e.target.parentNode.chapReference;
+}
+
+function followOrUnfollow(e){
+    e.preventDefault();
+    if(followButton.innerHTML === "Follow"){
+        viewingUser.following.push(sampleUser);
+        followButton.classList.add("btn-danger"); 
+        followButton.classList.remove("btn-success"); 
+        followButton.innerHTML = "UnFollow";
+        sampleUser.followers += 1;
+    }
+    else{
+        viewingUser.removeFollowing(sampleUser.name);
+        followButton.classList.add("btn-success"); 
+        followButton.classList.remove("btn-danger"); 
+        followButton.innerHTML = "Follow";
+        sampleUser.followers -= 1;
+    }
+    followers.innerHTML = sampleUser.followers;
 }
