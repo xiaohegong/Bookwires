@@ -64,7 +64,7 @@ function switchToBook(books) {
         const divider = document.createElement("div");
         divider.className = "bookDisplay";
         const imgContainer = document.createElement('a');
-        imgContainer.setAttribute('href', 'book.html');
+        imgContainer.setAttribute('href', 'adminBook.html');
         const img = document.createElement("img");
         img.src = book.getImage();
         img.className = "bookDisplayImg";
@@ -100,7 +100,7 @@ function switchToUser(users) {
     const searchBar = document.createElement('input');
     searchBar.className = "searchBar larger";
     searchBar.setAttribute('type', 'search');
-    searchBar.setAttribute('placeholder', 'Seach Users...');
+    searchBar.setAttribute('placeholder', 'Search Users...');
     booksRanking.appendChild(searchBar);
     const searchButtonContainer = document.createElement('a');
     const searchButton = document.createElement('img');

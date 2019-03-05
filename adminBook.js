@@ -41,6 +41,13 @@ function addCommentToTable(comment) {
     const UserCommentContainer = document.createElement('p');
     const UserComment = document.createTextNode(comment.getContent());
     UserCommentContainer.appendChild(UserComment);
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = "delete";
+    deleteButton.className = "btn btn-info deleteButton";
+    deleteButton.onclick = function(){
+        deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
+    };
+    newComments.appendChild(deleteButton);
     newComments.appendChild(UserCommentContainer);
 }
 
