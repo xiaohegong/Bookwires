@@ -96,10 +96,13 @@ while (i < book.getTotalChapter()) {
 //create author information
 const author = document.getElementById('authorInfo');
 const authorDetail = document.getElementById('authorDetail');
+const authorImageContainer = document.createElement('a');
+authorImageContainer.href = "profile.html";
 const authorImage = document.createElement('img');
 authorImage.className = 'authorPic';
 authorImage.src = book.author.getImage();
-author.insertBefore(authorImage, authorDetail);
+authorImageContainer.appendChild(authorImage);
+author.insertBefore(authorImageContainer, authorDetail);
 // author.appendChild(authorImage);
 
 
