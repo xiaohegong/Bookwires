@@ -90,6 +90,8 @@ const carouselInner = document.querySelector(".carousel-inner");
 let curNav = shelfButton;
 let curDiv = document.querySelector("#book-shelf");
 
+let edit = false;
+
 // follow button:
 const followButton = document.querySelector("#follow-button");
 
@@ -471,7 +473,7 @@ function updateChapList(){
         const currentChapter = bookModal.bookReference.chapters[i];
         const chapterElement = document.createElement("li");
         chapterElement.className = "list-group-item";
-        const chapText = document.createTextNode("Chapter: " + currentChapter.num + " " + currentChapter.chapterName);
+        const chapText = document.createTextNode("Chapter " + currentChapter.num + ": " + currentChapter.chapterName);
         chapterElement.appendChild(chapText);
         chapterElement.chapReference = currentChapter;
         
@@ -483,8 +485,11 @@ function updateChapList(){
 
         const chapEditButton = document.createElement("button");
         chapEditButton.className = "chapter-edit-button";
+        chapEditButton.classList.add("btn", "btn-secondary");
         chapEditButton.innerHTML = "Edit";
-        // chapEditButton.addEventListener("click", editChapter);
+        chapEditButton.setAttribute("data-toggle", "modal");
+        chapEditButton.setAttribute("data-target", "#chapter-modal");
+        chapEditButton.addEventListener("click", setEdit);
 
         chapterElement.appendChild(chapDeleteButton);
         chapterElement.appendChild(chapEditButton);
@@ -494,7 +499,7 @@ function updateChapList(){
 
 function editBook(e){
     e.preventDefault();
-    chapterListDiv.style.display = 'block';
+    
 
     // NEED TO CHANGE BUTTON FUNCTION
 
@@ -504,6 +509,9 @@ function editBook(e){
     newBookTitleForm.value = bookModal.bookReference.bookTitle;
     newBookGenreForm.value = bookModal.bookReference.genre;
     newBookImgForm.value = '';
+
+    updateChapList();
+    chapterListDiv.style.display = 'block';
 
     submitBookButton.removeEventListener('click', addNewAuthoredBook);
     submitBookButton.addEventListener('click', updateBook);
@@ -520,10 +528,18 @@ function editBook(e){
 // }
 
 function submitNewChapter(e){
-    const newChap = new Chapter(parseInt(chapterNumField.value, 10), chapterNameField.value);
-    newChap.setContent(chapterContentField.value);
+    if(edit===true){
+        chapterModal.chapReference.num = parseInt(chapterNumField.value, 10);
+        chapterModal.chapReference.chapterName = chapterNameField.value;
+        chapterModal.chapReference.setContent(chapterContentField.value);
+    }
+    else{
+        const newChap = new Chapter(parseInt(chapterNumField.value, 10), chapterNameField.value);
+        newChap.setContent(chapterContentField.value);
 
-    bookModal.bookReference.addChapter(newChap);
+        bookModal.bookReference.addChapter(newChap);
+    }
+    edit = false;
     clearChapterFields(e);
     updateChapList();
 }
@@ -533,7 +549,6 @@ function updateBook(e){
     bookModal.bookReference.description = newBookDescriptionForm.value;
     bookModal.bookReference.bookTitle = newBookTitleForm.value;
     bookModal.bookReference.genre = newBookGenreForm.value;
-
 
     submitBookButton.removeEventListener('click', updateBook);
     submitBookButton.addEventListener('click', addNewAuthoredBook);
@@ -545,4 +560,9 @@ function deleteBookChapter(e){
     const chapToDelete = e.target.parentNode.chapReference;
     bookModal.bookReference.deleteChapter(chapToDelete.num);
     e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+}
+
+function setEdit(e){
+    edit = true;
+    chapterModal.chapReference = e.target.parentNode.chapReference;
 }
