@@ -27,10 +27,10 @@ loginSubmit.onclick = function (e) {
     let foundUser = 0;
     let isAdmin = false;
     for (let i = 1; i <= numberOfUsers; i++) {
-        if (fakeUser[i - 1].name == userName) {
+        if (fakeUser[i - 1].name === userName) {
             foundUser = 1;
             isAdmin = fakeUser[i - 1].isAdmin();
-            if (fakeUser[i - 1].passWord == passWord) {
+            if (fakeUser[i - 1].passWord === passWord) {
                 currentUserId = i;
             } else {
                 alert("Wrong password");

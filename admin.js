@@ -1,7 +1,7 @@
 'use strict';
 const log = console.log;
-let tempBook = fakeBooks;
-let tempUser = fakeUser;
+let tempBook = fakeBooks;//server call that gets real info
+let tempUser = fakeUser;//server call that gets real info
 
 const booksRanking = document.querySelector("#InfoContainer");
 const bookNavButton = document.querySelector("#bookNav");

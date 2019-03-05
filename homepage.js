@@ -22,7 +22,7 @@ loginButton.onclick = function (e) {
 let numberOfBooks = fakeBooks.length; // total number of books
 
 for (let i = 0; i < numberOfBooks; i++) {
-    let book = fakeBooks[i];
+    let book = fakeBooks[i];//server call to get book
     // First, add authors
     const anchor = document.createElement("a");
     anchor.href = "profile.html";
@@ -116,6 +116,7 @@ function makeStars(num) {
 
 // Handles DOM set up when user is logged in by adding welcome messages and quit button.
 // Removes the old log in and sign up button and direct to correct pages
+//server call to check login in the database
 function userLoggedIn(username, isAdmin) {
     // Remove old buttons
     menu.removeChild(menu.children[0]);

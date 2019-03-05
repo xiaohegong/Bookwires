@@ -2,7 +2,7 @@
 const log = console.log;
 
 // testing book
-const book = fakeBooks[1];
+const book = fakeBooks[1]; //should server to get which book that the page received
 const save = document.getElementById("save");
 const commentBox = document.getElementById('commentBox');
 const enterBtn = document.getElementById("enterBtn");
@@ -22,13 +22,13 @@ cancelBtn.onclick = function cancelComment() {
 // Call back function for enter button
 enterBtn.onclick = function enterComment() {
     const comment = new Comment(fakeUser[0], commentBox.value);
-    book.newComment(comment);
+    book.newComment(comment);// server call that save the comment into database
     commentBox.value = "";
     addCommentToTable(comment);
 };
 
 save.onclick = function saveToShelf() {
-    book.save(fakeUser[0]);
+    book.save(fakeUser[0]); // server call that update the corresponding info
 };
 
 function addCommentToTable(comment) {

@@ -1,5 +1,5 @@
 'use strict';
-
+//everything in this js is backend, server side
 class Book {
     constructor(bookTitle, author, date, image, genre) {
         this.bookTitle = bookTitle;

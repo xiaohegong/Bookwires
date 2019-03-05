@@ -25,7 +25,7 @@ function searchBarSearch(){
 	const searchBar = document.getElementById('searchBar');
 	bookSetUp(fuzzyBookSearch(searchBar.value));
 }
-bookSetUp(fakeBooks);
+bookSetUp(fakeBooks);//server call to get real data
 function bookSetUp(books){
     while (booksRanking.firstChild) {
         booksRanking.removeChild(booksRanking.firstChild);
