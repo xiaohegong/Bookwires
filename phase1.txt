@@ -21,7 +21,8 @@ To Ta:
 		  Logged in.
 		3.Chapters for this book. Now all the buttons lead to a same page(Reading page).
 		4.You can add comment to this book, all the comment will under the name of Xie Wu by default.
-		5.You can rate a book on the top right corner.
+		5.You can click the user image and go to their profile page.
+		6.You can rate a book on the top right corner.
 
 	About SearchPage:
 	    1. All categories on the right can be clicked and it would update the books in the middle.
@@ -31,6 +32,13 @@ To Ta:
     About adminPage:
         1. admin can switch bewteen books and users, book page shows all the books and user page show all the users. All books and users
         can be deleted.
+        2.click book img takes you to adminBook page, where admin have the ability to delete comments.
+        3. click user img takes you to profile page and admin sees the same page as the profile owner sees.
+
+    About adminBookPage:
+        1. A temporary page only shows up if admin click a book in admin page. it has an addition function delete that normal book page.
+        2. work the same as bookPage
+        3. delete button in the comment area can delete comments.
 
     About profilePage:
         1. You can switch between layout by clicking the side bar.
