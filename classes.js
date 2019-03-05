@@ -159,6 +159,15 @@ class user{
             }
         }
     }
+
+    removeBookfromBookshelf(bookToRemove){
+        for(let j=0;j<this.bookshelf.length; j++){
+            if(this.bookshelf[j].bookTitle === bookToRemove.bookTitle && this.bookshelf[j].author === bookToRemove.author){
+                this.bookshelf.splice(j, 1);
+                break;
+            }
+        }
+    }
 }
 
 class Comment{
