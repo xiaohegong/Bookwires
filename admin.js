@@ -1,17 +1,29 @@
 'use strict';
 const log = console.log;
 
-const books = fakeBooks;
-const users = fakeUser;
 
 
-const overallContainer = document.getElementsByClassName("InfoContainer")
 const booksRanking = document.querySelector("#InfoContainer");
 const bookNavButton = document.querySelector("#bookNav");
+bookNavButton.addEventListener('click',function(){
+	switchToBook(fakeBooks);
+},false);
 const UserNavButton = document.querySelector("#userNav");
-
+UserNavButton.addEventListener('click',function(){
+	switchToUser(fakeUser);
+},false);
 
 let curNav = bookNavButton;
+
+function searchBarBookSearch(){
+	const searchBar = document.getElementsByClassName('searchBar');
+	switchToBook(fuzzyBookSearch(searchBar[0].value));
+}
+
+function searchBarUserSearch(){
+	const searchBar = document.getElementsByClassName('searchBar');
+	switchToUser(fuzzyUserSearch(searchBar[0].value));
+}
 
 function changeActive(elem){
     curNav.parentElement.classList.remove("active");
@@ -19,12 +31,24 @@ function changeActive(elem){
     curNav = elem;
 }
 
-function switchToBook(){
+function switchToBook(books){
 	changeActive(bookNavButton);
 	while (booksRanking.firstChild) {
 	    booksRanking.removeChild(booksRanking.firstChild);
 	}
-	for (let i = 0; i < fakeBooks.length; i++) {
+	const searchBar = document.createElement('input');
+	searchBar.className = "searchBar";
+	searchBar.setAttribute('type','search');
+	searchBar.setAttribute('placeholder','Seach Books...');
+	booksRanking.appendChild(searchBar);
+	const searchButtonContainer = document.createElement('a');
+	const searchButton = document.createElement('img');
+	searchButton.setAttribute('id','searchLogo');
+	searchButton.src = "img/search.png";
+	searchButtonContainer.appendChild(searchButton);
+	searchButtonContainer.onclick = searchBarBookSearch;
+	booksRanking.appendChild(searchButtonContainer);
+	for (let i = 0; i < books.length; i++) {
 	    let book = books[i];
 	    // First, add authors
 	    const anchor = document.createElement("a");
@@ -40,8 +64,8 @@ function switchToBook(){
 	    // Add books to the ranking section
 	    const divider = document.createElement("div");
 	    divider.className = "bookDisplay";
-	    const imgContainer = document.createElement('a')
-	    imgContainer.setAttribute('href','book.html')
+	    const imgContainer = document.createElement('a');
+	    imgContainer.setAttribute('href','book.html');
 	    const img = document.createElement("img");
 	    img.src = book.getImage();
 	    img.className = "bookDisplayImg";
@@ -65,18 +89,33 @@ function switchToBook(){
 
 	    divider.appendChild(imgContainer);
 	    divider.appendChild(span);
-	    divider.appendChild(button)
+	    divider.appendChild(button);
 
 
 	    booksRanking.appendChild(divider);
 	}
 }
 
-function switchToUser(){
+function switchToUser(users){
 	changeActive(UserNavButton);
+
 	while (booksRanking.firstChild) {
 	    booksRanking.removeChild(booksRanking.firstChild);
 	}
+
+	const searchBar = document.createElement('input');
+	searchBar.className = "searchBar";
+	searchBar.setAttribute('type','search');
+	searchBar.setAttribute('placeholder','Seach Users...');
+	booksRanking.appendChild(searchBar);
+	const searchButtonContainer = document.createElement('a');
+	const searchButton = document.createElement('img');
+	searchButton.setAttribute('id','searchLogo');
+	searchButton.src = "img/search.png";
+	searchButtonContainer.appendChild(searchButton);
+	searchButtonContainer.onclick = searchBarUserSearch;
+	booksRanking.appendChild(searchButtonContainer);
+
 	for (let i = 0; i < users.length; i++) {
 	    let user = users[i];
 	    // First, add authors
@@ -123,14 +162,14 @@ function switchToUser(){
 	
 	
 }
-switchToBook();
+switchToBook(fakeBooks);
 
 
 
 function deleteBook(e){
-	e.preventDefault()
+	e.preventDefault();
 	const name = e.target.parentElement.children[1].innerText;
-	fakeBooks = removeBook(name);
+	// fakeBooks = removeBook(name);
 	e.target.parentElement.parentElement.removeChild(e.target.parentElement);
 
 }

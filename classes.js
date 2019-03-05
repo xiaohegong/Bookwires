@@ -279,7 +279,16 @@ let currentUserId = -1;
 function searchBooksByTitle(title, inputList = fakeBooks) {
     return inputList.filter((fBook) => fBook.bookTitle == title);
 }
-
+function fuzzyUserSearch(input, inputList = fakeUser){
+    const outputList = [];
+    for (let index = 0; index < inputList.length; index++) {
+        if (stringCompByLevenshteinDistance(input, inputList[index].getName()) > 0.8) {
+            outputList.push(inputList[index]);
+            console.log('Book found by author, similarity is ' + stringCompByLevenshteinDistance(input, inputList[index].getName()));
+        }
+    }
+    return outputList;
+}
 //advanced version, the input can be anything: name, author or genre
 function fuzzyBookSearch(input, inputList = fakeBooks) {
     const outputList = [];
@@ -300,7 +309,7 @@ function fuzzyBookSearch(input, inputList = fakeBooks) {
 
     //genre search, similarity limit is 1
     for (let index = 0; index < inputList.length; index++) {
-        if (stringCompByLevenshteinDistance(input, inputList[index].getGenre()) == 1) {
+        if (stringCompByLevenshteinDistance(input, inputList[index].getGenre()) === 1) {
             outputList.push(inputList[index]);
             console.log('Book found by genre, similarity is ' + stringCompByLevenshteinDistance(input, inputList[index].getGenre()));
         }
@@ -318,7 +327,7 @@ function stringCompByLevenshteinDistance(s1, s2) {
         shorter = s1;
     }
     let longerLength = longer.length;
-    if (longerLength == 0) {
+    if (longerLength === 0) {
         return 1.0;
     }
     return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
