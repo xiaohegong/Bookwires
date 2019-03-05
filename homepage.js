@@ -93,6 +93,11 @@ for (let i = 0; i < 2; i++) {
     booksRanking.appendChild(divider);
 }
 
+// Add more book picture holder to the book display
+for (let i = numberOfBooks; i < 12; i++) {
+    booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = "img/threebody.jpg";
+}
+
 // A function that makes a div that contains num many stars
 function makeStars(num) {
     if (num > 5 || num < 0) {
