@@ -68,15 +68,6 @@ function bookSetUp(books){
         const rating = makeStars(book.getRating());
         span.appendChild(rating);
 
-        // const description = document.createTextNode(book.getDescription());
-        // const p2 = document.createElement("p");
-        // p2.className = "displayDesc";
-        // p2.appendChild(description);
-        // span.appendChild(p2);
-        const descriptionContainer = document.createElement('p')
-        descriptionContainer.appendChild(document.createTextNode(book.getShortDescription()))
-        span.appendChild(descriptionContainer);
-
         divider.appendChild(imgContainer);
         divider.appendChild(span);
 
