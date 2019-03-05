@@ -231,6 +231,7 @@
     padding-right: 5px;
     padding-bottom: 10px;
     padding-top: 10px;
+    min-height: 90px;
 }
 
 .CommentUserImage {
