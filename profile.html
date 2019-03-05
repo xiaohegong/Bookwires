@@ -28,7 +28,7 @@
                             <li id="navShelf" class="active">
                                 <!-- <a class="nav-link active" href="#"> -->
                                     <i class="fas fa-book"></i>
-                                    My Bookshelf
+                                    Bookshelf
                                 <!-- </a> -->
                             </li>
                             <li id="navAuthored">
@@ -52,9 +52,7 @@
                         </ul>
                     </div>
                 </div>
-                <!-- <div>
-                    <button class="btn btn-primary">Create Book</button>
-                </div> -->
+                <button id="new-book-button" class="btn btn-primary" data-toggle="modal" data-target=".book-modal">Create Book</button>
             </div>
 
             <div class="col-md-6">
@@ -75,10 +73,9 @@
                         </div>
                 </div>
                 <div id="main-content-containter"><div id="book-shelf" class="carousel slide active" data-interval="false">
-                        <h1>My Bookshelf</h1>
+                        <h1>Bookshelf</h1>
                         <div id="search-container">
                             <input class="form-control shelf-search" type="text" placeholder="Search title, genre, artist">
-                            <button id="search-button"><i class="fas fa-search"></i></button>
                         </div>
                         
                         <div class="carousel-inner"></div>
@@ -121,6 +118,60 @@
         </div>
         <button id="change-auth">Change Authentication</button>
     </div>
+    <div class="modal fade book-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="form-group">
+                    <label>Book Title*</label>
+                    <input class="form-control" id="book-title">
+                </div>
+
+                <div class="form-group">
+                    <label>Genre*</label>
+                    <input class="form-control" id="book-genre">
+                </div>
+                <div class="form-group">
+                        <label>Description</label>
+                        <textarea maxlength="220" class="form-control" id="book-description" rows="3"></textarea>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="book-image-upload">
+                    <label class="custom-file-label" for="book-image-upload">Choose Cover Image</label>
+                </div>
+                <div id="chapter-list">
+                    <label>Chapter List</label>
+                    <button class="btn btn-secondary" id="add-chapter" data-toggle="modal" data-target="#chapter-modal">New Chapter</button>
+                    <ul class="list-group"></ul>
+                </div>
+                <button id="book-cancelbutton" class="btn btn-danger" data-dismiss="modal" data-target=".book-modal">Cancel</button>
+                <button id="book-submitbutton" type="button" class="btn btn-primary" data-dismiss="modal" data-target=".book-modal">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div id="chapter-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Chapter Number</label>
+                        <input class="form-control" id="chapter-num">
+                    </div>
+                    <div class="form-group">
+                        <label>Chapter Name</label>
+                        <input class="form-control" id="chapter-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea class="form-control" id="chapter-content" rows="7"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button id="chapter-close" type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#chapter-modal">Close</button>
+                  <button id="chapter-submit" type="button" class="btn btn-primary"  data-dismiss="modal" data-target="#chapter-modal">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
     <script type="text/javascript" src="classes.js"></script>
     <script type="text/javascript" src="profile.js"></script>
 

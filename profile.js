@@ -38,6 +38,21 @@ const following = document.querySelector("#followingCount");
 const writtenCount = document.querySelector("#writenCount");
 const description = document.querySelector(".profiletextcontainer > p");
 
+// get book creation fields:
+const newBookTitleForm = document.querySelector("#book-title");
+const newBookGenreForm = document.querySelector("#book-genre");
+const newBookDescriptionForm = document.querySelector("#book-description");
+const newBookImgForm = document.querySelector("#book-image-upload");
+const chapterListDiv = document.querySelector("#chapter-list");
+const bookModal = document.querySelector(".book-modal");
+const chapterModal = document.querySelector("#chapter-modal");
+
+// chapter creation fields
+const chapterNumField = document.querySelector("#chapter-num");
+const chapterNameField = document.querySelector("#chapter-name");
+const chapterContentField = document.querySelector("#chapter-content");
+const chapterListGroup = document.querySelector(".list-group");
+
 // get navigation bar selectors and create click events:
 const navSettings = document.querySelector(".nav").children;
 //Bookshelf
@@ -54,9 +69,8 @@ const followingButton = document.querySelector("#navFollowing");
 followingButton.addEventListener('click', setUpFollowingList);
 
 // handle searching in bookshelf
-const searchButton = document.querySelector("#search-button");
-searchButton.addEventListener('click', updateShelf);
 const searchBox = document.querySelector(".shelf-search");
+searchBox.addEventListener("keyup", updateShelf)
 
 // Handle Settings editable:
 const editButton = document.querySelector("#editbutton");
@@ -78,6 +92,23 @@ let curDiv = document.querySelector("#book-shelf");
 
 // follow button:
 const followButton = document.querySelector("#follow-button");
+
+// book creation buttons:
+const bookCancelButton = document.querySelector("#book-cancelbutton");
+bookCancelButton.addEventListener('click', cancelAllBooksFields);
+
+const submitBookButton = document.querySelector("#book-submitbutton");
+submitBookButton.addEventListener('click', addNewAuthoredBook);
+
+const newChapterButton = document.querySelector("#add-chapter");
+// newChapterButton.addEventListener('click', createNewChapter);
+
+const chapterCloseButton = document.querySelector("#chapter-close");
+chapterCloseButton.addEventListener("click", clearChapterFields);
+
+const chapterSubmitButton = document.querySelector("#chapter-submit");
+chapterSubmitButton.addEventListener("click", submitNewChapter);
+
 
 // Sets up the carousel with all the books required for My Bookshelf and Authored view
 // each carousel page has a maximum of 15 books. There are a maximum of 3 rows, 
@@ -141,6 +172,19 @@ function setUpCarousel(bookList){
                     bookDeleteButton.onclick = removeBookBookshelf;
                     newLi.appendChild(bookDeleteButton);
                 }
+
+                if(profileOwner && curNav===authoredButton){
+                    const bookEditButton = document.createElement("button");
+                    bookEditButton.innerHTML = "Edit";
+                    bookEditButton.className = "book-edit";
+                    bookEditButton.classList.add("btn", "btn-secondary");
+                    bookEditButton.setAttribute("data-toggle", "modal");
+                    bookEditButton.setAttribute("data-target", ".book-modal");
+                    bookEditButton.onclick = editBook;
+                    newLi.appendChild(bookEditButton);
+                }
+
+
                 newLi.bookReference = bookToAdd;
                 newLi.appendChild(newImg);
                 newCarouselUl.appendChild(newLi);
@@ -182,7 +226,7 @@ function setUpShelf(e){
     searchBox.value = '';
 
     setUpCarousel(sampleUser.bookshelf);
-    
+    document.querySelector("#book-shelf").querySelector("h1").innerHTML = "BookShelf"
     
 }
 
@@ -258,13 +302,16 @@ function setUpFollowingList(e){
 
 function updateShelf(e){
     e.preventDefault();
+    let newList = sampleUser.bookshelf;
+    if(curNav == authoredButton){
+        newList = sampleUser.writtenBook;
+    }
 
     if(searchBox.value === ''){
+        setUpCarousel(newList)
         return
     }
-    setUpCarousel(fuzzyBookSearch(searchBox.value, sampleUser.bookshelf));
-    document.querySelector("#book-shelf").querySelector("h1").innerHTML = "My Bookshelf"
-
+    setUpCarousel(fuzzyBookSearch(searchBox.value, newList));
 }
 
 
@@ -386,4 +433,116 @@ function changeAuthentification(e){
     }
 
     curNav.click();
+}
+
+function cancelAllBooksFields(e){
+    newBookDescriptionForm.value = '';
+    newBookTitleForm.value = '';
+    newBookGenreForm.value = '';
+    newBookImgForm.value = '';
+
+    chapterListDiv.style.display = "none";
+}
+
+function clearChapterFields(e){
+    chapterNumField.value = '';
+    chapterNameField.value = '';
+    chapterContentField.value = '';
+}
+
+function addNewAuthoredBook(e){
+    const d = new Date();
+    const newBook = new Book(newBookTitleForm.value, sampleUser, d.getDate(), "img/TimeRaiders.jpg", newBookGenreForm.value);
+    newBook.setDescription(newBookDescriptionForm.value);
+    sampleUser.writtenBook.push(newBook);
+
+    if(curNav===authoredButton){
+        setUpCarousel(sampleUser.writtenBook);
+    }
+    writtenCount.innerHTML = sampleUser.writtenBook.length;
+    cancelAllBooksFields(e);
+}
+
+function updateChapList(){
+    while(chapterListGroup.firstChild){
+        chapterListGroup.removeChild(chapterListGroup.firstChild);
+    }
+    for(let i=0; i<bookModal.bookReference.chapters.length;i++){
+        const currentChapter = bookModal.bookReference.chapters[i];
+        const chapterElement = document.createElement("li");
+        chapterElement.className = "list-group-item";
+        const chapText = document.createTextNode("Chapter: " + currentChapter.num + " " + currentChapter.chapterName);
+        chapterElement.appendChild(chapText);
+        chapterElement.chapReference = currentChapter;
+        
+        const chapDeleteButton = document.createElement("button");
+        chapDeleteButton.className = "chapter-edit-button";
+        chapDeleteButton.classList.add("btn", "btn-danger");
+        chapDeleteButton.innerHTML = "Delete";
+        chapDeleteButton.addEventListener('click', deleteBookChapter);
+
+        const chapEditButton = document.createElement("button");
+        chapEditButton.className = "chapter-edit-button";
+        chapEditButton.innerHTML = "Edit";
+        // chapEditButton.addEventListener("click", editChapter);
+
+        chapterElement.appendChild(chapDeleteButton);
+        chapterElement.appendChild(chapEditButton);
+        chapterListGroup.appendChild(chapterElement);
+    }
+}
+
+function editBook(e){
+    e.preventDefault();
+    chapterListDiv.style.display = 'block';
+
+    // NEED TO CHANGE BUTTON FUNCTION
+
+    bookModal.bookReference = e.target.parentNode.bookReference;
+
+    newBookDescriptionForm.value = bookModal.bookReference.description;
+    newBookTitleForm.value = bookModal.bookReference.bookTitle;
+    newBookGenreForm.value = bookModal.bookReference.genre;
+    newBookImgForm.value = '';
+
+    submitBookButton.removeEventListener('click', addNewAuthoredBook);
+    submitBookButton.addEventListener('click', updateBook);
+
+    
+
+}
+
+// function createNewChapter(e){
+//     // e.preventDefault();
+//     console.log("ASdSAD");
+
+    
+// }
+
+function submitNewChapter(e){
+    const newChap = new Chapter(parseInt(chapterNumField.value, 10), chapterNameField.value);
+    newChap.setContent(chapterContentField.value);
+
+    bookModal.bookReference.addChapter(newChap);
+    clearChapterFields(e);
+    updateChapList();
+}
+
+function updateBook(e){
+
+    bookModal.bookReference.description = newBookDescriptionForm.value;
+    bookModal.bookReference.bookTitle = newBookTitleForm.value;
+    bookModal.bookReference.genre = newBookGenreForm.value;
+
+
+    submitBookButton.removeEventListener('click', updateBook);
+    submitBookButton.addEventListener('click', addNewAuthoredBook);
+    cancelAllBooksFields(e);
+}
+
+function deleteBookChapter(e){
+    e.preventDefault();
+    const chapToDelete = e.target.parentNode.chapReference;
+    bookModal.bookReference.deleteChapter(chapToDelete.num);
+    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
 }

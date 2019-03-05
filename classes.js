@@ -78,6 +78,15 @@ class Book {
         user.addToBookShelf(new readingBook(book));
         this.NumberOfFollowers += 1;
     }
+
+    deleteChapter(chapNum){
+        for (let j = 0; j < this.chapters.length; j++) {
+            if (this.chapters[j].num === chapNum) {
+                this.chapters.splice(j, 1);
+                break;
+            }
+        }
+    }
 }
 
 class readingBook {
@@ -119,15 +128,6 @@ class Chapter {
 
     getDescription() {
         return 'Chapter ' + this.num + ' : ' + this.chapterName;
-    }
-
-    deleteChapter(chapNum){
-        for (let j = 0; j < this.chapters.length; j++) {
-            if (this.chapters[j].num === chapNum) {
-                this.chapters.splice(j, 1);
-                break;
-            }
-        }
     }
 }
 

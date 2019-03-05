@@ -54,6 +54,7 @@
 #book-shelf h1 {
     margin: 10px;
     text-align: center;
+    text-shadow: rgb(255, 255, 255) 1px 1px 1px;
 }
 
 .shelf-search {
@@ -204,4 +205,44 @@
 
 .book-delete:focus {
     outline: none;
+}
+
+#new-book-button {
+    margin: 20px auto;
+    display: block;
+}
+
+.modal-content {
+    padding: 25px;
+}
+
+#book-cancelbutton {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.book-edit {
+    position: absolute;
+    width: 100%;
+    bottom: -20px;
+}
+
+#chapter-list {
+    margin-top: 20px;
+    display: none;
+}
+
+#add-chapter {
+    display: block;
+    margin-bottom: 10px;
+    font-size: small;
+}
+
+.chapter-edit-button {
+    float: right;
+    margin-right: 20px;
+}
+
+.modal {
+    overflow-y: auto;
 }
