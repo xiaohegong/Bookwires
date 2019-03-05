@@ -143,13 +143,13 @@ for (let i = 0; i < book.comments.length; i++) {
 
 // Code for animated menu bar
 const comments = document.getElementById("comments");
-$('.nav-link').on('click', function() {
+$('.nav-link').on('click', function () {
     $('.active-link').removeClass('active-link');
     $(this).addClass('active-link');
 
-    if ($(this).children()[0].innerText === "Comments"){
+    if ($(this).children()[0].innerText === "Comments") {
         changeDisplayedText(comments, chapters);
-    } else{
+    } else {
         changeDisplayedText(chapters, comments);
     }
 

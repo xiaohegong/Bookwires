@@ -1,4 +1,4 @@
-#profileimg {
+#profileImg {
     border-radius: 50%;
     width: 250px;
     height: 250px;
@@ -6,31 +6,33 @@
     border: solid black;
 }
 
-.profileimgcontent {
+.profileImgContent {
     width: 250px;
     margin: 0 auto;
 }
-.profiletextcontainer{
+
+.profileTextContainer {
     text-align: center;
     height: 200px;
     border: solid black;
 }
+
 .containment {
     margin-top: 30px;
 }
 
-.profileheader {
+.profileHeader {
     text-align: center;
 }
 
-.statscontainer {
+.statsContainer {
     border: solid black;
 }
 
-.statbox {
+.statBox {
     width: 32%;
     display: inline-block;
-    font-size: 25px;
+    font-size: 20px;
     padding-left: 10px;
     text-align: center;
 }
@@ -41,7 +43,7 @@
     border-width: 5px;
     background-size: cover;
     background-repeat: repeat-y;
-    
+
 }
 
 #book-shelf h1 {
@@ -70,15 +72,15 @@
     border-bottom: black 4px;
 }
 
-.book-row li{
-	list-style: none;
+.book-row li {
+    list-style: none;
     height: 80%;
     display: block;
     margin: 7px;
-    box-shadow: 5px 5px 14px 4px rgba(42,42,42,0.79);
+    box-shadow: 5px 5px 14px 4px rgba(42, 42, 42, 0.79);
 }
 
-.book-row li img{
+.book-row li img {
     height: 100%;
     width: 100px;
 }
@@ -92,28 +94,28 @@
     width: 7.5%;
 }
 
-.nav-container ul{
+.nav-container ul {
     border-top: solid black;
     margin-top: 10px;
     display: block;
 }
 
-.nav-container ul li{
+.nav-container ul li {
     border: solid black;
     border-top: none;
 }
 
-.nav-container ul li:hover{
+.nav-container ul li:hover {
     background: #dbe4f1;
-  }
-
-.nav-container ul li.active{
-background: #dbe4f1;
 }
 
-.nav-container ul li.active a{
+.nav-container ul li.active {
+    background: #dbe4f1;
+}
+
+.nav-container ul li.active a {
     color: #0056b3;
-  }
+}
 
 #ranking {
     margin: 10px;
@@ -123,9 +125,9 @@ background: #dbe4f1;
     clear: right;
     display: inline-block;
     padding: 20px;
-   
+
     border-bottom: 1px solid grey;
-    width:50%;
+    width: 50%;
 }
 
 .bookDisplayImg {
@@ -147,5 +149,38 @@ background: #dbe4f1;
     font-size: 12px;
 }
 
-.displayDesc {
-    font-size: 11px;
+
+.userIcon {
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    display: block;
+    object-fit: cover;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.deleteBtn {
+    color: white;
+    padding: 5px;
+    text-align: center;
+    background-color: #AEC3B0;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 10px;
+    cursor: pointer;
+    border: 1px solid #AEC3B0;
+}
+
+.deleteBtn:hover {
+    background-color: #cebebd;
+    color: white;
+    border: 1px solid #cebebd;
+}
+
+.larger {
+    width: 60%;
+}

@@ -1,97 +1,103 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="admin.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="overallStyle.css">
+    <link rel="stylesheet" type="text/css" href="admin.css">
 
 
     <title>Admin</title>
-  </head>
+</head>
 
 
-  <body>
-      <div id="header">
+<body>
+<div id="header">
     <!-- Twitter logo goes in here -->
     <a href="index.html"><img id='bookLogo' src="img/book.png"/>
         <span id="title">Bookwires</span></a>
-    
+
     <div class="clearfix"></div>
     <div class="container-fluid">
         <div class="row containment">
             <div class="col-md-4">
-                <div class="profileimgcontent">
-                    <img id="profileimg" src="img/dog.jpeg">
+                <div class="profileImgContent">
+                    <img id="profileImg" src="img/dog.jpeg">
                     <div class="nav-container">
                         <ul class="nav">
                             <li class="active">
-                                <a id = "bookNav" class="nav-link active" href="#">
+                                <a id="bookNav" class="nav-link active" href="#">
                                     <i class="fas fa-book"></i>
                                     Books
                                 </a>
                             </li>
                             <li>
-                                <a id = "userNav" class="nav-link" href="#">
+                                <a id="userNav" class="nav-link" href="#">
                                     <i class="fas fa-pencil-alt"></i>
                                     Users
                                 </a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <h1 class="profileheader">Admin 1</h1>
-                <div class="statscontainer">
-                        <div class="statbox">
-                            <strong>Deleted books</strong>
-                            <span>15</span>
-                        </div>
-                        <div class="statbox">
-                            <strong>Deleted user</strong>
-                            <span>3</span>
-                        </div>
-                        <div class="statbox">
-                            <strong>Deleted comments</strong>
-                            <span>23</span>
-                        </div>
+                <h1 class="profileHeader">Admin 1</h1>
+                <div class="statsContainer">
+                    <div class="statBox">
+                        <strong>Deleted books</strong>
+                        <div>15</div>
+                    </div>
+                    <div class="statBox">
+                        <strong>Deleted user</strong>
+                        <div>3</div>
+                    </div>
+                    <div class="statBox">
+                        <strong>Deleted comments</strong>
+                        <div>23</div>
+                    </div>
                 </div>
                 <div id="book-shelf" class="carousel slide" data-ride="carousel">
-                     <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                        </ol>
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
                     <div class="carousel-inner">
-                       
-                        <div id ="InfoContainer">
-                            
-                           
-                            
+
+                        <div id="InfoContainer">
+
+
                         </div>
+                    </div>
+                </div>
+                <!-- Content here -->
             </div>
-        </div>
-        <!-- Content here -->
-    </div>
 
 
-    <script type="text/javascript" src="./classes.js"></script>
-    <script type="text/javascript" src="admin.js"></script>
+            <script type="text/javascript" src="./classes.js"></script>
+            <script type="text/javascript" src="admin.js"></script>
 
 
-
-
-    <!--  Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+            <!--  Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                    crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                    crossorigin="anonymous"></script>
+</body>
 </html>

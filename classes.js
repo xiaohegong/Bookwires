@@ -79,7 +79,7 @@ class Book {
         this.NumberOfFollowers += 1;
     }
 
-    deleteChapter(chapNum){
+    deleteChapter(chapNum) {
         for (let j = 0; j < this.chapters.length; j++) {
             if (this.chapters[j].num === chapNum) {
                 this.chapters.splice(j, 1);
@@ -143,6 +143,7 @@ class user {
         this.following = [];
         this.mailAddress = "";
         this.passWord = "";
+        this.image = null;
     }
 
     getName() {
@@ -157,7 +158,7 @@ class user {
         this.image = src;
     }
 
-    isAdmin(){
+    isAdmin() {
         return this.admin;
     }
 
@@ -177,8 +178,17 @@ class user {
         this.mailAddress = address;
     }
 
-    setIsAdmin(isAdmin){
+    setIsAdmin(isAdmin) {
         this.admin = isAdmin;
+    }
+
+    isFollowing(userName) {
+        for (let j = 0; j < this.following.length; j++) {
+            if (this.following[j].name === userName) {
+                return true;
+            }
+        }
+        return false;
     }
 
     removeFollowing(nameToRemove) {
@@ -194,6 +204,15 @@ class user {
         for (let j = 0; j < this.bookshelf.length; j++) {
             if (this.bookshelf[j].bookTitle === bookToRemove.bookTitle && this.bookshelf[j].author === bookToRemove.author) {
                 this.bookshelf.splice(j, 1);
+                break;
+            }
+        }
+    }
+
+    removeBookfromWritten(bookToRemove) {
+        for (let j = 0; j < this.writtenBook.length; j++) {
+            if (this.writtenBook[j].bookTitle === bookToRemove.bookTitle && this.writtenBook[j].author === bookToRemove.author) {
+                this.writtenBook.splice(j, 1);
                 break;
             }
         }
@@ -235,7 +254,7 @@ function userCreater(name, mailAddress, passWord, isAdmin) {
 const fakeUser = [];
 fakeUser.push(userCreater("Xie Wu", "wuxie@gmail.com", "123456", false));
 fakeUser.push(userCreater("Cixin Liu", "liucixin@gmail.com", "123456", false));
-fakeUser.push(userCreater("JK_Rowling", "jkR@gmail.com", "123456", false));
+fakeUser.push(userCreater("JK Rowling", "jkR@gmail.com", "123456", false));
 fakeUser.push(userCreater("admin", "liucixin@gmail.com", "admin", true));
 fakeUser.push(userCreater("user", "jkR@gmail.com", "user", false));
 fakeUser.push(userCreater("1", "1", "1", false));
@@ -249,7 +268,7 @@ newBook(fakeUser[1], new Book('Wandering Earth', fakeUser[1], '2008/8/8', 'img/W
 newBook(fakeUser[1], new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', 'img/threebody.jpg', 'Sci-fi'));
 
 // Add many new chapters for visualization
-for (let i = 1; i < 30; i++){
+for (let i = 1; i < 30; i++) {
     fakeBooks[1].addChapter(new Chapter(i, 'Chapter Name'));
 }
 
@@ -279,7 +298,8 @@ let currentUserId = -1;
 function searchBooksByTitle(title, inputList = fakeBooks) {
     return inputList.filter((fBook) => fBook.bookTitle == title);
 }
-function fuzzyUserSearch(input, inputList = fakeUser){
+
+function fuzzyUserSearch(input, inputList = fakeUser) {
     const outputList = [];
     for (let index = 0; index < inputList.length; index++) {
         if (stringCompByLevenshteinDistance(input, inputList[index].getName()) > 0.8) {
@@ -289,6 +309,7 @@ function fuzzyUserSearch(input, inputList = fakeUser){
     }
     return outputList;
 }
+
 //advanced version, the input can be anything: name, author or genre
 function fuzzyBookSearch(input, inputList = fakeBooks) {
     const outputList = [];
@@ -358,5 +379,21 @@ function editDistance(s1, s2) {
             costs[s2.length] = lastValue;
     }
     return costs[s2.length];
+}
+
+// a function to similuate when a book is deleted from the database
+function deleteBookForAllUsers(bookToRemove){
+    //remove book from all user's bookshelf
+    for(let i=0;i<fakeUser.length;i++){
+        fakeUser[i].removeBookfromBookshelf(bookToRemove);
+    }
+
+    // remove book from 'database':
+    for (let j = 0; j < fakeBooks; j++) {
+        if (fakeBooks[j].bookTitle === bookToRemove.bookTitle && fakeBooks[j].author === bookToRemove.author) {
+            fakeBooks.splice(j, 1);
+            break;
+        }
+    }
 }
 
