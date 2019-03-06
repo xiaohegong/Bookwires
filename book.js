@@ -27,7 +27,8 @@ enterBtn.onclick = function enterComment() {
     addCommentToTable(comment);
 };
 
-save.onclick = function saveToShelf() {
+save.onclick = function saveToShelf(e) {
+    e.preventDefault();
     book.save(fakeUser[0]); // server call that update the corresponding info
 };
 
