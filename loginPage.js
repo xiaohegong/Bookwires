@@ -4,6 +4,7 @@ const toSignUp = document.getElementById("toSignUp");
 const loginSubmit = document.getElementById("loginButton");
 const quit = document.getElementById("quit");
 
+// Setting login pop up box animation
 closeBox.onclick = function (e) {
     e.preventDefault();
     logInForm.style.display = "none";
@@ -15,7 +16,7 @@ toSignUp.onclick = function (e) {
     logInForm.style.display = "none";
 };
 
-
+// Validation for log in
 loginSubmit.onclick = function (e) {
     e.preventDefault();
     const userNameInput = document.getElementById('loginUserName');
@@ -42,6 +43,8 @@ loginSubmit.onclick = function (e) {
         alert("This account do not exist");
         return;
     }
+
+    // Change DOM elements to display logged in status
     userLoggedIn(userName, isAdmin);
     logInForm.style.display = "none";
 };

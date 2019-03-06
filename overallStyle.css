@@ -10,7 +10,6 @@ h1 {
 }
 
 #wrapper {
-
     padding-right: 5%;
     padding-left: 5%;
     margin-top: 20px;
@@ -55,7 +54,6 @@ h1 {
     font-weight: bold;
 }
 
-
 #menuBar a:hover {
     background-color: #67898a;
     border: 2px solid #67898a;
@@ -72,7 +70,6 @@ h1 {
     border: 2px solid #bdcebe;
     display: block;
 }
-
 
 #searchLogo {
     width: 30px;

@@ -1,6 +1,7 @@
 "use strict";
 const booksRanking = document.querySelector("#ranking");
 
+// A function to generating stars with the given num
 function makeStars(num) {
     if (num > 5 || num < 0) {
         return;
@@ -21,12 +22,17 @@ function makeStars(num) {
     return div;
 }
 
-function searchBarSearch(){
-	const searchBar = document.getElementById('searchBar');
-	bookSetUp(fuzzyBookSearch(searchBar.value));
+// For search bar algorithm
+function searchBarSearch() {
+    const searchBar = document.getElementById('searchBar');
+    bookSetUp(fuzzyBookSearch(searchBar.value));
 }
+
+// DOM element helper function for displaying search results
 bookSetUp(fakeBooks);//server call to get real data
-function bookSetUp(books){
+
+// DOM element helper function for displaying search results
+function bookSetUp(books) {
     while (booksRanking.firstChild) {
         booksRanking.removeChild(booksRanking.firstChild);
     }
@@ -48,8 +54,8 @@ function bookSetUp(books){
         // Add books to the ranking section
         const divider = document.createElement("div");
         divider.className = "bookDisplay";
-        const imgContainer = document.createElement('a')
-        imgContainer.setAttribute('href','book.html')
+        const imgContainer = document.createElement('a');
+        imgContainer.setAttribute('href', 'book.html');
         const img = document.createElement("img");
         img.src = book.getImage();
         img.className = "bookDisplayImg";
@@ -70,7 +76,6 @@ function bookSetUp(books){
 
         divider.appendChild(imgContainer);
         divider.appendChild(span);
-
 
         booksRanking.appendChild(divider);
     }

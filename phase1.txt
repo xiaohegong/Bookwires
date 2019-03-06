@@ -15,10 +15,10 @@ To Ta:
 		- if the user has any new notifications a toast will appear telling the user.
 		3. You can click all the images of books to go to the "Book Page" of the selected books.
 		4. You can use the search bar at the very top of the page. Using the search bar will take the user to the "Search Page"
-			-	The search page will query a list books that match the search (genres, titles, authors)
-			- without a server right now, each search (from the home page) yields the same results
-			 (however the search functionality is already build in classes.js and search functionality can be tested on the Serach Page and Profile Page)
-			 - The Genres section on the left is brings the user to the search page as if they searched for the genre name
+			- The search page will query a list books that match the search (genres, titles, authors)
+			- Without a server right now, each search (from the home page) yields the same results
+			 (however the search functionality is already build in classes.js and search functionality can be tested on the Search Page and Profile Page)
+			- The Genres section on the left is brings the user to the search page as if they searched for the genre name
 		5. You can click on the authors on the bottom-right take you to the profile page.
 		6. After login in, there is a welcome button in the top right that it will take you to profile page if you are a user and take you to
 		admin page if you are a admin.
@@ -54,7 +54,7 @@ To Ta:
 		There are two main views for the profile page:
 			1. The Profile Owner/Admin's view 
 			2. Another user's view (who's profile it is not)
-			- for convenience we have made a button in the bottom left corner that switched between these types of views (this is not a funcionality of the website)
+			- for convenience we have made a button in the bottom left corner that switched between these types of views (this is not a functionality of the website)
 
 
 		The Profile Owner/Admin's view:
@@ -88,4 +88,4 @@ group member name and their corresponding github name
 Steven Cuneo : Steven
 Xiaohe Gong : gongxi10
 Chenghao Wang : Eric
-Yujie Miao : beijilang,Jerry
+Yujie Miao : beijilang, Jerry

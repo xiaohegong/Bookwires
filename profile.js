@@ -9,7 +9,7 @@
 // profileOwner will be true all the time for admins
 let profileOwner = true;
 // create a user that is to be used for example purposes as if they are not the owner of the profile
-const viewingUser = userCreator("sampleViewer","sv@domain.com","123", false);
+const viewingUser = userCreator("sampleViewer", "sv@domain.com", "123", false);
 
 // button that changes the viewers authentification for testing purposes
 const changeAuthButton = document.querySelector("#change-auth");
@@ -102,7 +102,7 @@ notificationButton.addEventListener('click', setUpNotificationList);
 
 // Search Bar
 const searchBox = document.querySelector(".shelf-search");
-searchBox.addEventListener("keyup", updateShelf)
+searchBox.addEventListener("keyup", updateShelf);
 
 // Follow button:
 const followButton = document.querySelector("#follow-button");
@@ -124,9 +124,9 @@ let edit = false;
 // MAIN CONTENT SETUP FUNCTIONS:
 
 /** Sets up the carousel with all the books required for My Bookshelf and Authored view.
- *  Each carousel page has a maximum of 15 books. There are a maximum of 3 rows per page, 
+ *  Each carousel page has a maximum of 15 books. There are a maximum of 3 rows per page,
  * each containing a maximum of 5 books.*/
-function setUpCarousel(bookList){
+function setUpCarousel(bookList) {
     // remove any children from before (reuqired if there have been updates to any book lists)
     while (carouselInner.firstChild) {
         carouselInner.removeChild(carouselInner.firstChild);
@@ -137,42 +137,42 @@ function setUpCarousel(bookList){
     indList.className = "carousel-indicators";
 
     // iterate over the number of carousel pages required (15 books per page)
-    for(let i=0; i < Math.ceil(bookList.length / 15); i++){
+    for (let i = 0; i < Math.ceil(bookList.length / 15); i++) {
         //create new page and indicator:
         const newCarousel = document.createElement("DIV");
         const newCarIndicator = document.createElement("li");
         newCarIndicator.setAttribute("data-target", "#book-shelf");
         newCarIndicator.setAttribute("data-slide-to", i.toString());
-        
+
         // set the first page as active:
-        if(i==0){
+        if (i === 0) {
             newCarousel.className = "carousel-item active";
             newCarIndicator.className = "active";
-        }else{
+        } else {
             newCarousel.className = "carousel-item";
         }
-        
+
         // create container for the rows:
         const newCarouselRowCont = document.createElement("DIV");
         newCarouselRowCont.className = "rows-container";
         newCarousel.appendChild(newCarouselRowCont);
 
         // determines how many books are going to be on the page
-        const booksleftPage = Math.min(15, bookList.length - i*15);
+        const booksleftPage = Math.min(15, bookList.length - i * 15);
 
         // create a row for each remaining rows required:
         // requires server call for book list
-        for(let j=0; j < Math.ceil(bookList.length / 5); j++){
+        for (let j = 0; j < Math.ceil(bookList.length / 5); j++) {
             const newCarouselUl = document.createElement("ul");
             newCarouselUl.className = "book-row";
             newCarouselRowCont.appendChild(newCarouselUl);
-            
+
             // create a book for each remaining books required in current row
-            for(let b=0; b<Math.min(5, booksleftPage - j*5); b++){
+            for (let b = 0; b < Math.min(5, booksleftPage - j * 5); b++) {
                 // new book list container and image:
                 const newLi = document.createElement("li");
                 const newImg = document.createElement("img");
-                const bookToAdd = bookList[(i*15 + j*5 + b)]
+                const bookToAdd = bookList[(i * 15 + j * 5 + b)];
                 newImg.src = bookToAdd.image;
                 newImg.title = bookToAdd.bookTitle;
                 newImg.onclick = function () {
@@ -180,22 +180,21 @@ function setUpCarousel(bookList){
                 };
 
                 // check if the "viewer" is the profile owner.
-                if(profileOwner){
+                if (profileOwner) {
                     // if so allow add delete buttons
                     const bookDeleteButton = document.createElement("button");
                     bookDeleteButton.innerHTML = "x";
                     bookDeleteButton.className = "book-delete";
-                    if(curNav===shelfButton){
+                    if (curNav === shelfButton) {
                         bookDeleteButton.onclick = removeBookBookshelf;
-                    }
-                    else{
+                    } else {
                         bookDeleteButton.onclick = removeWrittenBook;
                     }
                     newLi.appendChild(bookDeleteButton);
                 }
 
                 // if authored view add edit buttons:
-                if(profileOwner && curNav===authoredButton){
+                if (profileOwner && curNav === authoredButton) {
                     const bookEditButton = document.createElement("button");
                     bookEditButton.innerHTML = "Edit";
                     bookEditButton.className = "book-edit";
@@ -221,9 +220,9 @@ function setUpCarousel(bookList){
 }
 
 /** Sets up the user page with the current user information:
- * called immdediately on startup.
-*/
-function setUpUserPage(){
+ * called immediately on startup.
+ */
+function setUpUserPage() {
     // update all user information elements
     profileHeader.innerHTML = sampleUser.name;
     followers.innerHTML = sampleUser.followers;
@@ -238,15 +237,16 @@ function setUpUserPage(){
     setUpCarousel(sampleUser.bookshelf);
 
 }
+
 setUpUserPage();
 
-/** Called when Bookshelf is seleted in that nav menu.
+/** Called when Bookshelf is selected in that nav menu.
  * Changes nav element styling and sets up bookshelf for main content
  */
-function setUpShelf(e){
+function setUpShelf(e) {
     e.preventDefault();
     changeActive(shelfButton, document.querySelector("#book-shelf"));
-    
+
     // clear search bars
     searchBox.value = '';
 
@@ -256,13 +256,13 @@ function setUpShelf(e){
 
 /** Called when Settings is seleted in that nav menu.
  * Changes nav element styling and sets up Settings for main content */
-function setUpSettings(e){
+function setUpSettings(e) {
     e.preventDefault();
     changeActive(settingsButton, document.querySelector("#settings"));
 }
 
 /** Helper function to adjust html elements for when a viewer unfollows a user  */
-function removeFollowerTotal(e){
+function removeFollowerTotal(e) {
     e.preventDefault();
     const elem = e.target.parentNode;
     const name = elem.querySelector("h3").innerHTML;
@@ -272,9 +272,9 @@ function removeFollowerTotal(e){
     following.innerHTML = sampleUser.following.length;
 }
 
-/** Called when Following is seleted in that nav menu.
+/** Called when Following is selected in that nav menu.
  * Changes nav element styling and sets up Following for main content */
-function setUpFollowingList(e){
+function setUpFollowingList(e) {
     e.preventDefault();
 
     //remove any existing list
@@ -287,7 +287,7 @@ function setUpFollowingList(e){
     changeActive(followingButton, document.querySelector("#following"));
 
     // create a list element for each follower of sampleUser and add it to the list
-    for(let i=0;i<sampleUser.following.length;i++){
+    for (let i = 0; i < sampleUser.following.length; i++) {
         const newFollowCont = document.createElement("li");
         newFollowCont.className = "following-container";
 
@@ -296,10 +296,10 @@ function setUpFollowingList(e){
         followingImg.onclick = function () {
             location.href = "profile.html";
         };
-        
+
         const followingInfo = document.createElement("div");
         followingInfo.className = "following-info";
-        
+
         const followingName = document.createElement("h3");
         followingName.innerHTML = sampleUser.following[i].name;
         followingName.onclick = function () {
@@ -309,7 +309,7 @@ function setUpFollowingList(e){
         followingInfo.appendChild(followingName);
 
         const followingWritten = document.createElement("h4");
-        followingWritten.innerHTML = "Books Written: "
+        followingWritten.innerHTML = "Books Written: ";
 
         const followingWrittenCount = document.createElement("span");
         followingWrittenCount.innerHTML = sampleUser.following[i].writtenBook.length;
@@ -329,27 +329,27 @@ function setUpFollowingList(e){
     }
 }
 
-/** Called when Authored is seleted in that nav menu.
+/** Called when Authored is selected in that nav menu.
  * Changes nav element styling and sets up Authored for main content */
-function setUpAuthorShelf(e){
+function setUpAuthorShelf(e) {
     e.preventDefault();
     changeActive(authoredButton, document.querySelector("#book-shelf"));
 
     searchBox.value = '';
     setUpCarousel(sampleUser.writtenBook);
-    document.querySelector("#book-shelf").querySelector("h1").innerHTML = "Authored Books"
+    document.querySelector("#book-shelf").querySelector("h1").innerHTML = "Authored Books";
 }
 
-/** Called when Notification is seleted in that nav menu.
+/** Called when Notification is selected in that nav menu.
  * Changes nav element styling and sets up Notification for main content */
-function setUpNotificationList(e){
+function setUpNotificationList(e) {
     e.preventDefault();
 
-    while(notiListGroup.firstChild){
+    while (notiListGroup.firstChild) {
         notiListGroup.removeChild(notiListGroup.firstChild);
-    }    
+    }
     changeActive(notificationButton, document.querySelector("#notifications"));
-    for(let i=0;i<sampleUser.newMessages.length; i++){
+    for (let i = 0; i < sampleUser.newMessages.length; i++) {
         const bookNot = sampleUser.newMessages[i];
         const notificationElement = document.createElement("li");
         notificationElement.className = "list-group-item";
@@ -363,7 +363,7 @@ function setUpNotificationList(e){
         notiListGroup.appendChild(notificationElement);
     }
 
-    for(let i=0;i<sampleUser.oldMessages.length; i++){
+    for (let i = 0; i < sampleUser.oldMessages.length; i++) {
         const bookNot = sampleUser.newMessages[i];
         const notificationElement = document.createElement("li");
         notificationElement.className = "list-group-item";
@@ -376,38 +376,38 @@ function setUpNotificationList(e){
 
         notiListGroup.appendChild(notificationElement);
     }
-    
+
 }
 
-/** Update the shelf after a search is queried. Verfies if shelf is authored shelf or a bookshelf */
-function updateShelf(e){
+/** Update the shelf after a search is queried. Verifies if shelf is authored shelf or a bookshelf */
+function updateShelf(e) {
     e.preventDefault();
     let newList = sampleUser.bookshelf;
-    if(curNav == authoredButton){
+    if (curNav == authoredButton) {
         newList = sampleUser.writtenBook;
     }
-    if(searchBox.value === ''){
-        setUpCarousel(newList)
-        return
+    if (searchBox.value === '') {
+        setUpCarousel(newList);
+        return;
     }
     setUpCarousel(fuzzyBookSearch(searchBox.value, newList));
 }
 
 /** Changes the active main content element*/
-function changeActive(elem, newDiv){
+function changeActive(elem, newDiv) {
     curNav.classList.remove("active");
     elem.classList.add("active");
     curNav = elem;
 
     curDiv.classList.remove("active");
-    curDiv.classList.add("fade")
+    curDiv.classList.add("fade");
     newDiv.classList.remove("fade");
     newDiv.classList.add("active");
     curDiv = newDiv;
 }
 
 /** Changes the Settings forms to allow editing of the user's info */
-function changeEditable(e){
+function changeEditable(e) {
     e.preventDefault();
     cancelButton.style.display = "inline";
 
@@ -428,7 +428,7 @@ function changeEditable(e){
 }
 
 /** Confirms the edit changes in the Settings */
-function confirmChanges(e){
+function confirmChanges(e) {
     e.preventDefault();
     // update User values
     // requires server call to update user data
@@ -438,7 +438,7 @@ function confirmChanges(e){
     sampleUser.description = descriptionEditable.value;
 
     // reset buttons
-    confirmButton.disabled= true;
+    confirmButton.disabled = true;
     confirmButton.className = "btn btn-secondary";
     cancelButton.style.display = "none";
 
@@ -458,7 +458,7 @@ function confirmChanges(e){
 }
 
 /** Cancels any changes that were made while editing settings and resets the forms */
-function cancelChanges(e){
+function cancelChanges(e) {
     e.preventDefault();
 
     username.readOnly = true;
@@ -473,13 +473,13 @@ function cancelChanges(e){
     pass.readOnly = true;
     pass.value = '';
 
-    confirmButton.disabled= true;
+    confirmButton.disabled = true;
     confirmButton.className = "btn btn-secondary";
     cancelButton.style.display = "none";
 }
 
 /** Removes an html book element from the Bookshelf as well as makes a call to remove it from the user*/
-function removeBookBookshelf(e){
+function removeBookBookshelf(e) {
     e.preventDefault();
     const bookToRemove = e.target.parentNode.bookReference;
     //remove the book from user (reuqires server call)
@@ -490,8 +490,8 @@ function removeBookBookshelf(e){
 
 /** Removes an html book element from the Authored Shelf as well as makes a call to remove it from the user
  * Requires server call.
-*/
-function removeWrittenBook(e){
+ */
+function removeWrittenBook(e) {
     e.preventDefault();
     const bookToRemove = e.target.parentNode.bookReference;
     sampleUser.removeBookFromWritten(bookToRemove);
@@ -501,24 +501,23 @@ function removeWrittenBook(e){
     setUpCarousel(sampleUser.writtenBook);
 }
 
-/** Changes the view of the page from owner to non-owner. 
- * For demenstration purposes.
+/** Changes the view of the page from owner to non-owner.
+ * For demonstration purposes.
  */
-function changeAuthentification(e){
+function changeAuthentification(e) {
     e.preventDefault();
     // switch owner value
     profileOwner = !profileOwner;
 
-    if(profileOwner){
+    if (profileOwner) {
         // reveal everything except follow button
         followButton.style.display = "none";
         followingButton.style.display = "block";
         settingsButton.style.display = "block";
         notificationButton.style.display = "block";
         newBookButton.style.display = "block";
-    
-    }
-    else{
+
+    } else {
         //Viewer is not owner:
         // hide everything except follow button
         followButton.style.display = "inline-block";
@@ -528,22 +527,21 @@ function changeAuthentification(e){
         newBookButton.style.display = "none";
 
         // set up the follow button based on if they are following the user already or not
-        if(viewingUser.isFollowing(sampleUser.name)){
-            followButton.classList.add("btn-danger"); 
-            followButton.classList.remove("btn-success"); 
+        if (viewingUser.isFollowing(sampleUser.name)) {
+            followButton.classList.add("btn-danger");
+            followButton.classList.remove("btn-success");
             followButton.innerHTML = "UnFollow";
-        }
-        else{
-            followButton.classList.add("btn-success"); 
-            followButton.classList.remove("btn-danger"); 
+        } else {
+            followButton.classList.add("btn-success");
+            followButton.classList.remove("btn-danger");
             followButton.innerHTML = "Follow";
         }
     }
     curNav.click();
 }
 
-/** Cancle any edits made to a book creations form */
-function cancelAllBooksFields(e){
+/** Cancel any edits made to a book creations form */
+function cancelAllBooksFields(e) {
     newBookDescriptionForm.value = '';
     newBookTitleForm.value = '';
     newBookGenreForm.value = '';
@@ -553,14 +551,14 @@ function cancelAllBooksFields(e){
 }
 
 /** Clear fields of chapter creation/edit form */
-function clearChapterFields(e){
+function clearChapterFields(e) {
     chapterNumField.value = '';
     chapterNameField.value = '';
     chapterContentField.value = '';
 }
 
 /** Create a new Book based off the form elements. Add the book the the user's authored list */
-function addNewAuthoredBook(e){
+function addNewAuthoredBook(e) {
     const d = new Date();
     //requires server call to add new book
     const newBook = new Book(newBookTitleForm.value, sampleUser, d.getDate(), "img/TimeRaiders.jpg", newBookGenreForm.value);
@@ -568,7 +566,7 @@ function addNewAuthoredBook(e){
     sampleUser.writtenBook.push(newBook);
 
     //update html if main content is authored
-    if(curNav===authoredButton){
+    if (curNav === authoredButton) {
         setUpCarousel(sampleUser.writtenBook);
     }
     //update html profile stat
@@ -577,21 +575,21 @@ function addNewAuthoredBook(e){
 }
 
 /** Function to add the chapters to the book modal for the current book being edited. */
-function updateChapList(){
+function updateChapList() {
     // clear current list if any
-    while(chapterListGroup.firstChild){
+    while (chapterListGroup.firstChild) {
         chapterListGroup.removeChild(chapterListGroup.firstChild);
     }
 
     // add a chapter list element for each chapter of the current book
-    for(let i=0; i<bookModal.bookReference.chapters.length;i++){
+    for (let i = 0; i < bookModal.bookReference.chapters.length; i++) {
         const currentChapter = bookModal.bookReference.chapters[i];
         const chapterElement = document.createElement("li");
         chapterElement.className = "list-group-item";
         const chapText = document.createTextNode("Chapter " + currentChapter.num + ": " + currentChapter.chapterName);
         chapterElement.appendChild(chapText);
         chapterElement.chapReference = currentChapter;
-        
+
         const chapDeleteButton = document.createElement("button");
         chapDeleteButton.className = "chapter-edit-button";
         chapDeleteButton.classList.add("btn", "btn-danger");
@@ -613,7 +611,7 @@ function updateChapList(){
 }
 
 /** Called when want to edit a book that user has created */
-function editBook(e){
+function editBook(e) {
     e.preventDefault();
 
     // fill in fields with current book data
@@ -632,16 +630,16 @@ function editBook(e){
 }
 
 /** Create a new chapter for the book that is being edited currently */
-function submitNewChapter(e){
+function submitNewChapter(e) {
     // if in editing mode change the current chapter
-    if(edit===true){
+    if (edit === true) {
         chapterModal.chapReference.num = parseInt(chapterNumField.value, 10);
         chapterModal.chapReference.chapterName = chapterNameField.value;
         chapterModal.chapReference.setContent(chapterContentField.value);
     }
     //if not in editing mode create and add a new chapter to the book
     // requires a server call
-    else{
+    else {
         const newChap = new Chapter(parseInt(chapterNumField.value, 10), chapterNameField.value);
         newChap.setContent(chapterContentField.value);
 
@@ -654,13 +652,13 @@ function submitNewChapter(e){
 }
 
 /** Called when wanting to submit book edits*/
-function updateBook(e){
+function updateBook(e) {
     //update book data (requires server call)
     bookModal.bookReference.description = newBookDescriptionForm.value;
     bookModal.bookReference.bookTitle = newBookTitleForm.value;
     bookModal.bookReference.genre = newBookGenreForm.value;
 
-    // restore submit button functionailty to "create new book"
+    // restore submit button functionality to "create new book"
     submitBookButton.removeEventListener('click', updateBook);
     submitBookButton.addEventListener('click', addNewAuthoredBook);
     cancelAllBooksFields(e);
@@ -669,7 +667,7 @@ function updateBook(e){
 /** Remove a book chapter from html and book's chapter list
  * Requires a server call to update book.
  */
-function deleteBookChapter(e){
+function deleteBookChapter(e) {
     e.preventDefault();
     const chapToDelete = e.target.parentNode.chapReference;
     bookModal.bookReference.deleteChapter(chapToDelete.num);
@@ -679,7 +677,7 @@ function deleteBookChapter(e){
 /** Called when opening book editor. Sets the book to be edited and
  * flags the edit variable to be true.
  */
-function setEdit(e){
+function setEdit(e) {
     edit = true;
     chapterModal.chapReference = e.target.parentNode.chapReference;
 }
@@ -687,21 +685,20 @@ function setEdit(e){
 /** Used only when viewer is not profile owner. Provides functionality for follow/unfollow button.
  * Makes viewer follow the user if they are not already, or unfollow if they are already following.
  * Requires server request. */
-function followOrUnfollow(e){
+function followOrUnfollow(e) {
     e.preventDefault();
-    if(followButton.innerHTML === "Follow"){
+    if (followButton.innerHTML === "Follow") {
         // add user to follow list and update followee number
         viewingUser.following.push(sampleUser);
-        followButton.classList.add("btn-danger"); 
-        followButton.classList.remove("btn-success"); 
+        followButton.classList.add("btn-danger");
+        followButton.classList.remove("btn-success");
         followButton.innerHTML = "UnFollow";
         sampleUser.followers += 1;
-    }
-    else{
+    } else {
         // remove user to follow list and update followee number
         viewingUser.removeFollowing(sampleUser.name);
-        followButton.classList.add("btn-success"); 
-        followButton.classList.remove("btn-danger"); 
+        followButton.classList.add("btn-success");
+        followButton.classList.remove("btn-danger");
         followButton.innerHTML = "Follow";
         sampleUser.followers -= 1;
     }
@@ -709,14 +706,14 @@ function followOrUnfollow(e){
 }
 
 /** Handles the clear button in the notification view.
- * Remove all notifcations from user.
+ * Remove all notifications from user.
  * Requires server request.
  */
-function clearNotifications(e){
+function clearNotifications(e) {
     e.preventDefault();
-    while(notiListGroup.firstChild){
+    while (notiListGroup.firstChild) {
         notiListGroup.removeChild(notiListGroup.firstChild);
     }
-    sampleUser.newMessages=[];
+    sampleUser.newMessages = [];
     sampleUser.oldMessages = [];
 }

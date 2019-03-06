@@ -1,192 +1,224 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <link rel="stylesheet" type="text/css" href="overallStyle.css">
     <link rel="stylesheet" type="text/css" href="profile.css">
     <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
     <title>Profile</title>
-  </head>
+</head>
 
 
-  <body>
-    <div id="header">
-        <a href="index.html"><img id='bookLogo' src="img/book.png"/>
-            <span id="title">Bookwires</span></a>
-        <div id="menuBar">
-            <span class="welcomeMsg"><a href="profile.html">Welcome user!</a></span><span class="welcomeMsg" id="quit"><a href="index.html">Quit</a></span></div>
-        </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="container-fluid">
-        <div class="row containment">
-            <div class="col-md-4">
-                <div class="profileimgcontent">
-                    <img id="profileimg" src="img/dog.jpeg">
-                    <div class="profiletextcontainer">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque blanditiis, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe.</p>
-                    </div>
-                    <div class="nav-container">
-                        <ul class="nav">
-                            <li id="navShelf" class="active">
-                                    <i class="fas fa-book"></i>
-                                    Bookshelf
-                            </li>
-                            <li id="navAuthored">
-                                    <i class="fas fa-pencil-alt"></i>
-                                    Authored
-                            </li>
-                            <li id="navFollowing">
-                                    <i class="fas fa-users"></i>
-                                    Following
-                            </li>
-                            <li id="navNotifications">
-                                    <i class="fas fa-envelope"></i>
-                                    Notifications
-                            </li>
-                            <li id="navSettings">
-                                    <i class="fas fa-cog"></i>
-                                    Settings
-                            </li>
-                        </ul>
-                    </div>
+<body>
+<div id="header">
+    <a href="index.html"><img id='bookLogo' src="img/book.png"/>
+        <span id="title">Bookwires</span></a>
+    <div id="menuBar">
+        <span class="welcomeMsg"><a href="profile.html">Welcome user!</a></span><span class="welcomeMsg" id="quit"><a
+            href="index.html">Quit</a></span></div>
+</div>
+
+<div class="clearfix"></div>
+<div class="container-fluid">
+    <div class="row containment">
+        <div class="col-md-4">
+            <div class="profileimgcontent">
+                <img id="profileimg" src="img/dog.jpeg">
+                <div class="profiletextcontainer">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque blanditiis,
+                        omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas
+                        repudiandae in. Aliquam, aperiam? Saepe.</p>
                 </div>
-                <button id="new-book-button" class="btn btn-primary" data-toggle="modal" data-target=".book-modal">Create Book</button>
+                <div class="nav-container">
+                    <ul class="nav">
+                        <li id="navShelf" class="active">
+                            <i class="fas fa-book"></i>
+                            Bookshelf
+                        </li>
+                        <li id="navAuthored">
+                            <i class="fas fa-pencil-alt"></i>
+                            Authored
+                        </li>
+                        <li id="navFollowing">
+                            <i class="fas fa-users"></i>
+                            Following
+                        </li>
+                        <li id="navNotifications">
+                            <i class="fas fa-envelope"></i>
+                            Notifications
+                        </li>
+                        <li id="navSettings">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </li>
+                    </ul>
+                </div>
             </div>
-
-            <div class="col-md-6">
-                <button class="btn btn-success" id="follow-button">Follow</button>
-                <h1 class="profileheader">Charles Barkowski</h1>
-                <div class="statscontainer">
-                        <div class="statbox">
-                            <strong>Followers</strong>
-                            <span id="followerCount">0</span>
-                        </div>
-                        <div class="statbox">
-                            <strong>Following</strong>
-                            <span id="followingCount">200</span>
-                        </div>
-                        <div class="statbox">
-                            <strong>Books Written</strong>
-                            <span id="writenCount">5</span>
-                        </div>
-                </div>
-                <div id="main-content-containter"><div id="book-shelf" class="carousel slide active" data-interval="false">
-                        <h1>Bookshelf</h1>
-                        <div id="search-container">
-                            <input class="form-control shelf-search" type="text" placeholder="Search title, genre, artist">
-                        </div>
-                        
-                        <div class="carousel-inner"></div>
-                        <a class="carousel-control-prev shelf-navs" href="#book-shelf" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next shelf-navs" href="#book-shelf" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div><div id="settings" class="container fade">
-                        <h2>Profile Information</h2>
-                        <div class="form-group">
-                            <label>Email address</label>
-                            <input type="email" class="form-control" id="emailaddress" placeholder="cbarkowski@domain.com" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input class="form-control" id="username" placeholder="Charles Barkowski" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" class="form-control" id="password" readonly>
-                        </div>
-                        <div class="form-group">
-                                <label>Description</label>
-                                <textarea maxlength="220" class="form-control" id="description" rows="3" readonly></textarea>
-                        </div>
-                        <button id="editbutton" class="btn btn-primary">Edit</button>
-                        <button id="cancelbutton" class="btn btn-danger">Cancel</button>
-                        <button id="confirmbutton" type="button" class="btn btn-secondary" disabled>Confirm</button>
-                    </div><div id="following" class="container fade">
-                        <ul id="following-list"></ul>
-                    </div><div id="notifications" class="container fade"><h2>Notifications</h2><ul id="not-list-group" class="list-group"></ul><button id="clear" class="btn btn-secondary">Clear</button></div></div>
-            </div>
+            <button id="new-book-button" class="btn btn-primary" data-toggle="modal" data-target=".book-modal">Create
+                Book
+            </button>
         </div>
-        <button id="change-auth">Change Authentication (for T.A use to switch between context)</button>
-    </div>
-    <div class="modal fade book-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="form-group">
-                    <label>Book Title*</label>
-                    <input class="form-control" id="book-title">
-                </div>
 
-                <div class="form-group">
-                    <label>Genre*</label>
-                    <input class="form-control" id="book-genre">
+        <div class="col-md-6">
+            <button class="btn btn-success" id="follow-button">Follow</button>
+            <h1 class="profileheader">Charles Barkowski</h1>
+            <div class="statscontainer">
+                <div class="statbox">
+                    <strong>Followers</strong>
+                    <span id="followerCount">0</span>
                 </div>
-                <div class="form-group">
+                <div class="statbox">
+                    <strong>Following</strong>
+                    <span id="followingCount">200</span>
+                </div>
+                <div class="statbox">
+                    <strong>Books Written</strong>
+                    <span id="writenCount">5</span>
+                </div>
+            </div>
+            <div id="main-content-containter">
+                <div id="book-shelf" class="carousel slide active" data-interval="false">
+                    <h1>Bookshelf</h1>
+                    <div id="search-container">
+                        <input class="form-control shelf-search" type="text" placeholder="Search title, genre, artist">
+                    </div>
+
+                    <div class="carousel-inner"></div>
+                    <a class="carousel-control-prev shelf-navs" href="#book-shelf" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next shelf-navs" href="#book-shelf" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <div id="settings" class="container fade">
+                    <h2>Profile Information</h2>
+                    <div class="form-group">
+                        <label>Email address</label>
+                        <input type="email" class="form-control" id="emailaddress" placeholder="cbarkowski@domain.com"
+                               readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input class="form-control" id="username" placeholder="Charles Barkowski" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" id="password" readonly>
+                    </div>
+                    <div class="form-group">
                         <label>Description</label>
-                        <textarea maxlength="220" class="form-control" id="book-description" rows="3"></textarea>
+                        <textarea maxlength="220" class="form-control" id="description" rows="3" readonly></textarea>
+                    </div>
+                    <button id="editbutton" class="btn btn-primary">Edit</button>
+                    <button id="cancelbutton" class="btn btn-danger">Cancel</button>
+                    <button id="confirmbutton" type="button" class="btn btn-secondary" disabled>Confirm</button>
                 </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="book-image-upload">
-                    <label class="custom-file-label" for="book-image-upload">Choose Cover Image</label>
+                <div id="following" class="container fade">
+                    <ul id="following-list"></ul>
                 </div>
-                <div id="chapter-list">
-                    <label>Chapter List</label>
-                    <button class="btn btn-secondary" id="add-chapter" data-toggle="modal" data-target="#chapter-modal">New Chapter</button>
-                    <ul id="chap-list-group" class="list-group"></ul>
+                <div id="notifications" class="container fade"><h2>Notifications</h2>
+                    <ul id="not-list-group" class="list-group"></ul>
+                    <button id="clear" class="btn btn-secondary">Clear</button>
                 </div>
-                <button id="book-cancelbutton" class="btn btn-danger" data-dismiss="modal" data-target=".book-modal">Cancel</button>
-                <button id="book-submitbutton" type="button" class="btn btn-primary" data-dismiss="modal" data-target=".book-modal">Submit</button>
             </div>
         </div>
     </div>
-    <div id="chapter-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-xl" role="document">
-              <div class="modal-content">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Chapter Number</label>
-                        <input class="form-control" id="chapter-num">
-                    </div>
-                    <div class="form-group">
-                        <label>Chapter Name</label>
-                        <input class="form-control" id="chapter-name">
-                    </div>
-                    <div class="form-group">
-                        <label>Content</label>
-                        <textarea class="form-control" id="chapter-content" rows="7"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                  <button id="chapter-close" type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#chapter-modal">Close</button>
-                  <button id="chapter-submit" type="button" class="btn btn-primary"  data-dismiss="modal" data-target="#chapter-modal">Save changes</button>
-                </div>
-              </div>
+    <button id="change-auth">Change Authentication (for T.A use to switch between context)</button>
+</div>
+<div class="modal fade book-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
+     data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="form-group">
+                <label>Book Title*</label>
+                <input class="form-control" id="book-title">
             </div>
-          </div>
-    <script type="text/javascript" src="classes.js"></script>
-    <script type="text/javascript" src="profile.js"></script>
+
+            <div class="form-group">
+                <label>Genre*</label>
+                <input class="form-control" id="book-genre">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea maxlength="220" class="form-control" id="book-description" rows="3"></textarea>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="book-image-upload">
+                <label class="custom-file-label" for="book-image-upload">Choose Cover Image</label>
+            </div>
+            <div id="chapter-list">
+                <label>Chapter List</label>
+                <button class="btn btn-secondary" id="add-chapter" data-toggle="modal" data-target="#chapter-modal">New
+                    Chapter
+                </button>
+                <ul id="chap-list-group" class="list-group"></ul>
+            </div>
+            <button id="book-cancelbutton" class="btn btn-danger" data-dismiss="modal" data-target=".book-modal">
+                Cancel
+            </button>
+            <button id="book-submitbutton" type="button" class="btn btn-primary" data-dismiss="modal"
+                    data-target=".book-modal">Submit
+            </button>
+        </div>
+    </div>
+</div>
+<div id="chapter-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Chapter Number</label>
+                    <input class="form-control" id="chapter-num">
+                </div>
+                <div class="form-group">
+                    <label>Chapter Name</label>
+                    <input class="form-control" id="chapter-name">
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea class="form-control" id="chapter-content" rows="7"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="chapter-close" type="button" class="btn btn-secondary" data-dismiss="modal"
+                        data-target="#chapter-modal">Close
+                </button>
+                <button id="chapter-submit" type="button" class="btn btn-primary" data-dismiss="modal"
+                        data-target="#chapter-modal">Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="classes.js"></script>
+<script type="text/javascript" src="profile.js"></script>
 
 
+<!--  Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
-    <!--  Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
 </body>
 </html>
