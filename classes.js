@@ -314,6 +314,8 @@ sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/three
 sampleUser.bookshelf = sampleBooks;
 sampleUser.newMessages.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
 sampleUser.newMessages.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', 'img/TimeRaiders.jpg', 'fantasy'));
+sampleUser.writtenBook.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', 'img/TimeRaiders.jpg', 'fantasy'));
+sampleUser.writtenBook[0].addChapter(new Chapter(1, 'The First Chapter'));
 
 //currentUserId shows the current login user's id. 0 means user0 has logined, -1 means no one hsa logined yet.
 let currentUserId = -1;
