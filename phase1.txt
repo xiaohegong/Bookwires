@@ -85,7 +85,7 @@ Additional Notes:
 	- the logo at the top left can be used to return to the home page from any page.
 
 group member name and their corresponding github name
-Steven Cuneo : Steven
+Steven Cuneo : s-cuneo
 Xiaohe Gong : gongxi10
 Chenghao Wang : Eric
 Yujie Miao : beijilang, Jerry
