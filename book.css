@@ -4,7 +4,7 @@
     float: left;
 }
 
-/*book informations*/
+/******* book information *******/
 #book-info {
     margin-top: 70px;
     padding: 20px;
@@ -50,8 +50,6 @@
     margin-right: 20px;
     font-size: 150%;
     font-weight: bold;
-
-    /* Add properties below */
     list-style: none;
     display: inline-block;
 
@@ -61,7 +59,7 @@
     color: #67898a;
 }
 
-/*chapter information*/
+/******* chapter information *******/
 #chapters {
     padding: 20px;
     background-color: white;
@@ -89,7 +87,7 @@
     padding: 2px;
 }
 
-/*author information*/
+/* author information */
 #authorInfo{
 	margin-left: 2%;
 	margin-top: 5px;

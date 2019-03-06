@@ -124,8 +124,6 @@ function switchToUser(users) {
         const author = document.createTextNode(user.getName());
         parag.appendChild(author);
         anchor.appendChild(parag);
-        // Then add book image to the book shelf
-        // booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.src = book.getImage();
 
         // Add books to the ranking section
         const divider = document.createElement("div");

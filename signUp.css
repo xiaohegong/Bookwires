@@ -15,7 +15,10 @@ button[type=button] {
     margin-bottom: 20px;
 }
 
-/* The pop up (background) */
+
+/******** The pop up window for sign up *******/
+/* NOTE: The following animation ideas are taken from https://www.w3schools.com/howto/howto_css_login_form.asp */
+/* But we styled the elements by ourselves using original designs */
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -96,7 +99,7 @@ input[type=text], input[type=password] {
     color: grey;
 }
 
-/* Center the avatar image inside this container */
+/* Avatar image style */
 .imgContainer {
     text-align: center;
     margin: 24px 0 12px 0;
