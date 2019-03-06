@@ -1,5 +1,6 @@
 'use strict';
 /* -----------------------  Classes definitions  -------------------- */
+
 // The book class
 class Book {
     constructor(bookTitle, author, date, image, genre) {
@@ -90,6 +91,7 @@ class Book {
     }
 }
 
+// Class for reading page
 class readingBook {
     constructor(book) {
         this.book = book;
@@ -105,6 +107,7 @@ class readingBook {
     }
 }
 
+// A chapter class to be used when managing chapters of a book
 class Chapter {
     constructor(num, chapterName) {
         this.num = num;
@@ -132,6 +135,7 @@ class Chapter {
     }
 }
 
+// A user class that stores information, books, messages and etc
 class user {
     constructor(name, id) {
         this.name = name;
@@ -225,13 +229,14 @@ class user {
         }
     }
 
-    moveNewMsgToOld(){
-        while (this.newMessages.length > 0){
+    moveNewMsgToOld() {
+        while (this.newMessages.length > 0) {
             this.oldMessages.push(this.newMessages.pop());
         }
     }
 }
 
+// A comment class used when reader leaves comment in the book page
 class Comment {
     constructor(user, content) {
         this.user = user;
@@ -252,6 +257,7 @@ function newBook(author, book) {
     author.newBook(book);
 }
 
+// user creator class to create a new user
 let numberOfUsers = 0;
 
 function userCreator(name, mailAddress, passWord, isAdmin) {
@@ -285,11 +291,11 @@ for (let i = 1; i < 30; i++) {
     fakeBooks[1].addChapter(new Chapter(i, 'Chapter Name'));
 }
 
+// Add new comment for visualization
 for (let i = 0; i < 4; i++) {
     fakeBooks[1].newComment(new Comment(fakeUser[0], 'This is a good book.'));
 }
 fakeBooks[1].setDescription('I begin tucking him into bed and he tells me, “Daddy check for monsters under my bed.” I look underneath for his amusement and see him, another him, under the bed, staring back at me quivering and whispering, “Daddy there’s somebody on my bed.”');
-
 fakeBooks[0].setRating(4);
 fakeBooks[1].setRating(5);
 
@@ -301,18 +307,18 @@ sampleUser.followers = 20;
 sampleUser.description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque, omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas repudiandae in. Aliquam, aperiam? Saepe.";
 //create sample bookshelf and followerlist for testing purposes
 // this requires an actual server call to get the user whose profile it is
-const sampleBooks = []
-for(let p=0; p<7; p++){
-    sampleBooks.push(new Book('Harry Potter', fakeUser[2],'1999/10/1','img/harryPotter.jpg','fantasy'));
-    sampleBooks.push(new Book('Time Raiders', fakeUser[0],'2002/4/5','img/TimeRaiders.jpg','fantasy'));
-    sampleBooks.push(new Book('Wandering Earth', fakeUser[1],'2008/8/8','img/WanderingEarth.jpg','Sci-fi'));
-    sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
+const sampleBooks = [];
+for (let p = 0; p < 7; p++) {
+    sampleBooks.push(new Book('Harry Potter', fakeUser[2], '1999/10/1', 'img/harryPotter.jpg', 'fantasy'));
+    sampleBooks.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', 'img/TimeRaiders.jpg', 'fantasy'));
+    sampleBooks.push(new Book('Wandering Earth', fakeUser[1], '2008/8/8', 'img/WanderingEarth.jpg', 'Sci-fi'));
+    sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', 'img/threebody.jpg', 'Sci-fi'));
     sampleUser.following.push(sampleUser);
-    
+
 }
-sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
+sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', 'img/threebody.jpg', 'Sci-fi'));
 sampleUser.bookshelf = sampleBooks;
-sampleUser.newMessages.push(new Book('ThreeBody Problem', fakeUser[1],'2010/5/3','img/threebody.jpg','Sci-fi'));
+sampleUser.newMessages.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', 'img/threebody.jpg', 'Sci-fi'));
 sampleUser.newMessages.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', 'img/TimeRaiders.jpg', 'fantasy'));
 sampleUser.writtenBook.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', 'img/TimeRaiders.jpg', 'fantasy'));
 sampleUser.writtenBook[0].addChapter(new Chapter(1, 'The First Chapter'));
@@ -366,7 +372,8 @@ function fuzzyBookSearch(input, inputList = fakeBooks) {
     return outputList;
 }
 
-//help function of fuzzyBookSearch(),reference from:https://stackoverflow.com/questions/10473745/compare-strings-javascript-return-of-likely
+// help function of fuzzyBookSearch(),reference from:https://stackoverflow.com/questions/10473745/compare-strings-javascript-return-of-likely
+// This will be replaced by filter functions in phase 2
 function stringCompByLevenshteinDistance(s1, s2) {
     let longer = s1;
     let shorter = s2;
