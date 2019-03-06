@@ -1,18 +1,20 @@
 To Ta:
 
 	The app can be started from the home page(index.html).
+
 	About Home Page:
 		1.You can log in using the login button:
 		    Username: "user"  Password: "user"
-		  	Also you can use 'admin', password 'admin'
+		  	Username: 'admin' Password: 'admin'
 			- **Note you can not use the website until you log in**
-			- for testing convenience please open links in new tabs (so you do not lose login credentials)
-		2. You can sign up using the sign up button to create a new account and use that account to sign in. 
-			However without the server to save data, your new created data will disappear if you switch to another page.
+			- for testing convenience please open links in new tabs (so you do not have to log in every time to navigate)
+		2. You can sign up using the sign up button to create a new account and use that account to sign in.
+			However without the server data wont save and newly created data will disappear if you switch to another page.
+
 		Once logged in:
-		- if the user has any new notifications a toast will appear telling the user so.
+		- if the user has any new notifications a toast will appear telling the user.
 		3. You can click all the images of books to go to the "Book Page" of the selected books.
-		4. You can use the search bar at the very top of the page. Using the serach bar will take the user to the "Search Page"
+		4. You can use the search bar at the very top of the page. Using the search bar will take the user to the "Search Page"
 			-	The search page will query a list books that match the search (genres, titles, authors)
 			- without a server right now, each search (from the home page) yields the same results
 			 (however the search functionality is already build in classes.js and search functionality can be tested on the Serach Page and Profile Page)
@@ -23,9 +25,10 @@ To Ta:
 		
 	About Book Page:
 		1. Read button links to the "Reading page" (the first page of book).
-		2. Save button will save this book to the current logged in user's bookshelf. You can go to the console to check it out by input:fakeUser[0].bookshelf. 
-		3. There is a list of chapters for this book. Without the server each chapter link leads to the same Reading Page.
-		4. You can add comments to the book, all the comment will be under the name of Xie Wu by default until we can save login credentials with the server.
+		2. Save button will save this book to the current logged in user's bookshelf. You can go to the console to check it out by inputting: fakeUser[0].bookshelf. 
+		3. There is a list of chapters for this book. Without the server each chapter links to the same Reading Page.
+		4. View comments by clicking the comments button
+			- You can add comments to the book, all the comment will be under the name of Xie Wu by default, until we can save login credentials with the server.
 		5. You can click the author image and go to their profile page.
 		6. You can rate a book on the top right corner.
 
@@ -35,12 +38,15 @@ To Ta:
     	3. Clicking on a book takes you to the book page.
 
 	About Admin Page:
-			1. admin can switch bewteen books and users, book page shows all the books and user page show all the users. All books and users
-			can be deleted.
-			2. clicking a book takes you to adminBook page, where the admin has the ability to delete comments.
-			3. clicking the user takes you to profile page and admin sees the same page as the profile owner sees including the ability to edit all personal data and books.
+			1. The admin can switch between viewing books and users
+				- the book section shows all the books on the website
+				- the user section show all the users
+				- All books and users can be deleted.
+			2. clicking a book takes you to Admin Book page, where the admin has the ability to delete comments.
+			3. clicking the user takes you to profile page and admin sees the same page as the profile owner sees. 
+				(which includes the ability to edit all personal data and books)
 
-	About adminBookPage:
+	About Admin Book Page:
 			1. Admins view of the book page. 
 			2. It is the same as the Book Page however the admin can also delete the book and delete comments.
 
@@ -50,28 +56,30 @@ To Ta:
 			2. Another user's view (who's profile it is not)
 			- for convenience we have made a button in the bottom left corner that switched between these types of views (this is not a funcionality of the website)
 
+
 		The Profile Owner/Admin's view:
 			Create Book: the create book button on the left brings up a modal that has inputs to allow the user to create a new book (with title, genre, description).
 				- without the server the image upload is not functional
 				- see below for adding chapters to the book
 
-			- There is a navigation bar on the left that changes the pages content
+			There is a navigation bar on the left that changes the page's content:
 			1. Bookshelf displays all the books the user has saved. They can remove them with the "x" button.
 				 - in both the Bookshelf and Authored section, the user can search for books within
 			2. Authored displays all the books the user has written. They can remove them with the "x" button or edit them with the edit button.
-				- Editing: brings up a modal similar to the create book modal, however, now the user can create, edit and delete chapters with the apporpraite buttons
+				- Editing: brings up a modal similar to the create book modal, however, now the user can create, edit and delete chapters with the appropriate buttons
+									- they can also edit the original book data
 			3. Following displays all user that you are currently following. The user can view their profile or unfollow them by clicking the unfollow button
-			4. Notifications displays all the notifications the user has from authors or books they follow.
-				-the user can click the notification to view the book that represents thatnotification
-				- the user can clear all notifications
-			4. Settings displays personal information, and clicking the edit button allow the user to change your email, username, password and desription.
+			4. Notifications displays all the notifications the user has gotten from authors or books.
+				-the user can click the notification to view the book that represents that notification
+				 the user can clear all notifications
+			5. Settings displays personal information, and clicking the edit button allow the user to change that info (email, username, password and description)
 
 		The Other User's View:
 			- other users can view the user's bookshelf and authored book's but can not edit or delete them.
 			- there is also a follow/unfollow button for the viewer to follow/unfollow the user. 
 
-	About ReadingPage:
-		The easiest page. Having 4 buttons go to next/previous chapter, and a button can go back to the content of the book.
+	About Reading Page:
+		This page displays the book text and has 4 buttons go to next/previous chapter, and a button can go back to the content of the book.
 
 Additional Notes:
 	- the logo at the top left can be used to return to the home page from any page.
