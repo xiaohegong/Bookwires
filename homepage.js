@@ -167,4 +167,10 @@ function userLoggedIn(username, isAdmin) {
         
         sampleUser.moveNewMsgToOld();
     }
+
+    document.querySelector("#bookShelf").style.pointerEvents = "all";
+    document.querySelector("#searchLogo").style.pointerEvents = "all";
+    document.querySelector("#leftSideBar").style.pointerEvents = "all";
+    document.querySelector("#rightSideBar").style.pointerEvents = "all";
+    document.querySelector("#searchLogo").style.pointerEvents = "all";
 }
