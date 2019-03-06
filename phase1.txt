@@ -8,14 +8,14 @@ To Ta:
 			- **Note you can not use the website until you log in**
 			- for testing convenience please open links in new tabs (so you do not lose login credentials)
 		2. You can sign up using the sign up button to create a new account and use that account to sign in. 
-			However without the server t osave data, your new created data will disappear if you switch to another page.
+			However without the server to save data, your new created data will disappear if you switch to another page.
 		Once logged in:
 		- if the user has any new notifications a toast will appear telling the user so.
 		3. You can click all the images of books to go to the "Book Page" of the selected books.
 		4. You can use the search bar at the very top of the page. Using the serach bar will take the user to the "Search Page"
 			-	The search page will query a list books that match the search (genres, titles, authors)
 			- without a server right now, each search (from the home page) yields the same results
-			 (however the search funcionality is already build in classes.js and search functionality can be tested on the Serach Page and Profile Page)
+			 (however the search functionality is already build in classes.js and search functionality can be tested on the Serach Page and Profile Page)
 			 - The Genres section on the left is brings the user to the search page as if they searched for the genre name
 		5. You can click on the authors on the bottom-right take you to the profile page.
 		6. After login in, there is a welcome button in the top right that it will take you to profile page if you are a user and take you to
@@ -31,7 +31,7 @@ To Ta:
 
 	About Search Page:
 	    1. Categories bar is the same as Home Page.
-	    2. The search will work on this page (by seaching withgenres, titles, authors).
+	    2. The search will work on this page (by searching with genres, titles, authors).
     	3. Clicking on a book takes you to the book page.
 
 	About Admin Page:
@@ -48,7 +48,7 @@ To Ta:
 		There are two main views for the profile page:
 			1. The Profile Owner/Admin's view 
 			2. Another user's view (who's profile it is not)
-			- for convience we have made a button in the bottom left corner that switched between these types of views (this is not a funcionality of the website)
+			- for convenience we have made a button in the bottom left corner that switched between these types of views (this is not a funcionality of the website)
 
 		The Profile Owner/Admin's view:
 			Create Book: the create book button on the left brings up a modal that has inputs to allow the user to create a new book (with title, genre, description).
@@ -57,11 +57,11 @@ To Ta:
 
 			- There is a navigation bar on the left that changes the pages content
 			1. Bookshelf displays all the books the user has saved. They can remove them with the "x" button.
-				 - in both the Booksheld and Authored section, the user can search for books within
+				 - in both the Bookshelf and Authored section, the user can search for books within
 			2. Authored displays all the books the user has written. They can remove them with the "x" button or edit them with the edit button.
 				- Editing: brings up a modal similar to the create book modal, however, now the user can create, edit and delete chapters with the apporpraite buttons
 			3. Following displays all user that you are currently following. The user can view their profile or unfollow them by clicking the unfollow button
-			4. Notifcations displays all the notifications the user has from authors or books they follow.
+			4. Notifications displays all the notifications the user has from authors or books they follow.
 				-the user can click the notification to view the book that represents thatnotification
 				- the user can clear all notifications
 			4. Settings displays personal information, and clicking the edit button allow the user to change your email, username, password and desription.
@@ -71,7 +71,13 @@ To Ta:
 			- there is also a follow/unfollow button for the viewer to follow/unfollow the user. 
 
 	About ReadingPage:
-		The easist page. Having 4 buttons go to next/previous chapter, and a button can go back to the content of the book.
+		The easiest page. Having 4 buttons go to next/previous chapter, and a button can go back to the content of the book.
 
 Additional Notes:
 	- the logo at the top left can be used to return to the home page from any page.
+
+group member name and their corresponding github name
+Steven Cuneo : Steven
+Xiaohe Gong : gongxi10
+Chenghao Wang : Eric
+Yujie Miao : beijilang,Jerry
