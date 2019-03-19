@@ -18,7 +18,7 @@ button[type=button] {
 
 /******** The pop up window for sign up *******/
 /* NOTE: The following animation ideas are taken from https://www.w3schools.com/howto/howto_css_login_form.asp */
-/* But we styled the elements by ourselves using original designs */
+/* But we styled the window and elements by ourselves using original designs */
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */

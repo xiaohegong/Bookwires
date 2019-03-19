@@ -69,8 +69,7 @@ function bookSetUp(books) {
         p.className = "displayInfo";
         p.appendChild(info);
         span.appendChild(p);
-
-
+        
         const rating = makeStars(book.getRating());
         span.appendChild(rating);
 
