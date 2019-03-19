@@ -8,16 +8,22 @@
     <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="book.css">
-    <link rel="stylesheet" type="text/css" href="overallStyle.css">
+    <link rel="stylesheet" type="text/css" href="../CSS/book.css">
+    <link rel="stylesheet" type="text/css" href="../CSS/overallStyle.css">
+
 </head>
 <body>
 <div id="wrapper">
     <div id="header">
         <!-- Twitter logo goes in here -->
-        <a href="index.html"><img id='bookLogo' src="img/book.png"/>
+        <a href="index.html"><img id='bookLogo' src="../img/book.png"/>
             <span id="title">Bookwires</span></a>
-
+        <input class="searchBar" type="search" placeholder=" Search books...">
+        <a href=""><img id="searchLogo" src="../img/search.png"></a>
+        <div id="menuBar">
+            <a href="">Log in</a>
+            <a href="">Sign up</a>
+        </div>
     </div>
     <div class="container">
 
@@ -31,23 +37,11 @@
                 <div class='book-nav'>
                     <ul>
                         <li><a href="ReadingPage.html">READ</a></li>
-                        <li><a href="" id="save">SAVE</a></li>
+                        <li><a href="" id="save">DELETE</a></li>
                     </ul>
                 </div>
             </div>
-            <fieldset class="rating">
-                <input type="radio" id="star5" name="rating" value="5"/><label class="full" for="star5"
-                                                                               title="Awesome - 5 stars">&#9733</label>
-                <input type="radio" id="star4" name="rating" value="4"/><label class="full" for="star4"
-                                                                               title="Pretty good - 4 stars">&#9733</label>
-                <input type="radio" id="star3" name="rating" value="3"/><label class="full" for="star3"
-                                                                               title="Meh - 3 stars">&#9733</label>
-                <input type="radio" id="star2" name="rating" value="2"/><label class="full" for="star2"
-                                                                               title="Kinda bad - 2 stars">&#9733</label>
-                <input type="radio" id="star1" name="rating" value="1"/><label class="full" for="star1"
-                                                                               title="Sucks big time - 1 star">&#9733</label>
 
-            </fieldset>
             <!--reference from https://codepen.io/jamesbarnett/pen/vlpkh-->
         </div>
 
@@ -97,11 +91,11 @@
                 <div id="authorInfo">
                     <div id="authorDetail">
                         <ul>
-                            <li><img src="img/book.jpg">
+                            <li><img src="../img/book.jpg">
                                 <p>Books</p>
                                 <p>5</p>
                             </li>
-                            <li><img src="img/active.jpg">
+                            <li><img src="../img/active.jpg">
                                 <p>Days</p>
                                 <p>23</p>
                             </li>
@@ -157,8 +151,8 @@
 </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
-<script type="text/javascript" src="./classes.js"></script>
-<script type="text/javascript" src="book.js"></script>
+<script type="text/javascript" src="../JS/classes.js"></script>
+<script type="text/javascript" src="../JS/book.js"></script>
 
 <!-- bootstrap import -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

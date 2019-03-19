@@ -47,7 +47,7 @@
 #book-shelf {
     border: solid gray;
     border-width: 5px;
-    background: url("img/wood.jpg");
+    background: url("../img/wood.jpg");
     background-size: cover;
     background-repeat: repeat-y;
 
