@@ -37,39 +37,34 @@ const BookSchema = mongoose.Schema({
 
 });
 
-BookSchema.statics.addBook = ((book)=> {
-        MongoClient.connect('mongodb://localhost:27017/StudentAPI', (error, client) => {
-            if (error) {
-                log("Can't connect to Mongo server")
-            } else {
-                log('Connected to mongo server')
-            }
+BookSchema.statics.addBook = ((req,res)=> {
+    // Create a new student
+    const book = new Book({
+        bookTitle: req.body.bookTitle,
+        image: req.body.image
+    });
+    // Save student to the database
+    book.save().then((result) => {
+        res.send(result)
+    }, (error) => {
+        res.status(400).send(error) // 400 for bad request
+    })
 
-            const db = client.db('books');
+});
 
-            // Create a collection and insert into it
-            db.collection('books').insertOne({
-                //_id: 7,
-                bookTitle: 'Jimmy',
-                image: "3"
-            }, (error, result) => {
-                if (error) {
-                    log("Can't insert book", error)
-                } else {
-                    log(result.ops)
-                    // log(result.ops[0]._id.getTimestamp())
-                }
-            });
-
-            // close connection
-            client.close()
-
-
-        })
-    }
-);
-
+BookSchema.statics.findBook = ((req,res)=> {
+    // Create a new student
+    Book.find({bookTitle: req.body.bookTitle}).then((book)=> {
+        res.send(book);
+    },(error)=>{
+        res.status(404).json({success: false})
+    })
+});
 const Book = mongoose.model('Book',BookSchema);
+
+
+
+
 const User = mongoose.model("User",{
     name:{
         type:String,

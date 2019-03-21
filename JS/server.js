@@ -27,21 +27,11 @@ app.get('/', (req, res) => {
 
 // Set up a POST route to *create* a student
 app.post('/book', (req, res) => {
-    log(req.body);
-    // Create a new student
-    const book = new Book({
-        bookTitle: req.body.bookTitle,
-        image: req.body.image
-    });
-    Book.addBook();
+    Book.addBook(req,res);
+});
 
-    // Save student to the database
-    book.save().then((result) => {
-        res.send(result)
-    }, (error) => {
-        res.status(400).send(error) // 400 for bad request
-    })
-
+app.post('/find', (req, res) => {
+    Book.findBook(req,res);
 });
 
 const port = process.env.PORT || 3000;
