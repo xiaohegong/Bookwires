@@ -1,7 +1,11 @@
-
+'use strict';
+const log = console.log;
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
+const ObjectId = mongoose.Schema.Types.ObjectId;
+const {MongoClient, ObjectID} = require('mongodb');
 
-const Book = mongoose.model('Book', {
+const BookSchema = mongoose.Schema({
     bookTitle: {
         type: String,
         required: true,
@@ -13,7 +17,8 @@ const Book = mongoose.model('Book', {
     },
 
     user: {
-        type: Number
+        // User module
+        type: ObjectId
     },
     image:{
         type: String,
@@ -24,19 +29,56 @@ const Book = mongoose.model('Book', {
         maxlength: 300,
         required:false
     },
-    chapters:['Chapter'],
+    //Chapter module
+    chapters:[ObjectId],
 
-    comments:['Comment']
+    //comments module
+    comments:[ObjectId]
 
 });
+
+BookSchema.statics.addBook = ((book)=> {
+        MongoClient.connect('mongodb://localhost:27017/StudentAPI', (error, client) => {
+            if (error) {
+                log("Can't connect to Mongo server")
+            } else {
+                log('Connected to mongo server')
+            }
+
+            const db = client.db('books');
+
+            // Create a collection and insert into it
+            db.collection('books').insertOne({
+                //_id: 7,
+                bookTitle: 'Jimmy',
+                image: "3"
+            }, (error, result) => {
+                if (error) {
+                    log("Can't insert book", error)
+                } else {
+                    log(result.ops)
+                    // log(result.ops[0]._id.getTimestamp())
+                }
+            });
+
+            // close connection
+            client.close()
+
+
+        })
+    }
+);
+
+const Book = mongoose.model('Book',BookSchema);
 const User = mongoose.model("User",{
     name:{
         type:String,
         required:true,
         minlength: 3
     },
-    bookshelf:[Number],
-    writtenBook:[Number],
+    //Book module
+    bookshelf:[ObjectId],
+    writtenBook:[ObjectId],
     followers:{
         type: Number,
         default: 0
@@ -45,7 +87,8 @@ const User = mongoose.model("User",{
         type: String,
         required:true
     },
-    following:[String]
+    //User module
+    following:[ObjectId]
 
     });
 const Chapter = mongoose.model("Chapter",{

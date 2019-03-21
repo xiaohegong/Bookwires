@@ -33,6 +33,7 @@ app.post('/book', (req, res) => {
         bookTitle: req.body.bookTitle,
         image: req.body.image
     });
+    Book.addBook();
 
     // Save student to the database
     book.save().then((result) => {
@@ -41,7 +42,7 @@ app.post('/book', (req, res) => {
         res.status(400).send(error) // 400 for bad request
     })
 
-})
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
