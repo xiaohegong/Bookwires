@@ -17,7 +17,8 @@ app.use(bodyParser.json());
 
 // Setting up a static directory for your html files
 // using Express middleware
-app.use('/',express.static(path.join(__dirname, '../CSS')));
+// app.use('/',express.static(path.join(__dirname, '../CSS')));
+app.use(express.static('/team26'));
 app.get('/', (req, res) => {
 
     res.sendFile('index.html', {root: path.join(__dirname, '../HTML') });
@@ -27,12 +28,38 @@ app.get('/', (req, res) => {
 
 // Set up a POST route to *create* a student
 app.post('/book', (req, res) => {
-    Book.addBook(req,res);
+    Book.addBook(req).then((result)=>{
+        log(result);
+        res.send(result)
+    })
+        .catch((rej)=>{
+            res.status(rej.code).send(rej.error)
+        })
 });
 
 app.post('/find', (req, res) => {
-    Book.findBook(req,res);
+    Book.findBook(req).then((result)=>{
+        log(result);
+        res.send(result)
+    })
+        .catch((rej)=>{
+            res.status(rej.code).send(rej.error)
+        })
 });
+
+app.patch('/updateDesription', (req, res) => {
+    Book.updateDesription(req).then((result)=>{
+        log(result);
+        res.send(result)
+    })
+        .catch((rej)=>{
+            res.status(rej.code).send(rej.error)
+        })
+});
+
+// app.post('/newChapter',(req,res)=>{
+//    Chapter.
+// });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

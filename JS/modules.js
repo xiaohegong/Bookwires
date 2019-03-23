@@ -29,6 +29,10 @@ const BookSchema = mongoose.Schema({
         maxlength: 300,
         required:false
     },
+    genre:{
+      type:String,
+      required:false
+    },
     //Chapter module
     chapters:[ObjectId],
 
@@ -37,29 +41,76 @@ const BookSchema = mongoose.Schema({
 
 });
 
-BookSchema.statics.addBook = ((req,res)=> {
+BookSchema.statics.addBook = (req)=> {
     // Create a new student
-    const book = new Book({
-        bookTitle: req.body.bookTitle,
-        image: req.body.image
+    return new Promise((resolve, reject) => {
+        const book = new Book({
+            bookTitle: req.body.bookTitle,
+            image: req.body.image
+        });
+        // Save student to the database
+        book.save().then((result) => {
+            resolve(result)
+        }, (error) => {
+            reject({code:400,error});
+        })
+    })
+
+
+};
+
+BookSchema.statics.findBook = (req)=> {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({bookTitle: req.body.bookTitle}).then((book)=> {
+            resolve(book)
+        },(error)=>{
+            reject({code:404,error});
+        })
+    })
+
+};
+BookSchema.statics.updateDesription = (req)=>{
+    return new Promise((resolve, reject) => {
+
+        Book.findOneAndUpdate({
+            bookTitle:req.query.bookTitle
+        }, {
+            $set:{
+                description: req.body.description
+            }
+
+        }, {
+            returnOriginal: false // gives us back updated arguemnt
+        }).then((result) => {
+            resolve(result)
+        }, (error) => {
+            reject({code:404,error});
+        });
+
     });
-    // Save student to the database
-    book.save().then((result) => {
+
+};
+
+BookSchema.statics.updateimage = ((req,res)=>{
+
+    Book.findOneAndUpdate({
+        bookTitle:req.query.bookTitle
+    }, {
+        $set:{
+            image: req.body.image
+        }
+
+    }, {
+        returnOriginal: false // gives us back updated arguemnt
+    }).then((result) => {
         res.send(result)
     }, (error) => {
-        res.status(400).send(error) // 400 for bad request
-    })
+        res.status(404).send(error) // 400 for bad request
+    });
 
 });
 
-BookSchema.statics.findBook = ((req,res)=> {
-    // Create a new student
-    Book.find({bookTitle: req.body.bookTitle}).then((book)=> {
-        res.send(book);
-    },(error)=>{
-        res.status(404).json({success: false})
-    })
-});
 const Book = mongoose.model('Book',BookSchema);
 
 
