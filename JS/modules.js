@@ -92,31 +92,38 @@ BookSchema.statics.updateDesription = (req)=>{
 
 };
 
-BookSchema.statics.updateimage = ((req,res)=>{
+BookSchema.statics.updateimage = ((req)=>{
 
-    Book.findOneAndUpdate({
-        bookTitle:req.query.bookTitle
-    }, {
-        $set:{
-            image: req.body.image
-        }
+    return new Promise((resolve, reject) => {
 
-    }, {
-        returnOriginal: false // gives us back updated arguemnt
-    }).then((result) => {
-        res.send(result)
-    }, (error) => {
-        res.status(404).send(error) // 400 for bad request
+        Book.findOneAndUpdate({
+            bookTitle:req.query.bookTitle
+        }, {
+            $set:{
+                image: req.body.image
+            }
+
+        }, {
+            returnOriginal: false // gives us back updated arguemnt
+        }).then((result) => {
+            resolve(result)
+        }, (error) => {
+            reject({code:404,error});
+        });
+
     });
 
+
 });
+
+BookSchema.methods.addChapter()
 
 const Book = mongoose.model('Book',BookSchema);
 
 
 
 
-const User = mongoose.model("User",{
+const UserSchema = mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -137,7 +144,9 @@ const User = mongoose.model("User",{
     following:[ObjectId]
 
     });
-const Chapter = mongoose.model("Chapter",{
+const User = mongoose.model('User',UserSchema);
+
+const ChapterSchema = mongoose.Schema({
    chapterNum:{
        type:Number,
        required:true,
@@ -146,7 +155,8 @@ const Chapter = mongoose.model("Chapter",{
        content: String
    }
 });
-const Comment = mongoose.model("Comment",{
+const Chapter = mongoose.model("Chapter",ChapterSchema);
+const CommentSchema = mongoose.Schema({
    user:{
        type: String,
        required: true
@@ -156,4 +166,5 @@ const Comment = mongoose.model("Comment",{
         required:true
     }
 });
+const Comment = mongoose.model("Comment",CommentSchema);
 module.exports = { Book,User, Chapter, Comment};
