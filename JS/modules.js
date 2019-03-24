@@ -5,6 +5,30 @@ const bcrypt = require('bcrypt-nodejs');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const {MongoClient, ObjectID} = require('mongodb');
 
+const ChapterSchema = mongoose.Schema({
+    chapterNum:{
+        type:Number,
+        required:true
+    },
+    content:{
+        type: String,
+        required:true
+    }
+});
+const Chapter = mongoose.model("Chapter",ChapterSchema);
+const CommentSchema = mongoose.Schema({
+    user:{
+        type: String,
+        required: true
+    },
+    content: {
+        type: String,
+        required:true
+    }
+});
+const Comment = mongoose.model("Comment",CommentSchema);
+
+
 const BookSchema = mongoose.Schema({
     bookTitle: {
         type: String,
@@ -14,6 +38,10 @@ const BookSchema = mongoose.Schema({
     rating: {
         type: Number,
         default: 0
+    },
+    numOfRate:{
+        type:Number,
+        default:0
     },
 
     user: {
@@ -34,10 +62,10 @@ const BookSchema = mongoose.Schema({
       required:false
     },
     //Chapter module
-    chapters:[ObjectId],
+    chapters:[ChapterSchema],
 
     //comments module
-    comments:[ObjectId]
+    comments:[CommentSchema]
 
 });
 
@@ -62,7 +90,7 @@ BookSchema.statics.addBook = (req)=> {
 BookSchema.statics.findBook = (req)=> {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: req.body.bookTitle}).then((book)=> {
+        Book.find({bookTitle: req.query.bookTitle}).then((book)=> {
             resolve(book)
         },(error)=>{
             reject({code:404,error});
@@ -70,6 +98,19 @@ BookSchema.statics.findBook = (req)=> {
     })
 
 };
+
+BookSchema.statics.findBookByID = (req)=> {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.findById({bookTitle: req.query.bookTitle}).then((book)=> {
+            resolve(book)
+        },(error)=>{
+            reject({code:404,error});
+        })
+    })
+
+};
+
 BookSchema.statics.updateDesription = (req)=>{
     return new Promise((resolve, reject) => {
 
@@ -116,7 +157,80 @@ BookSchema.statics.updateimage = ((req)=>{
 
 });
 
-BookSchema.methods.addChapter()
+BookSchema.methods.addChapter = (num,content,book)=>{
+
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        book.update({
+                $push:{chapters:{chapterNum:num,
+                        content:req.body.content}
+
+                    }
+            }
+        ).then((result) => {
+            resolve(result)
+        }, (error) => {
+            reject({code:404,error});
+        });
+    })
+};
+
+BookSchema.methods.addComments = (user,content,book)=>{
+
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        book.update({
+                $push:{comments:{user:user,
+                        content:content}
+
+                }
+            }
+        ).then((result) => {
+            resolve(result)
+        }, (error) => {
+            reject({code:404,error});
+        });
+    })
+};
+
+BookSchema.methods.newRate = (rate,book)=>{
+
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        const newRate = (book.rate*book.numOfRate+rate)/(book.numOfRate+1);
+        book.update({
+                $inc:{numOfRate: 1},
+
+                $set:{rate:newRate}
+            }
+        ).then((result) => {
+            resolve(result)
+        }, (error) => {
+            reject({code:404,error});
+        });
+    })
+};
+
+BookSchema.methods.deleteChapter = (id,chap_id)=>{
+
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        Book.findByIdAndUpdate(id,{
+            $pull:{chapters:{
+                    id:chap_id}
+                }
+            }).then((result) => {
+            resolve(result)
+        }, (error) => {
+            reject({code:404,error});
+        });
+    });
+};
+
 
 const Book = mongoose.model('Book',BookSchema);
 
@@ -146,25 +260,5 @@ const UserSchema = mongoose.Schema({
     });
 const User = mongoose.model('User',UserSchema);
 
-const ChapterSchema = mongoose.Schema({
-   chapterNum:{
-       type:Number,
-       required:true,
-   },
-   content:{
-       content: String
-   }
-});
-const Chapter = mongoose.model("Chapter",ChapterSchema);
-const CommentSchema = mongoose.Schema({
-   user:{
-       type: String,
-       required: true
-   },
-    content: {
-       type: String,
-        required:true
-    }
-});
-const Comment = mongoose.model("Comment",CommentSchema);
+
 module.exports = { Book,User, Chapter, Comment};

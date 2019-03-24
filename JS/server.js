@@ -39,9 +39,13 @@ app.post('/book', (req, res) => {
 
 app.post('/find', (req, res) => {
     Book.findBook(req).then((result)=>{
-        log(result);
-        res.send(result)
-    })
+        res.send(result);
+        return result
+    }).then(
+        (result)=>{
+            log(result[0].image);
+            result[0].addChapter(req,result[0])}
+    )
         .catch((rej)=>{
             res.status(rej.code).send(rej.error)
         })
@@ -56,6 +60,8 @@ app.patch('/updateDesription', (req, res) => {
             res.status(rej.code).send(rej.error)
         })
 });
+
+
 
 // app.post('/newChapter',(req,res)=>{
 //    Chapter.
