@@ -59,7 +59,7 @@ const BookSchema = mongoose.Schema({
     },
     genre:{
       type:String,
-      required:false
+      default:'None'
     },
     //Chapter module
     chapters:[ChapterSchema],
@@ -81,6 +81,45 @@ BookSchema.statics.addBook = (req)=> {
             resolve(result)
         }, (error) => {
             reject({code:400,error});
+        })
+    })
+
+
+};
+
+BookSchema.statics.findByGenre = (genre)=> {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({genre: genre}).then((book)=> {
+            resolve(book)
+        },(error)=>{
+            reject({code:404,error});
+        })
+    })
+
+
+};
+
+BookSchema.statics.fuzzySearch = (name)=> {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({bookTitle: /.*name.*/}).then((book)=> {
+            resolve(book)
+        },(error)=>{
+            reject({code:404,error});
+        })
+    })
+
+
+};
+
+BookSchema.statics.findByRate = (rate)=> {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({rate:{$gte: rate}}).then((book)=> {
+            resolve(book)
+        },(error)=>{
+            reject({code:404,error});
         })
     })
 
