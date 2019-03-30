@@ -4,7 +4,7 @@
   "main": "JS/homepage.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node app/server.js"
   },
   "engines": {
     "node": "11.11.0"
