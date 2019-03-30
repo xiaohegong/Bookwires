@@ -4,16 +4,20 @@ const toSignUp = document.getElementById("toSignUp");
 const loginSubmit = document.getElementById("loginButton");
 const quit = document.getElementById("quit");
 
+window.onclick = function (event) {
+    if (event.target === logInForm) {
+        window.location.href = "./index.html";
+    }
+};
 // Setting login pop up box animation
 closeBox.onclick = function (e) {
     e.preventDefault();
-    logInForm.style.display = "none";
+    window.location.href = "./index.html";
 };
 
 toSignUp.onclick = function (e) {
     e.preventDefault();
-    signUpForm.style.display = "block";
-    logInForm.style.display = "none";
+    window.location.href = "./signUp.html";
 };
 
 // Validation for log in
@@ -45,6 +49,7 @@ loginSubmit.onclick = function (e) {
     }
 
     // Change DOM elements to display logged in status
-    userLoggedIn(userName, isAdmin);
-    logInForm.style.display = "none";
+    // TODO: add request handling after user is logged in
+    window.location.href = "./index.html";
+    // userLoggedIn(userName, isAdmin);
 };

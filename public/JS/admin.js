@@ -65,7 +65,7 @@ function switchToBook(books) {
         const divider = document.createElement("div");
         divider.className = "bookDisplay";
         const imgContainer = document.createElement('a');
-        imgContainer.setAttribute('href', 'adminBook.html');
+        imgContainer.setAttribute('href', 'public/HTML/adminBook.html');
         const img = document.createElement("img");
         img.src = book.getImage();
         img.className = "bookDisplayImg";
@@ -129,7 +129,7 @@ function switchToUser(users) {
         const divider = document.createElement("div");
         divider.className = "bookDisplay";
         const imgContainer = document.createElement('a');
-        imgContainer.setAttribute('href', 'profile.html');
+        imgContainer.setAttribute('href', 'public/HTML/profile.html');
         const img = document.createElement("img");
         if (user.getImage() == null) {
             img.src = "img/dog.jpeg";

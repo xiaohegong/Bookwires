@@ -103,7 +103,7 @@ while (i < book.getTotalChapter()) {
         newPost.className = 'Chapter';
         const newPostTitle = document.createTextNode(book.getChapter(i).getDescription());
         const newPostTitleContainer = document.createElement('a');
-        newPostTitleContainer.href = "ReadingPage.html";
+        newPostTitleContainer.href = "public/HTML/ReadingPage.html";
         newPostTitleContainer.appendChild(newPostTitle);
         newPost.appendChild(newPostTitleContainer);
         nextLine.appendChild(newPost);
@@ -117,7 +117,7 @@ while (i < book.getTotalChapter()) {
 const author = document.getElementById('authorInfo');
 const authorDetail = document.getElementById('authorDetail');
 const authorImageContainer = document.createElement('a');
-authorImageContainer.href = "profile.html";
+authorImageContainer.href = "public/HTML/profile.html";
 const authorImage = document.createElement('img');
 authorImage.className = 'authorPic';
 authorImage.src = book.author.getImage();

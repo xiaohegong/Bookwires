@@ -55,7 +55,7 @@ function bookSetUp(books) {
         const divider = document.createElement("div");
         divider.className = "bookDisplay";
         const imgContainer = document.createElement('a');
-        imgContainer.setAttribute('href', 'book.html');
+        imgContainer.setAttribute('href', 'public/HTML/book.html');
         const img = document.createElement("img");
         img.src = book.getImage();
         img.className = "bookDisplayImg";

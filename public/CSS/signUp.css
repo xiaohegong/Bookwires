@@ -20,7 +20,7 @@ button[type=button] {
 /* NOTE: The following animation ideas are taken from https://www.w3schools.com/howto/howto_css_login_form.asp */
 /* But we styled the window and elements by ourselves using original designs */
 .modal {
-    display: none; /* Hidden by default */
+    display: block;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
