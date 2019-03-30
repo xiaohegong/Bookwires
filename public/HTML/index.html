@@ -18,13 +18,13 @@
 
 <!-- The header -->
 <div id="header">
-    <a href="index.html"><img id='bookLogo' src="../img/book.png"/>
+    <a href="../HTML/index.html"><img id='bookLogo' src="../img/book.png"/>
         <span id="title">Bookwires</span></a>
     <input class="searchBar" type="search" placeholder=" Search books...">
-    <a href="search.html"><img id="searchLogo" src="../img/search.png"></a>
+    <a href="../HTML/search.html"><img id="searchLogo" src="../img/search.png"></a>
     <div id="menuBar">
-        <a href="">Log in</a>
-        <a href="">Sign up</a>
+        <a href="./login.html">Log in</a>
+        <a href="./signUp.html">Sign up</a>
     </div>
 </div>
 
@@ -36,25 +36,25 @@
         </h4>
     </div>
     <div id="categories">
-        <a href="search.html"><p class="category">
+        <a href="../HTML/search.html"><p class="category">
             Mysteries
         </p></a>
-        <a href="search.html"><p class="category">
+        <a href="../HTML/search.html"><p class="category">
             Science Fiction
         </p></a>
-        <a href="search.html"><p class="category">
+        <a href="../HTML/search.html"><p class="category">
             Urban Fantasy
         </p></a>
-        <a href="search.html"><p class="category">
+        <a href="../HTML/search.html"><p class="category">
             Horror
         </p></a>
-        <a href="search.html"><p class="category">
+        <a href="../HTML/search.html"><p class="category">
             Romance
         </p></a>
-        <a href="search.html"><p class="category">
+        <a href="../HTML/search.html"><p class="category">
             Historical
         </p></a>
-        <a href="search.html"><p class="category">
+        <a href="../HTML/search.html"><p class="category">
             Suspense
         </p></a>
     </div>
@@ -157,70 +157,6 @@
     </div>
 </div>
 
-<div id="signUpForm" class="modal">
-    <span id="close" class="close" title="Close Modal">&times;</span>
-
-    <!-- Modal Content -->
-    <form class="modal-content animate">
-        <div class="imgContainer">
-            <img src="../img/avatar.png" class="avatar">
-        </div>
-
-        <div id='SignUpInfo'>
-            <div id="nameBox">
-                <span class="littleText">User Name</span>
-                <input id='userName' type="text" placeholder="User name">
-            </div>
-
-            <div id="mailBox">
-                <span class="littleText">Email Address</span>
-                <input id='mail' type="text" placeholder="Email address">
-            </div>
-
-            <div id="passWordBox">
-                <span class="littleText">Password</span>
-                <input id='passWord' type="password" placeholder="Enter a password">
-                <span class="littleText">Confirm password</span>
-                <input id='passWordConfirm' type="password" placeholder="Enter your password again">
-            </div>
-            <br>
-
-            <button id='signUpButton' type="button">Sign Up Now!</button>
-
-            <div>
-                <span class="littleText center">Already have a account?  </span>
-                <a id="toSignIn" class="littleText" href="">Sign in</a>
-            </div>
-        </div>
-    </form>
-</div>
-
-<div id="logInForm" class="modal">
-    <span id="close2" class="close" title="Close Modal">&times;</span>
-
-    <!-- Modal Content -->
-    <form class="modal-content animate">
-        <div class="imgContainer">
-            <img src="../img/avatar.png" class="avatar">
-        </div>
-
-        <div>
-            <div id="LoginBox">
-                <form id='LoginInfo'>
-                    <input id='loginUserName' type="text" placeholder="Username"><br><br>
-                    <input id='loginPassword' type="password" placeholder="Enter your password"><br><br>
-                    <button id='loginButton' type="button">Login</button>
-                    <div>
-                        <span class="littleText center">Don't have an account? </span>
-                        <a id="toSignUp" class="littleText" href="">Sign up</a>
-                    </div>
-                    <br><br>
-                </form>
-            </div>
-        </div>
-    </form>
-</div>
-
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
         <strong class="mr-auto">New Chapters Available!</strong>
@@ -234,8 +170,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../JS/classes.js"></script>
 <script type="text/javascript" src="../JS/homepage.js"></script>
-<script type="text/javascript" src="../JS/signUp.js"></script>
-<script type="text/javascript" src="../JS/loginPage.js"></script>
 
 <!-- bootstrap import for grid -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

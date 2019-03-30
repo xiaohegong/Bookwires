@@ -8,16 +8,14 @@ const toSignIn = document.getElementById("toSignIn");
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
     if (event.target === signUpForm) {
-        signUpForm.style.display = "none";
-    } else if (event.target === logInForm){
-        logInForm.style.display = "none";
+        window.location.href = "./index.html";
     }
 };
 
 // Set call back function when close window is clicked
 close.onclick = function (e) {
     e.preventDefault();
-    signUpForm.style.display = "none";
+    window.location.href = "./index.html";
 };
 
 // Handles sign up validation and recording
@@ -46,12 +44,13 @@ signUpSubmit.onclick = function tryToSignUp(e) {
     }
 
     fakeUser.push(userCreator(userName, userMail, passWord));
-    signUpForm.style.display = "none";
+    // TODO: add request handling after user is signed up 
+    window.location.href = "./index.html";
+    // signUpForm.style.display = "none";
 };
 
 // Set DOM elements correctly when sign up is complete
 toSignIn.onclick = function (e) {
     e.preventDefault();
-    signUpForm.style.display = "none";
-    logInForm.style.display = "block";
+    window.location.href = "./login.html";
 };

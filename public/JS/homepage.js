@@ -10,17 +10,17 @@ const signUpButton = menu.children[1];
 const toast = document.querySelector(".toast");
 const toastBody = document.querySelector(".toast-body");
 
-// Set up callback functions for sign up
-signUpButton.onclick = function (e) {
-    e.preventDefault();
-    signUpForm.style.display = 'block';
-};
-
-// Set up callback functions for log in
-loginButton.onclick = function (e) {
-    e.preventDefault();
-    logInForm.style.display = 'block';
-};
+// // Set up callback functions for sign up
+// signUpButton.onclick = function (e) {
+//     e.preventDefault();
+//     signUpForm.style.display = 'block';
+// };
+//
+// // Set up callback functions for log in
+// loginButton.onclick = function (e) {
+//     e.preventDefault();
+//     logInForm.style.display = 'block';
+// };
 
 let numberOfBooks = fakeBooks.length; // total number of books
 
@@ -134,9 +134,9 @@ function userLoggedIn(username, isAdmin) {
 
     // Check user type to direct to correct pages
     if (isAdmin) {
-        link.href = "admin.html";
+        link.href = "public/HTML/admin.html";
     } else {
-        link.href = "profile.html";
+        link.href = "public/HTML/profile.html";
     }
 
     // Create the welcome message

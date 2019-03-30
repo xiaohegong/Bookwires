@@ -176,7 +176,7 @@ function setUpCarousel(bookList) {
                 newImg.src = bookToAdd.image;
                 newImg.title = bookToAdd.bookTitle;
                 newImg.onclick = function () {
-                    location.href = "book.html";
+                    location.href = "public/HTML/book.html";
                 };
 
                 // check if the "viewer" is the profile owner.
