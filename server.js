@@ -67,6 +67,25 @@ app.patch('/updateDesription', (req, res) => {
 //    Chapter.
 // });
 
+
+// UNCOMMENT TO TEST A PUSH TO DB
+
+// app.post('/testing123', (req, res) => {
+//     const user = new User({
+//         name: "bob",
+//         bookshelf: [],
+//         writtenBook: [],
+//         followers: 0,
+//         image: "img/default"
+//     })
+//     console.log("SDSADASd");
+//     user.save().then((result) =>{
+// 		res.send(result);
+// 	}, (error) => {
+// 		res.status(400).send(error) // 400 for bad request
+// 	})
+// });
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     log('Listening on port 3000...');
