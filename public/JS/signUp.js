@@ -44,7 +44,7 @@ signUpSubmit.onclick = function tryToSignUp(e) {
     }
 
     fakeUser.push(userCreator(userName, userMail, passWord));
-    // TODO: add request handling after user is signed up 
+    // TODO: add request handling after user is signed up
     window.location.href = "./index.html";
     // signUpForm.style.display = "none";
 };

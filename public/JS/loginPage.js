@@ -5,7 +5,7 @@ const loginSubmit = document.getElementById("loginButton");
 const quit = document.getElementById("quit");
 
 window.onclick = function (event) {
-    if (event.target === logInForm){
+    if (event.target === logInForm) {
         window.location.href = "./index.html";
     }
 };
