@@ -9,8 +9,8 @@ const app = express();
 const bodyParser = require('body-parser'); // middleware for parsing HTTP body
 const { ObjectID } = require('mongodb');
 
-const { mongoose } = require('./mongoose.js');
-const { Book,User,Chapter,Comment } = require('./modules.js');
+const { mongoose } = require('../JS/mongoose.js');
+const { Book,User,Chapter,Comment } = require('../JS/modules.js');
 app.use(bodyParser.json());
 
 
