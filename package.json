@@ -1,0 +1,25 @@
+{
+  "name": "JS",
+  "version": "1.0.0",
+  "main": "public/JS/homepage.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "11.11.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "install": "^0.12.2",
+    "mongodb": "^3.2.2",
+    "mongoose": "^5.4.20",
+    "path": "^0.12.7"
+  }
+}
