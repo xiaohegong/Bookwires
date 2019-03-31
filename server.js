@@ -52,6 +52,18 @@ app.route('/login')
 		res.sendFile(__dirname + '/public/login.html')
 })
 
+app.get('/index', (req, res) => {
+	// check if we have active session cookie
+	if (req.session.user) {
+		res.sendFile(__dirname + '/public/dashboard.html')
+		// res.render('dashboard.hbs', {
+		// 	email: req.session.email
+		// })
+	} else {
+		res.redirect('/login')
+	}
+})
+
 
 
 
