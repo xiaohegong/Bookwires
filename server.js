@@ -32,7 +32,7 @@ app.use(session({
 
 const sessionChecker = (req, res, next) => {
 	if (req.session.user) {
-		res.redirect('home')
+		res.redirect('index')
 	} else {
 		next();
 	}
@@ -40,8 +40,7 @@ const sessionChecker = (req, res, next) => {
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
-    const dir = path.join(__dirname + "/public/HTML/");
-    res.sendFile(dir + 'index.html');
+    res.redirect('/index');
 
     // res.sendFile('../HTML/index.html', {root: __dirname })
 });
@@ -49,7 +48,19 @@ app.get('/', (req, res) => {
 // route for login
 app.route('/login')
 	.get(sessionChecker, (req, res) => {
-		res.sendFile(__dirname + '/public/login.html')
+		res.sendFile(__dirname + '/public/HTML/login.html')
+})
+
+app.get('/index', (req, res) => {
+	// check if we have active session cookie
+	if (req.session.user) {
+		res.sendFile(__dirname + '/public/HTML/index.html')
+		// res.render('dashboard.hbs', {
+		// 	email: req.session.email
+		// })
+	} else {
+		res.redirect('/login')
+	}
 })
 
 
