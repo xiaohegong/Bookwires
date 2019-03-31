@@ -1,4 +1,5 @@
 "use strict";
+const log = console.log;
 // Constants defined for DOM objects
 const authors = document.querySelector("#authorRec");
 const booksDisplayed = document.querySelector("#books");
@@ -25,7 +26,7 @@ const fetchBooks = () => {
         });
 };
 
-let numEditorPicks = 1; // total number of books
+let numEditorPicks = 3; // total number of books
 
 for (let i = 0; i < fakeBooks.length; i++) {
     // const request = new Request(url, {
@@ -130,16 +131,19 @@ for (let i = 0; i < 2; i++) {
     booksRanking.appendChild(divider);
 }
 
-
+// Async function that sets the <Editor's Pick> books
 fetchBooks().then((b) => {
     for (let i = 0; i < numEditorPicks; i++) {
-        console.log(books);
         if (books.length < 1) {
             console.log("Not enough books in server");
             break;
         }
+        const bookElement = booksDisplayed.children[i + (i / 3) >> 0];
+        const bookTag = bookElement.firstElementChild;
 
-        booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = books[i].image;
+        // Links to each book page
+        bookTag.href = "./books/" + String(books[i]._id);
+        bookTag.firstElementChild.src = books[i].image;
     }
 });
 
