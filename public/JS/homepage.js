@@ -10,22 +10,57 @@ const signUpButton = menu.children[1];
 const toast = document.querySelector(".toast");
 const toastBody = document.querySelector(".toast-body");
 
-// // Set up callback functions for sign up
-// signUpButton.onclick = function (e) {
-//     e.preventDefault();
-//     signUpForm.style.display = 'block';
-// };
-//
-// // Set up callback functions for log in
-// loginButton.onclick = function (e) {
-//     e.preventDefault();
-//     logInForm.style.display = 'block';
-// };
+// All books from the database
+let books = [];
+const url = '/books';
 
-let numberOfBooks = fakeBooks.length; // total number of books
+const fetchBooks = () => {
+    return fetch(url)
+        .then((res) => res.json())
+        .then((bookJson) => {
+            books = bookJson;
+            return bookJson;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
 
-for (let i = 0; i < numberOfBooks; i++) {
-    let book = fakeBooks[i];//server call to get book
+let numEditorPicks = 12; // total number of books
+
+for (let i = 0; i < fakeBooks.length; i++) {
+    // const request = new Request(url, {
+    //     method: 'get',
+    //     headers: {
+    //         'Accept': 'application/json, text/plain, */*',
+    //         'Content-Type': 'application/json'
+    //     },
+    // });
+    // fetch(request)
+    //     .then(function (res) {
+    //         // Handle response we get from the API
+    //         // Usually check the error codes to see what happened
+    //         const message = document.querySelector('#message');
+    //         if (res.status === 200) {
+    //             console.log('Added student');
+    //             message.innerText = 'Success: Added a student.';
+    //             message.setAttribute("style", "color: green");
+    //
+    //         } else {
+    //             message.innerText = 'Could not add student';
+    //             message.setAttribute("style", "color: red");
+    //
+    //         }
+    //         console.log(res);
+    //
+    //     }).catch((error) => {
+    //     console.log(error);
+    // });
+    // if (books.length < 1){
+    //     console.log("Not enough books in server");
+    //     break;
+    // }
+    let book = fakeBooks[i];
     // First, add authors
     const anchor = document.createElement("a");
     anchor.href = "profile.html";
@@ -37,7 +72,7 @@ for (let i = 0; i < numberOfBooks; i++) {
     authors.appendChild(anchor);
 
     // Then add book image to the book shelf
-    booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = book.getImage();
+    // booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = book.getImage();
 
     // Add books to the ranking section
     const divider = document.createElement("div");
@@ -97,8 +132,12 @@ for (let i = 0; i < 2; i++) {
 }
 
 // Add more book picture holder to the book display
-for (let i = numberOfBooks; i < 12; i++) {
-    booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = "img/threebody.jpg";
+for (let i = 0; i < numEditorPicks; i++) {
+    if (books.length < 1){
+        console.log("Not enough books in server");
+        break;
+    }
+    booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = books[i].image;
 }
 
 // A function that makes a div that contains num many stars
@@ -169,9 +208,9 @@ function userLoggedIn(username, isAdmin) {
         sampleUser.moveNewMsgToOld();
     }
 
-    document.querySelector("#bookShelf").style.pointerEvents = "all";
-    document.querySelector("#searchLogo").style.pointerEvents = "all";
-    document.querySelector("#leftSideBar").style.pointerEvents = "all";
-    document.querySelector("#rightSideBar").style.pointerEvents = "all";
-    document.querySelector("#searchLogo").style.pointerEvents = "all";
+    // document.querySelector("#bookShelf").style.pointerEvents = "all";
+    // document.querySelector("#searchLogo").style.pointerEvents = "all";
+    // document.querySelector("#leftSideBar").style.pointerEvents = "all";
+    // document.querySelector("#rightSideBar").style.pointerEvents = "all";
+    // document.querySelector("#searchLogo").style.pointerEvents = "all";
 }
