@@ -19,6 +19,8 @@ app.use(bodyParser.json());
 // using Express middleware
 // app.use('/',express.static(path.join(__dirname, '../CSS')));
 app.use(express.static('/team26'));
+
+/* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
     res.sendFile(dir + 'index.html');
@@ -26,41 +28,241 @@ app.get('/', (req, res) => {
     // res.sendFile('../HTML/index.html', {root: __dirname })
 });
 
-// Set up a POST route to *create* a student
-app.post('/book', (req, res) => {
-    Book.addBook(req).then((result) => {
-        log(result);
-        res.send(result);
-    })
-        .catch((rej) => {
-            res.status(rej.code).send(rej.error);
+/* Routes for books */
+app.get('/books/:id', (req, res) => {
+    const id = req.params.id;
+    Book.findBookByID(id)
+        .then((book) => {
+            if (!book) {
+                return res.status(404).send();
+            } else {
+                res.send(book);
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send(error);
         });
 });
 
-app.post('/find', (req, res) => {
-    Book.findBook(req).then((result) => {
-        res.send(result);
-        return result;
-    }).then(
-        (result) => {
-            log(result[0].image);
-            result[0].addChapter(req, result[0]);
-        }
-    )
-        .catch((rej) => {
-            res.status(rej.code).send(rej.error);
+app.get('/books', (req, res) => {
+    Book.find()
+        .then((books) => {
+            res.send(books);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.post('/books', (req, res) => {
+    const newBook = {
+        "bookTitle": req.body.bookTitle,
+        "rating": req.body.rating,
+        "numOfRate": req.body.numOfRate,
+        "user": req.body.user,
+        "image": req.body.image,
+        "description": req.body.description,
+        "genre": req.body.genre
+    };
+
+    // Check if the inputs are valid
+    if (!newBook.bookTitle || !newBook.rating || !newBook.numOfRate || !newBook.user
+        || !newBook.image || !newBook.description || !newBook.genre)
+        return res.status(400).send();
+
+    newBook.save()
+        .then((book) => {
+            res.send(book);
+        })
+        .catch(error => {
+            return res.status(400).send(error);
+        });
+
+});
+
+app.get('/books/:id', (req, res) => {
+    const id = req.params.id;
+
+    // Validate the id
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    // Otherwise, find book by id and send back
+    Book.findBookByID(id)
+        .then((book) => {
+            if (!book) {
+                return res.status(404).send();
+            } else {
+                res.send(book);
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send(error);
         });
 });
 
-app.patch('/updateDesription', (req, res) => {
-    Book.updateDesription(req).then((result) => {
-        log(result);
-        res.send(result);
-    })
-        .catch((rej) => {
-            res.status(rej.code).send(rej.error);
+app.post('/books/:id', (req, res) => {
+    // Validate the id
+    const id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    // Check if the inputs are valid
+    const newChapter = {
+        "chapterNum": req.body.chapterNum,
+        "content": req.body.content
+    };
+    if (!newChapter.chapterNum || !newChapter.content)
+        return res.status(400).send();
+
+    // Otherwise, find book by id and send back
+    Book.findBookByID(id)
+        .then((book) => {
+            // Save chapter to queried book
+            // TODO: Does this work...???
+            book.addChapter(req.body.chapterNum, req.body.content, book);
+
+            // book.chapters.push(newChapter);
+            // book.save().then(
+            //     (updated) => {
+            //         res.send({
+            //             "reservation": newChapter,
+            //             "restaurant": updated
+            //         });
+            //     }, (error) => {
+            //         return res.status(400).send(error); // 400 for bad request
+            //     });
+        })
+        .catch((error) => {
+            return res.status(500).send(error);
+        });
+
+});
+
+app.delete('/books/:id/:chapter_id', (req, res) => {
+    // Validate the id and reservation id
+    const id = req.params.id;
+    const chapter_id = req.params.chapter_id;
+    if (!ObjectID.isValid(id) || !ObjectID.isValid(chapter_id)) {
+        return res.status(404).send();
+    }
+
+    // If valid, find the book
+    Book.findBookByID(id)
+        .then((book) => {
+            if (!book) {
+                return res.status(404).send();
+            } else {
+                // Find the queried chapter
+                const chap = book.chapters.id(chapter_id);
+                if (chap) {
+                    book.deleteChapter(book.id, chap.id);
+                } else {
+                    return res.status(404).send();
+                }
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send(error);
         });
 });
+
+app.patch('/books/:id/:chapter_id', (req, res) => {
+    // Validate the id and reservation id
+    const id = req.params.id;
+    const chapter_id = req.params.chapter_id;
+    if (!ObjectID.isValid(id) || !ObjectID.isValid(chapter_id)) {
+        return res.status(404).send();
+    }
+
+    // If valid, find the book
+    Book.findBookByID(id)
+        .then((book) => {
+            if (!book) {
+                return res.status(404).send();
+            } else {
+                // Find the queried chapter
+                const chap = book.chapters.id(chapter_id);
+                if (chap) {
+                    book.updateDescription(req);
+                } else {
+                    return res.status(404).send();
+                }
+            }
+
+        })
+        .catch((error) => {
+            return res.status(500).send(error);
+        });
+
+});
+
+/* Routes for users */
+// TODO - to be edited after User Schema is posted
+app.get('/users/:id', (req, res) => {
+    const id = req.params.id;
+    User.findUserById(id)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send();
+            } else {
+                res.send(user);
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send(error);
+        });
+});
+
+app.get('/users', (req, res) => {
+    User.find()
+        .then((users) => {
+            res.send(users);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+// // Set up a POST route to *create* a student
+// app.post('/book', (req, res) => {
+//     Book.addBook(req).then((result) => {
+//         log(result);
+//         res.send(result);
+//     })
+//         .catch((rej) => {
+//             res.status(rej.code).send(rej.error);
+//         });
+// });
+//
+// app.post('/find', (req, res) => {
+//     Book.findBook(req).then((result) => {
+//         res.send(result);
+//         return result;
+//     }).then(
+//         (result) => {
+//             log(result[0].image);
+//             result[0].addChapter(req, result[0]);
+//         }
+//     )
+//         .catch((rej) => {
+//             res.status(rej.code).send(rej.error);
+//         });
+// });
+//
+// app.patch('/updateDesription', (req, res) => {
+//     Book.updateDesription(req).then((result) => {
+//         log(result);
+//         res.send(result);
+//     })
+//         .catch((rej) => {
+//             res.status(rej.code).send(rej.error);
+//         });
+// });
 
 
 // app.post('/newChapter',(req,res)=>{
