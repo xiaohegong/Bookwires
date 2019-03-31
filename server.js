@@ -25,6 +25,13 @@ app.get('/', (req, res) => {
 /* Routes for books */
 app.get('/db/books/:id', (req, res) => {
     const id = req.params.id;
+    log(id)
+    // Validate the id
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    // Otherwise, find book by id and send back
     Book.findBookByID(id)
         .then((book) => {
             if (!book) {
@@ -45,7 +52,8 @@ app.get('/books/:id', (req, res) => {
             if (!book) {
                 return res.status(404).send();
             } else {
-                // TODO res.render("book", ...)
+                const dir = path.join(__dirname + "/public/HTML/");
+                res.sendFile(dir + 'book.html');
             }
         })
         .catch((error) => {
@@ -53,6 +61,8 @@ app.get('/books/:id', (req, res) => {
         });
 });
 
+app.get('/db/books', (req, res) => {
+    log("FIND")
 app.get('/db/books', (req, res) => {
     Book.find()
         .then((books) => {

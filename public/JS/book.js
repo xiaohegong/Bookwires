@@ -1,15 +1,21 @@
 'use strict';
 const log = console.log;
-import {Books} from './app/Models/modules.js';
+const currentLocation = window.location.href;
+const url = "/db"+new URL(currentLocation).pathname;
+log(url);
+async function getBook() {
+    return fetch(url).then((res) => {
+        if(res.status === 200){
+            return res.status(404).send();
+        }
+        res.json()
+    }).then((bookJson) => {
+            log(bookJson[0]);
+            return bookJson[0];
+        }).catch(error => log(error));
+}
+getBook().then(res=>log(res.image));
 
-Books.findBook("ThreeBody").then((result) => {
-    // res.send(result);
-    log(result);
-}).catch((rej) => {
-    res.status(rej.code).send(rej.error);
-});
-// testing book
-const book = fakeBooks[1]; //should server to get which book that the page received
 const save = document.getElementById("save");
 const commentBox = document.getElementById('commentBox');
 const enterBtn = document.getElementById("enterBtn");
@@ -84,6 +90,7 @@ const bookInformation = document.getElementById("bookInformation");
     const bookNameContainer = document.createElement('h1');
     const zoom = document.getElementsByClassName("zoom")[0];
     const bookImage = document.createElement('img');
+
     bookImage.src = book.getImage();
     zoom.appendChild(bookImage);
 

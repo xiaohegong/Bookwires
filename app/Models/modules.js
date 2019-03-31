@@ -126,13 +126,17 @@ BookSchema.statics.findByRate = (rate) => {
 
 };
 
-BookSchema.statics.findBook = (req) => {
+BookSchema.statics.findBook = (bookTitle) => {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: req.query.bookTitle}).then((book) => {
-            resolve(book);
+        Book.find({bookTitle}).then((book) => {
+            if(book.length === 0){
+                reject({code: 404,error:"can't find book"});
+            }else {
+                resolve(book);
+            }
         }, (error) => {
-            reject({code: 404, error});
+            reject({code: 500, error});
         });
     });
 
@@ -279,7 +283,7 @@ BookSchema.methods.deleteChapter = (id, chap_id) => {
 };
 
 
-const Book = mongoose.model('Books', BookSchema);
+const Book = mongoose.model('Book', BookSchema);
 
 
 const UserSchema = mongoose.Schema({
