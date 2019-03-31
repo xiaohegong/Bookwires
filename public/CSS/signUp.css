@@ -30,7 +30,7 @@ button[type=button] {
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-    padding-top: 60px;
+    padding-top: 100px;
 }
 
 /* Modal Content/Box */
@@ -45,7 +45,7 @@ button[type=button] {
 .close {
     position: absolute;
     right: 22%;
-    top: 0;
+    top: 20px;
     color: lightblue;
     font-size: 55px;
     font-weight: bold;
