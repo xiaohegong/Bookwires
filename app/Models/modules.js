@@ -6,8 +6,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const {MongoClient, ObjectID} = require('mongodb');
 
 const ChapterSchema = mongoose.Schema({
-    chapterNum: {
-        type: Number,
+    chapterTitle: {
+        type: String,
         required: true
     },
     content: {
@@ -200,16 +200,16 @@ BookSchema.statics.updateImage = ((req) => {
 
 });
 
-BookSchema.methods.addChapter = (num, content, book) => {
+BookSchema.statics.addChapter = (title, content, id) => {
 
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
         // log(book);
-        book.update({
+        Book.findOneAndUpdate({_id:id},{
                 $push: {
                     chapters: {
-                        chapterNum: num,
-                        content: req.body.content
+                        chapterTitle: title,
+                        content: content
                     }
 
                 }
@@ -222,12 +222,12 @@ BookSchema.methods.addChapter = (num, content, book) => {
     });
 };
 
-BookSchema.methods.addComments = (user, content, book) => {
+BookSchema.statics.addComments = (user, content, id) => {
 
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
         // log(book);
-        book.update({
+        Book.findOneAndUpdate({_id:id},{
                 $push: {
                     comments: {
                         user: user,
