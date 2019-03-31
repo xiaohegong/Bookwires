@@ -32,7 +32,7 @@ app.use(session({
 
 const sessionChecker = (req, res, next) => {
 	if (req.session.user) {
-		res.redirect('home')
+		res.redirect('index')
 	} else {
 		next();
 	}
