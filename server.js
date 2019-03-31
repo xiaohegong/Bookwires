@@ -3,6 +3,7 @@
 const log = console.log;
 
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 
 const app = express();
@@ -13,6 +14,29 @@ const {mongoose} = require('./app/mongoose.js');
 const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
 app.use(express.static("public"));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended:true }))
+
+
+
+
+
+app.use(session({
+	secret: 'oursecret',
+	resave: false,
+	saveUninitialized: false,
+	cookie: {
+		expires: 600000,
+		httpOnly: true
+	}
+}))
+
+const sessionChecker = (req, res, next) => {
+	if (req.session.user) {
+		res.redirect('home')
+	} else {
+		next();
+	}
+}
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
@@ -21,6 +45,28 @@ app.get('/', (req, res) => {
 
     // res.sendFile('../HTML/index.html', {root: __dirname })
 });
+
+// route for login
+app.route('/login')
+	.get(sessionChecker, (req, res) => {
+		res.sendFile(__dirname + '/public/login.html')
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Routes for books */
 app.get('/db/books/:id', (req, res) => {
