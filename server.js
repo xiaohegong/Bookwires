@@ -25,7 +25,6 @@ app.get('/', (req, res) => {
 /* Routes for books */
 app.get('/db/books/:id', (req, res) => {
     const id = req.params.id;
-    log(id)
     // Validate the id
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
@@ -61,8 +60,7 @@ app.get('/books/:id', (req, res) => {
         });
 });
 
-app.get('/db/books', (req, res) => {
-    log("FIND")
+
 app.get('/db/books', (req, res) => {
     Book.find()
         .then((books) => {
