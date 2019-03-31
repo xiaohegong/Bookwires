@@ -14,12 +14,6 @@ const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
 app.use(express.static("public"));
 app.use(bodyParser.json());
 
-
-// Setting up a static directory for your html files
-// using Express middleware
-// app.use('/',express.static(path.join(__dirname, '../CSS')));
-app.use(express.static('/team26'));
-
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
@@ -29,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 /* Routes for books */
-app.get('/books/:id', (req, res) => {
+app.get('db/books/:id', (req, res) => {
     const id = req.params.id;
     Book.findBookByID(id)
         .then((book) => {
@@ -44,7 +38,22 @@ app.get('/books/:id', (req, res) => {
         });
 });
 
-app.get('/books', (req, res) => {
+app.get('/books/:id', (req, res) => {
+    const id = req.params.id;
+    Book.findBookByID(id)
+        .then((book) => {
+            if (!book) {
+                return res.status(404).send();
+            } else {
+                // TODO res.render("book", ...)
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send(error);
+        });
+});
+
+app.get('db/books', (req, res) => {
     Book.find()
         .then((books) => {
             res.send(books);
@@ -55,21 +64,24 @@ app.get('/books', (req, res) => {
         );
 });
 
-app.post('/books', (req, res) => {
-    const newBook = {
+app.post('db/books', (req, res) => {
+    const newBook = new Book({
         "bookTitle": req.body.bookTitle,
         "rating": req.body.rating,
         "numOfRate": req.body.numOfRate,
-        "user": req.body.user,
+        // "user": req.body.user,
         "image": req.body.image,
         "description": req.body.description,
         "genre": req.body.genre
-    };
+    });
 
     // Check if the inputs are valid
-    if (!newBook.bookTitle || !newBook.rating || !newBook.numOfRate || !newBook.user
-        || !newBook.image || !newBook.description || !newBook.genre)
+    // if (!newBook.bookTitle || !newBook.rating || !newBook.numOfRate || !newBook.user || !newBook.description) {
+    //     return res.status(400).send();
+    // }
+    if (!newBook.bookTitle || !newBook.rating || !newBook.numOfRate || !newBook.description) {
         return res.status(400).send();
+    }
 
     newBook.save()
         .then((book) => {
@@ -81,7 +93,7 @@ app.post('/books', (req, res) => {
 
 });
 
-app.get('/books/:id', (req, res) => {
+app.get('db/books/:id', (req, res) => {
     const id = req.params.id;
 
     // Validate the id
@@ -103,7 +115,7 @@ app.get('/books/:id', (req, res) => {
         });
 });
 
-app.post('/books/:id', (req, res) => {
+app.post('db/books/:id', (req, res) => {
     // Validate the id
     const id = req.params.id;
     if (!ObjectID.isValid(id)) {
@@ -111,10 +123,10 @@ app.post('/books/:id', (req, res) => {
     }
 
     // Check if the inputs are valid
-    const newChapter = {
+    const newChapter = new Chapter({
         "chapterNum": req.body.chapterNum,
         "content": req.body.content
-    };
+    });
     if (!newChapter.chapterNum || !newChapter.content)
         return res.status(400).send();
 
@@ -142,7 +154,7 @@ app.post('/books/:id', (req, res) => {
 
 });
 
-app.delete('/books/:id/:chapter_id', (req, res) => {
+app.delete('db/books/:id/:chapter_id', (req, res) => {
     // Validate the id and reservation id
     const id = req.params.id;
     const chapter_id = req.params.chapter_id;
@@ -170,7 +182,7 @@ app.delete('/books/:id/:chapter_id', (req, res) => {
         });
 });
 
-app.patch('/books/:id/:chapter_id', (req, res) => {
+app.patch('db/books/:id/:chapter_id', (req, res) => {
     // Validate the id and reservation id
     const id = req.params.id;
     const chapter_id = req.params.chapter_id;
@@ -202,7 +214,7 @@ app.patch('/books/:id/:chapter_id', (req, res) => {
 
 /* Routes for users */
 // TODO - to be edited after User Schema is posted
-app.get('/users/:id', (req, res) => {
+app.get('db/users/:id', (req, res) => {
     const id = req.params.id;
     User.findUserById(id)
         .then((user) => {
@@ -217,7 +229,7 @@ app.get('/users/:id', (req, res) => {
         });
 });
 
-app.get('/users', (req, res) => {
+app.get('db/users', (req, res) => {
     User.find()
         .then((users) => {
             res.send(users);

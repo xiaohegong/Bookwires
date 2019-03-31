@@ -11,22 +11,23 @@ const toast = document.querySelector(".toast");
 const toastBody = document.querySelector(".toast-body");
 
 // All books from the database
+const url = 'db/books';
 let books = [];
-const url = '/books';
-
 const fetchBooks = () => {
     return fetch(url)
-        .then((res) => res.json())
-        .then((bookJson) => {
-            books = bookJson;
-            return bookJson;
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+            books = json;
+            return json;
         })
         .catch(error => {
             console.log(error);
         });
 };
 
-let numEditorPicks = 12; // total number of books
+let numEditorPicks = 1; // total number of books
 
 for (let i = 0; i < fakeBooks.length; i++) {
     // const request = new Request(url, {
@@ -131,14 +132,20 @@ for (let i = 0; i < 2; i++) {
     booksRanking.appendChild(divider);
 }
 
-// Add more book picture holder to the book display
-for (let i = 0; i < numEditorPicks; i++) {
-    if (books.length < 1){
-        console.log("Not enough books in server");
-        break;
+
+fetchBooks().then((b) => {
+    for (let i = 0; i < numEditorPicks; i++) {
+        console.log(books);
+        if (books.length < 1) {
+            console.log("Not enough books in server");
+            break;
+        }
+
+        booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = books[i].image;
     }
-    booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = books[i].image;
-}
+});
+
+
 
 // A function that makes a div that contains num many stars
 function makeStars(num) {
