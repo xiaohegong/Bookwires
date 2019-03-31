@@ -301,7 +301,7 @@ const UserSchema = mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
+        default: "../img/avatar.jpg"
     },
     //User module
     following:[ObjectId],

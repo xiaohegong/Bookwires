@@ -6,7 +6,6 @@ log(url);
 async function getBook() {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
-            log(bookJson)
             return bookJson;
         }).catch(error => log(error));
 }
