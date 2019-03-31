@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(express.static('/team26'));
 app.get('/', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
-    res.sendFile(dir + 'index.html');
+    res.sendFile(dir + 'book.html');
 
     // res.sendFile('../HTML/index.html', {root: __dirname })
 });

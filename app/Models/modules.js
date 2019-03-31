@@ -138,10 +138,10 @@ BookSchema.statics.findBook = (req)=> {
 
 };
 
-BookSchema.statics.findBookByID = (req)=> {
+BookSchema.statics.findBookByID = (id)=> {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.findById({bookTitle: req.query.bookTitle}).then((book)=> {
+        Book.findById(id).then((book)=> {
             resolve(book)
         },(error)=>{
             reject({code:404,error});
@@ -150,7 +150,7 @@ BookSchema.statics.findBookByID = (req)=> {
 
 };
 
-BookSchema.statics.updateDesription = (req)=>{
+BookSchema.statics.updateDescription = (req)=>{
     return new Promise((resolve, reject) => {
 
         Book.findOneAndUpdate({
@@ -172,7 +172,7 @@ BookSchema.statics.updateDesription = (req)=>{
 
 };
 
-BookSchema.statics.updateimage = ((req)=>{
+BookSchema.statics.updateImage = ((req)=>{
 
     return new Promise((resolve, reject) => {
 
@@ -271,7 +271,7 @@ BookSchema.methods.deleteChapter = (id,chap_id)=>{
 };
 
 
-const Book = mongoose.model('Book',BookSchema);
+const Book = mongoose.model('Books',BookSchema);
 
 
 
