@@ -40,7 +40,9 @@ const sessionChecker = (req, res, next) => {
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
-    res.redirect('/index');
+    // res.redirect('/index');
+    const dir = path.join(__dirname + "/public/HTML/");
+    res.sendFile(dir + 'index.html');
 
     // res.sendFile('../HTML/index.html', {root: __dirname })
 });
