@@ -26,40 +26,13 @@ const fetchBooks = () => {
         });
 };
 
-let numEditorPicks = 3; // total number of books
+const numEditorPicks = 3; // total number of books on the shelf
+const numTopBooks = 3; // total number of books on popular books
 
+
+// TODO - Replace author sec below with user obj
 for (let i = 0; i < fakeBooks.length; i++) {
-    // const request = new Request(url, {
-    //     method: 'get',
-    //     headers: {
-    //         'Accept': 'application/json, text/plain, */*',
-    //         'Content-Type': 'application/json'
-    //     },
-    // });
-    // fetch(request)
-    //     .then(function (res) {
-    //         // Handle response we get from the API
-    //         // Usually check the error codes to see what happened
-    //         const message = document.querySelector('#message');
-    //         if (res.status === 200) {
-    //             console.log('Added student');
-    //             message.innerText = 'Success: Added a student.';
-    //             message.setAttribute("style", "color: green");
-    //
-    //         } else {
-    //             message.innerText = 'Could not add student';
-    //             message.setAttribute("style", "color: red");
-    //
-    //         }
-    //         console.log(res);
-    //
-    //     }).catch((error) => {
-    //     console.log(error);
-    // });
-    // if (books.length < 1){
-    //     console.log("Not enough books in server");
-    //     break;
-    // }
+
     let book = fakeBooks[i];
     // First, add authors
     const anchor = document.createElement("a");
@@ -70,69 +43,12 @@ for (let i = 0; i < fakeBooks.length; i++) {
     parag.appendChild(author);
     anchor.appendChild(parag);
     authors.appendChild(anchor);
-
-    // Then add book image to the book shelf
-    // booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = book.getImage();
-
-    // Add books to the ranking section
-    const divider = document.createElement("div");
-    divider.className = "bookDisplay";
-    const link = document.createElement("a");
-    link.href = "book.html";
-    const img = document.createElement("img");
-    img.src = book.getImage();
-    img.className = "bookDisplayImg";
-    link.appendChild(img);
-
-    // Add book info to the block
-    const span = document.createElement("span");
-    span.className = "bookDisplayText";
-    span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
-
-    const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre());
-    const p = document.createElement("p");
-    p.className = "displayInfo";
-    p.appendChild(info);
-    span.appendChild(p);
-
-    // Append star ratings to the block
-    const rating = makeStars(book.getRating());
-    span.appendChild(rating);
-
-    divider.appendChild(link);
-    divider.appendChild(span);
-    booksRanking.appendChild(divider);
 }
 
-// Another for loop to add more place holder books, similar procedure with above
-for (let i = 0; i < 2; i++) {
-    let book = fakeBooks[3];
-
-    const divider = document.createElement("div");
-    divider.className = "bookDisplay";
-    const img = document.createElement("img");
-    img.src = book.getImage();
-    img.className = "bookDisplayImg";
-    const span = document.createElement("span");
-    span.className = "bookDisplayText";
-    span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
-
-    const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre());
-    const p = document.createElement("p");
-    p.className = "displayInfo";
-    p.appendChild(info);
-    span.appendChild(p);
-
-    const rating = makeStars(book.getRating());
-    span.appendChild(rating);
-
-    divider.appendChild(img);
-    divider.appendChild(span);
-    booksRanking.appendChild(divider);
-}
-
-// Async function that sets the <Editor's Pick> books
+const hrefURL = "./books/";
+// Async function that sets the books array by fetch
 fetchBooks().then((b) => {
+    /*********** Code for making <Editor's Pick> section ***********/
     for (let i = 0; i < numEditorPicks; i++) {
         if (books.length < 1) {
             console.log("Not enough books in server");
@@ -142,8 +58,44 @@ fetchBooks().then((b) => {
         const bookTag = bookElement.firstElementChild;
 
         // Links to each book page
-        bookTag.href = "./books/" + String(books[i]._id);
+        bookTag.href = hrefURL + String(books[i]._id);
         bookTag.firstElementChild.src = books[i].image;
+    }
+
+    /*********** Code for making <popular books> section ***********/
+    const booksSortedByRate = sortBooksByRate(books, numTopBooks);
+    for (let i = 0; i < numTopBooks; i++) {
+        let book = booksSortedByRate[i];
+
+        // Add books to the ranking section
+        const divider = document.createElement("div");
+        divider.className = "bookDisplay";
+        const link = document.createElement("a");
+        link.href = hrefURL + String(book._id);
+        const img = document.createElement("img");
+        img.src = book.image;
+        img.className = "bookDisplayImg";
+        link.appendChild(img);
+
+        // Add book info to the block
+        const span = document.createElement("span");
+        span.className = "bookDisplayText";
+        span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.bookTitle)));
+
+        // const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre()); // TODO
+        const info = document.createTextNode("AUTHOR" + " | " + book.genre);
+        const p = document.createElement("p");
+        p.className = "displayInfo";
+        p.appendChild(info);
+        span.appendChild(p);
+
+        // Append star ratings to the block
+        const rating = makeStars(parseInt(book.rate));
+        span.appendChild(rating);
+
+        divider.appendChild(link);
+        divider.appendChild(span);
+        booksRanking.appendChild(divider);
     }
 });
 
@@ -168,6 +120,14 @@ function makeStars(num) {
 
     return div;
 }
+
+function sortBooksByRate(books, num) {
+    books.sort(function (a, b) {
+        return parseFloat(a.rate) - parseFloat(a.rate);
+    });
+    return books.slice(0, num + 1);
+}
+
 
 // Handles DOM set up when user is logged in by adding welcome messages and quit button.
 // Removes the old log in and sign up button and direct to correct pages
