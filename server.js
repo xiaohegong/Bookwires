@@ -118,6 +118,11 @@ app.get('/db/books', (req, res) => {
         );
 });
 
+app.get('/search', (req, res) => {
+    const dir = path.join(__dirname + "/public/HTML/");
+    res.sendFile(dir + 'search.html');
+});
+
 app.post('/db/books', (req, res) => {
     const newBook = new Book({
         "bookTitle": req.body.bookTitle,

@@ -1,6 +1,19 @@
 "use strict";
+const log = console.log;
 const booksRanking = document.querySelector("#ranking");
 
+
+async function getAllBook(url) {
+    return fetch(url).then((res) => res.json())
+        .then((bookJson) => {
+            log(bookJson)
+            return bookJson;
+        }).catch(error => log(error));
+}
+getAllBook("/db/books").then(res=>{
+    bookSetUp(res);
+});
+// getBook().then(res=>log(res.image));
 // A function to generating stars with the given num
 function makeStars(num) {
     if (num > 5 || num < 0) {
@@ -29,7 +42,7 @@ function searchBarSearch() {
 }
 
 // DOM element helper function for displaying search results
-bookSetUp(fakeBooks);//server call to get real data
+// bookSetUp(fakeBooks);//server call to get real data
 
 // DOM element helper function for displaying search results
 function bookSetUp(books) {
@@ -43,9 +56,9 @@ function bookSetUp(books) {
         anchor.setAttribute("href", "");
         const parag = document.createElement("p");
         parag.className = "author";
-        const author = document.createTextNode(book.getAuthor());
-        parag.appendChild(author);
-        anchor.appendChild(parag);
+        // const author = document.createTextNode(book.getAuthor());
+        // parag.appendChild(author);
+        // anchor.appendChild(parag);
         // authors.appendChild(anchor);
 
         // Then add book image to the book shelf
@@ -57,20 +70,20 @@ function bookSetUp(books) {
         const imgContainer = document.createElement('a');
         imgContainer.setAttribute('href', 'public/HTML/book.html');
         const img = document.createElement("img");
-        img.src = book.getImage();
+        img.src = book.image;
         img.className = "bookDisplayImg";
         imgContainer.appendChild(img);
         const span = document.createElement("span");
         span.className = "bookDisplayText";
-        span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.getBookTitle())));
-
-        const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre());
+        span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.bookTitle)));
+        //TEMP
+        const info = document.createTextNode("WHAT" + " | " + book.genre);
         const p = document.createElement("p");
         p.className = "displayInfo";
         p.appendChild(info);
         span.appendChild(p);
         
-        const rating = makeStars(book.getRating());
+        const rating = makeStars(book.rating);
         span.appendChild(rating);
 
         divider.appendChild(imgContainer);
