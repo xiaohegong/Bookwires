@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 /* Routes for books */
-app.get('db/books/:id', (req, res) => {
+app.get('/db/books/:id', (req, res) => {
     const id = req.params.id;
     Book.findBookByID(id)
         .then((book) => {
@@ -53,7 +53,7 @@ app.get('/books/:id', (req, res) => {
         });
 });
 
-app.get('db/books', (req, res) => {
+app.get('/db/books', (req, res) => {
     Book.find()
         .then((books) => {
             res.send(books);
@@ -64,7 +64,7 @@ app.get('db/books', (req, res) => {
         );
 });
 
-app.post('db/books', (req, res) => {
+app.post('/db/books', (req, res) => {
     const newBook = new Book({
         "bookTitle": req.body.bookTitle,
         "rating": req.body.rating,
@@ -93,7 +93,7 @@ app.post('db/books', (req, res) => {
 
 });
 
-app.get('db/books/:id', (req, res) => {
+app.get('/db/books/:id', (req, res) => {
     const id = req.params.id;
 
     // Validate the id
@@ -115,7 +115,7 @@ app.get('db/books/:id', (req, res) => {
         });
 });
 
-app.post('db/books/:id', (req, res) => {
+app.post('/db/books/:id', (req, res) => {
     // Validate the id
     const id = req.params.id;
     if (!ObjectID.isValid(id)) {
@@ -154,7 +154,7 @@ app.post('db/books/:id', (req, res) => {
 
 });
 
-app.delete('db/books/:id/:chapter_id', (req, res) => {
+app.delete('/db/books/:id/:chapter_id', (req, res) => {
     // Validate the id and reservation id
     const id = req.params.id;
     const chapter_id = req.params.chapter_id;
@@ -182,7 +182,7 @@ app.delete('db/books/:id/:chapter_id', (req, res) => {
         });
 });
 
-app.patch('db/books/:id/:chapter_id', (req, res) => {
+app.patch('/db/books/:id/:chapter_id', (req, res) => {
     // Validate the id and reservation id
     const id = req.params.id;
     const chapter_id = req.params.chapter_id;
@@ -214,7 +214,7 @@ app.patch('db/books/:id/:chapter_id', (req, res) => {
 
 /* Routes for users */
 // TODO - to be edited after User Schema is posted
-app.get('db/users/:id', (req, res) => {
+app.get('/db/users/:id', (req, res) => {
     const id = req.params.id;
     User.findUserById(id)
         .then((user) => {
@@ -229,7 +229,7 @@ app.get('db/users/:id', (req, res) => {
         });
 });
 
-app.get('db/users', (req, res) => {
+app.get('/db/users', (req, res) => {
     User.find()
         .then((users) => {
             res.send(users);

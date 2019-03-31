@@ -44,13 +44,13 @@ const BookSchema = mongoose.Schema({
         default: 0
     },
 
-    user: {
-        // User module
-        type: ObjectId
-    },
+    // user: {
+    //     // User module
+    //     type: ObjectId
+    // },
     image: {
         type: String,
-        required: true
+        default: "./img/default.jpg"
     },
     description: {
         type: String,

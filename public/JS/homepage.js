@@ -4,14 +4,12 @@ const authors = document.querySelector("#authorRec");
 const booksDisplayed = document.querySelector("#books");
 const booksRanking = document.querySelector("#ranking");
 const menu = document.getElementById("menuBar");
-const loginButton = menu.children[0];
-const signUpButton = menu.children[1];
 
 const toast = document.querySelector(".toast");
 const toastBody = document.querySelector(".toast-body");
 
 // All books from the database
-const url = 'db/books';
+const url = '/db/books';
 let books = [];
 const fetchBooks = () => {
     return fetch(url)
@@ -144,7 +142,6 @@ fetchBooks().then((b) => {
         booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.firstElementChild.src = books[i].image;
     }
 });
-
 
 
 // A function that makes a div that contains num many stars
