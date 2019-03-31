@@ -1,6 +1,13 @@
 'use strict';
 const log = console.log;
+import {Books} from './app/Models/modules.js';
 
+Books.findBook("ThreeBody").then((result) => {
+    // res.send(result);
+    log(result);
+}).catch((rej) => {
+    res.status(rej.code).send(rej.error);
+});
 // testing book
 const book = fakeBooks[1]; //should server to get which book that the page received
 const save = document.getElementById("save");

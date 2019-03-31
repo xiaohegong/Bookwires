@@ -59,7 +59,7 @@ const BookSchema = mongoose.Schema({
     },
     genre: {
         type: String,
-        required: false
+        default: 'None'
     },
     //Chapter module
     chapters: [ChapterSchema],
@@ -87,6 +87,45 @@ BookSchema.statics.addBook = (req) => {
 
 };
 
+BookSchema.statics.findByGenre = (genre) => {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({genre: genre}).then((book) => {
+            resolve(book);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+
+
+};
+
+BookSchema.statics.fuzzySearch = (name) => {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({bookTitle: /.*name.*/}).then((book) => {
+            resolve(book);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+
+
+};
+
+BookSchema.statics.findByRate = (rate) => {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({rate: {$gte: rate}}).then((book) => {
+            resolve(book);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+
+
+};
+
 BookSchema.statics.findBook = (req) => {
     // Create a new student
     return new Promise((resolve, reject) => {
@@ -99,10 +138,10 @@ BookSchema.statics.findBook = (req) => {
 
 };
 
-BookSchema.statics.findBookByID = (req) => {
+BookSchema.statics.findBookByID = (id) => {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.findById({bookTitle: req.query.bookTitle}).then((book) => {
+        Book.findById(id).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
@@ -122,7 +161,7 @@ BookSchema.statics.updateDescription = (req) => {
             }
 
         }, {
-            returnOriginal: false // gives us back updated arguement
+            returnOriginal: false // gives us back updated arguemnt
         }).then((result) => {
             resolve(result);
         }, (error) => {
@@ -133,7 +172,7 @@ BookSchema.statics.updateDescription = (req) => {
 
 };
 
-BookSchema.statics.updateimage = ((req) => {
+BookSchema.statics.updateImage = ((req) => {
 
     return new Promise((resolve, reject) => {
 
@@ -240,7 +279,7 @@ BookSchema.methods.deleteChapter = (id, chap_id) => {
 };
 
 
-const Book = mongoose.model('Book', BookSchema);
+const Book = mongoose.model('Books', BookSchema);
 
 
 const UserSchema = mongoose.Schema({
