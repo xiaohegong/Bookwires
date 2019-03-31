@@ -4,17 +4,12 @@ const currentLocation = window.location.href;
 const url = "/db"+new URL(currentLocation).pathname;
 log(url);
 async function getBook() {
-    return fetch(url).then((res) => {
-        if(res.status === 200){
-            return res.status(404).send();
-        }
-        res.json()
-    }).then((bookJson) => {
-            log(bookJson[0]);
-            return bookJson[0];
+    return fetch(url).then((res) => res.json())
+        .then((bookJson) => {
+            log(bookJson);
+            return bookJson;
         }).catch(error => log(error));
 }
-getBook().then(res=>log(res.image));
 
 const save = document.getElementById("save");
 const commentBox = document.getElementById('commentBox');
