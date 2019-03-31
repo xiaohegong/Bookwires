@@ -133,8 +133,8 @@ app.get('/db/books', (req, res) => {
 app.post('/db/books', (req, res) => {
     const newBook = new Book({
         "bookTitle": req.body.bookTitle,
-        "rating": req.body.rating,
-        "numOfRate": req.body.numOfRate,
+        // "rating": req.body.rating,
+        // "numOfRate": req.body.numOfRate,
         // "user": req.body.user,
         "image": req.body.image,
         "description": req.body.description,
@@ -145,7 +145,7 @@ app.post('/db/books', (req, res) => {
     // if (!newBook.bookTitle || !newBook.rating || !newBook.numOfRate || !newBook.user || !newBook.description) {
     //     return res.status(400).send();
     // }
-    if (!newBook.bookTitle || !newBook.rating || !newBook.numOfRate || !newBook.description) {
+    if (!newBook.bookTitle || !newBook.description) {
         return res.status(400).send();
     }
 
@@ -181,43 +181,51 @@ app.get('/db/books/:id', (req, res) => {
         });
 });
 
-app.post('/db/books/:id', (req, res) => {
+app.post('/db/booksChapter/:id', (req, res) => {
     // Validate the id
     const id = req.params.id;
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
+    Book.addChapter(req.body.chapterTitle, req.body.content, id).then(result=>res.send(result));
 
     // Check if the inputs are valid
-    const newChapter = new Chapter({
-        "chapterNum": req.body.chapterNum,
-        "content": req.body.content
-    });
-    if (!newChapter.chapterNum || !newChapter.content)
-        return res.status(400).send();
+    // const newChapter = new Chapter({
+    //     "chapterTitle": req.body.chapterTitle,
+    //     "content": req.body.content
+    // });
+    // if (!newChapter.chapterTitle || !newChapter.content)
+    //     return res.status(400).send();
+    //
+    // // Otherwise, find book by id and send back
+    // Book.findBookByID(id)
+    //     .then((book) => {
+    //         // Save chapter to queried book
+    //         book.addChapter(req.body.chapterTitle, req.body.content, book);
+    //
+    //         // book.chapters.push(newChapter);
+    //         // book.save().then(
+    //         //     (updated) => {
+    //         //         res.send({
+    //         //             "reservation": newChapter,
+    //         //             "restaurant": updated
+    //         //         });
+    //         //     }, (error) => {
+    //         //         return res.status(400).send(error); // 400 for bad request
+    //         //     });
+    //     })
+    //     .catch((error) => {
+    //         return res.status(500).send(error);
+    //     });
 
-    // Otherwise, find book by id and send back
-    Book.findBookByID(id)
-        .then((book) => {
-            // Save chapter to queried book
-            // TODO: Does this work...???
-            book.addChapter(req.body.chapterNum, req.body.content, book);
-
-            // book.chapters.push(newChapter);
-            // book.save().then(
-            //     (updated) => {
-            //         res.send({
-            //             "reservation": newChapter,
-            //             "restaurant": updated
-            //         });
-            //     }, (error) => {
-            //         return res.status(400).send(error); // 400 for bad request
-            //     });
-        })
-        .catch((error) => {
-            return res.status(500).send(error);
-        });
-
+});
+app.post('/db/booksComment/:id', (req, res) => {
+    // Validate the id
+    const id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+    Book.addComments(req.body.user, req.body.content, id).then(result => res.send(result));
 });
 
 app.delete('/db/books/:id/:chapter_id', (req, res) => {

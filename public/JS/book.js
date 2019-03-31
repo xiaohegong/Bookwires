@@ -6,10 +6,11 @@ log(url);
 async function getBook() {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
-            log(bookJson);
+            log(bookJson)
             return bookJson;
         }).catch(error => log(error));
 }
+getBook().then(res=>log(res.image));
 
 const save = document.getElementById("save");
 const commentBox = document.getElementById('commentBox');
@@ -79,48 +80,56 @@ const bookInformation = document.getElementById("bookInformation");
 
 // Let's create a new chapter
 (function () {
-    const authorTitle = document.createTextNode(book.getBookTitle());
-    const authorName = document.createTextNode(book.getAuthor());
-    const bookdesription = document.createTextNode(book.getDescription());
-    const bookNameContainer = document.createElement('h1');
-    const zoom = document.getElementsByClassName("zoom")[0];
-    const bookImage = document.createElement('img');
+    getBook().then(res=>{
+        const authorTitle = document.createTextNode(res.bookTitle);
+        //TEMP
+        const authorName = document.createTextNode("WUXE");
+        const bookdesription = document.createTextNode(res.description);
+        const bookNameContainer = document.createElement('h1');
+        const zoom = document.getElementsByClassName("zoom")[0];
+        const bookImage = document.createElement('img');
 
-    bookImage.src = book.getImage();
-    zoom.appendChild(bookImage);
+        bookImage.src = res.image;
+        zoom.appendChild(bookImage);
 
-    bookNameContainer.appendChild(authorTitle);
-    const AuthorNameContainer = document.createElement('h3');
-    AuthorNameContainer.appendChild(authorName);
-    //AuthorNameContainer.href = 'www.google.ca'
-    const desriptionContainer = document.createElement('p');
-    desriptionContainer.appendChild(bookdesription);
-    bookInformation.insertBefore(bookNameContainer, bookInformation.lastElementChild);
-    bookInformation.insertBefore(AuthorNameContainer, bookInformation.lastElementChild);
-    bookInformation.insertBefore(desriptionContainer, bookInformation.lastElementChild);
+        bookNameContainer.appendChild(authorTitle);
+        const AuthorNameContainer = document.createElement('h3');
+        AuthorNameContainer.appendChild(authorName);
+        //AuthorNameContainer.href = 'www.google.ca'
+        const desriptionContainer = document.createElement('p');
+        desriptionContainer.appendChild(bookdesription);
+        bookInformation.insertBefore(bookNameContainer, bookInformation.lastElementChild);
+        bookInformation.insertBefore(AuthorNameContainer, bookInformation.lastElementChild);
+        bookInformation.insertBefore(desriptionContainer, bookInformation.lastElementChild);
+    });
+
 })();
 
 let i = 0;
-while (i < book.getTotalChapter()) {
-    const nextLine = document.createElement('tr');
+getBook().then(res=>{
+    while (i < res.chapters.length) {
+        const nextLine = document.createElement('tr');
 
-    for (let j = 0; j < 3; j++) {
-        if (i >= book.getTotalChapter()) {
-            break;
+        for (let j = 0; j < 3; j++) {
+            if (i >= res.chapters.length) {
+                break;
+            }
+            const newPost = document.createElement('td');
+            newPost.className = 'Chapter';
+            const newPostTitle = document.createTextNode(res.chapters[i].chapterTitle);
+            const newPostTitleContainer = document.createElement('a');
+            newPostTitleContainer.href = "public/HTML/ReadingPage.html";
+            newPostTitleContainer.appendChild(newPostTitle);
+            newPost.appendChild(newPostTitleContainer);
+            nextLine.appendChild(newPost);
+            i++;
         }
-        const newPost = document.createElement('td');
-        newPost.className = 'Chapter';
-        const newPostTitle = document.createTextNode(book.getChapter(i).getDescription());
-        const newPostTitleContainer = document.createElement('a');
-        newPostTitleContainer.href = "public/HTML/ReadingPage.html";
-        newPostTitleContainer.appendChild(newPostTitle);
-        newPost.appendChild(newPostTitleContainer);
-        nextLine.appendChild(newPost);
-        i++;
-    }
-    chapterTable.appendChild(nextLine);
+        chapterTable.appendChild(nextLine);
 
-}
+    }
+
+});
+
 
 //create author information
 const author = document.getElementById('authorInfo');
@@ -147,7 +156,7 @@ const slider = document.getElementsByClassName("carousel-inner");
 
 for (let i = 0; i < 3; i++) {
     const bookImage = document.createElement('img');
-    bookImage.src = 'img/WanderingEarth.jpg';
+    bookImage.src = '../img/WanderingEarth.jpg';
     bookImage.className = 'otherBookImg';
     slider[0].children[i].appendChild(bookImage);
     const bookname = document.createTextNode('BOOK NAME');
