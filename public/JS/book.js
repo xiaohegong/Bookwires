@@ -6,7 +6,6 @@ log(url);
 async function getBook() {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
-            log(bookJson)
             return bookJson;
         }).catch(error => log(error));
 }
@@ -132,22 +131,22 @@ getBook().then(res=>{
 
 
 //create author information
-const author = document.getElementById('authorInfo');
-const authorDetail = document.getElementById('authorDetail');
-const authorImageContainer = document.createElement('a');
-authorImageContainer.href = "public/HTML/profile.html";
-const authorImage = document.createElement('img');
-authorImage.className = 'authorPic';
-authorImage.src = book.author.getImage();
-authorImageContainer.appendChild(authorImage);
-author.insertBefore(authorImageContainer, authorDetail);
-// author.appendChild(authorImage);
-
-
-const nameContainer = document.createElement('h3');
-const authorName = document.createTextNode(book.getAuthor());
-nameContainer.appendChild(authorName);
-author.insertBefore(nameContainer, authorDetail);
+// const author = document.getElementById('authorInfo');
+// const authorDetail = document.getElementById('authorDetail');
+// const authorImageContainer = document.createElement('a');
+// authorImageContainer.href = "public/HTML/profile.html";
+// const authorImage = document.createElement('img');
+// authorImage.className = 'authorPic';
+// authorImage.src = book.author.getImage();
+// authorImageContainer.appendChild(authorImage);
+// author.insertBefore(authorImageContainer, authorDetail);
+// // author.appendChild(authorImage);
+//
+//
+// const nameContainer = document.createElement('h3');
+// const authorName = document.createTextNode(book.getAuthor());
+// nameContainer.appendChild(authorName);
+// author.insertBefore(nameContainer, authorDetail);
 
 // author.appendChild(nameContainer);
 
@@ -168,11 +167,11 @@ for (let i = 0; i < 3; i++) {
 
 //create comments
 const commentsArea = document.getElementById('commentsArea');
-
-for (let i = 0; i < book.comments.length; i++) {
-    const comment = book.comments[i];
-    addCommentToTable(comment);
-}
+//
+// for (let i = 0; i < book.comments.length; i++) {
+//     const comment = book.comments[i];
+//     addCommentToTable(comment);
+// }
 
 // Code for animated menu bar
 const comments = document.getElementById("comments");
