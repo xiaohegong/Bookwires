@@ -15,7 +15,7 @@
     cursor: pointer;
 }
 
-.category {
+#category {
     text-align: center;
     margin: 10px;
     color: white;

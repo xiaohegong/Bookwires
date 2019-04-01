@@ -1,29 +1,39 @@
 "use strict";
 const log = console.log;
 const booksRanking = document.querySelector("#ranking");
+const genre = window.location.search.substring(1);
 
 
 async function getAllBook(url) {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
-            log(bookJson)
             return bookJson;
         }).catch(error => log(error));
 }
-getAllBook("/db/books").then(res=>{
-    bookSetUp(res);
-});
-
-function fuzzyBookSearch(input, inputList) {
-    const outputList = [];
-    //name search, similarity limit is .75
-    for (let index = 0; index < inputList.length; index++) {
-        if (stringCompByLevenshteinDistance(input, inputList[index].bookTitle) > 0.5) {
-            outputList.push(inputList[index]);
-        }
-    }
-    return outputList;
+if(genre !== ""){
+    (function(){
+        let data = {
+            genre: genre
+        };
+        const request = new Request('/db/bookByGenre', {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },});
+        getAllBook(request).then(res=>{
+            bookSetUp(res);
+        });
+    })();
 }
+else{
+    getAllBook("/db/books").then(res=>{
+        bookSetUp(res);
+    });
+}
+
+
 // getBook().then(res=>log(res.image));
 // A function to generating stars with the given num
 function makeStars(num) {
@@ -45,26 +55,84 @@ function makeStars(num) {
 
     return div;
 }
+function searchByRate(rate){
+    if(genre === "") {
+        let data = {
+            rate: rate
+
+        };
+        const request = new Request('/db/bookByRate', {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+        });
+        getAllBook(request).then(res => {
+            bookSetUp(res);
+
+        });
+    }
+    else{
+        let data = {
+            rate:rate,
+            genre:genre
+
+        };
+        const request = new Request('/db/bookByRateWithGenre', {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },});
+        getAllBook(request).then(res=>{
+            bookSetUp(res);
+
+        });
+    }
+}
 
 
 function searchBarSearch() {
     const searchBar = document.getElementById('searchBar');
-    let data = {
-        word: searchBar.value
-    };
-    //bookSetUp(fuzzyBookSearch(searchBar.value,res));
-    const request = new Request('/db/fuzzySearch', {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-        },});
-    getAllBook(request).then(res=>{
-        bookSetUp(res);
-        // const searchBar = document.getElementById('searchBar');
-        // bookSetUp(fuzzyBookSearch(searchBar.value,res));
-    });
+    if(genre === "") {
+        let data = {
+            word: searchBar.value,
+
+        };
+        const request = new Request('/db/fuzzySearch', {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+        });
+        getAllBook(request).then(res => {
+            bookSetUp(res);
+
+        });
+    }
+    else{
+        let data = {
+            word: searchBar.value,
+            genre:genre
+
+        };
+        const request = new Request('/db/fuzzySearchWithGenre', {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },});
+        getAllBook(request).then(res=>{
+            bookSetUp(res);
+
+        });
+    }
 
 }
 
@@ -76,6 +144,9 @@ function bookSetUp(books) {
     while (booksRanking.firstChild) {
         booksRanking.removeChild(booksRanking.firstChild);
     }
+    const header = document.createElement('h1');
+    header.appendChild(document.createTextNode("Books"));
+    booksRanking.appendChild(header);
     for (let i = 0; i < books.length; i++) {
         let book = books[i];
         // First, add authors

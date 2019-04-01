@@ -1,9 +1,8 @@
 'use strict';
 const log = console.log;
 const currentLocation = window.location.href;
-const url = "/db"+new URL(currentLocation).pathname;
-log(url);
 async function getBook() {
+    const url = "/db"+new URL(currentLocation).pathname;
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
             return bookJson;

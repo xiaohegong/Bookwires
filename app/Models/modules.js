@@ -114,10 +114,36 @@ BookSchema.statics.fuzzySearch = (name) => {
 
 };
 
+BookSchema.statics.fuzzySearchWithGenre = (name,genre) => {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({bookTitle: {$regex:name},genre:genre}).then((book) => {
+            resolve(book);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+
+
+};
+
 BookSchema.statics.findByRate = (rate) => {
     // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({rate: {$gte: rate}}).then((book) => {
+            resolve(book);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+
+
+};
+
+BookSchema.statics.findByRate = (rate,genre) => {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        Book.find({rate: {$gte: rate},genre:genre}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});

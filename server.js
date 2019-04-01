@@ -220,10 +220,58 @@ app.put('/db/fuzzySearch', (req, res) => {
         );
 });
 
+app.put('/db/fuzzySearchwithGenre', (req, res) => {
+    log(req.body.word);
+    Book.fuzzySearchWithGenre(req.body.word,req.body.genre)
+        .then((books) => {
+            res.send(books);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.put('/db/bookByGenre', (req, res) => {
+    Book.findByGenre(req.body.genre)
+        .then((books) => {
+            res.send(books);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.put('/db/bookByRate', (req, res) => {
+    Book.findByRate(req.body.rate)
+        .then((books) => {
+            res.send(books);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.put('/db/bookByRateWithGenre', (req, res) => {
+    Book.findByRateWithGenre(req.body.rate,req.body.genre)
+        .then((books) => {
+            res.send(books);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+
+
 app.get('/search', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
     res.sendFile(dir + 'search.html');
 });
+
 
 app.post('/db/books', (req, res) => {
     const newBook = new Book({
