@@ -2,7 +2,7 @@
 const log = console.log;
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
-const validator = require('validator')
+const validator = require('validator');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const {MongoClient, ObjectID} = require('mongodb');
 
@@ -104,7 +104,7 @@ BookSchema.statics.findByGenre = (genre) => {
 BookSchema.statics.fuzzySearch = (name) => {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: {$regex:name}}).then((book) => {
+        Book.find({bookTitle: {$regex: name}}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
@@ -131,9 +131,9 @@ BookSchema.statics.findBook = (bookTitle) => {
     // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({bookTitle}).then((book) => {
-            if(book.length === 0){
-                reject({code: 404,error:"can't find book"});
-            }else {
+            if (book.length === 0) {
+                reject({code: 404, error: "can't find book"});
+            } else {
                 resolve(book);
             }
         }, (error) => {
@@ -206,7 +206,7 @@ BookSchema.statics.addChapter = (title, content, id) => {
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
         // log(book);
-        Book.findOneAndUpdate({_id:id},{
+        Book.findOneAndUpdate({_id: id}, {
                 $push: {
                     chapters: {
                         chapterTitle: title,
@@ -228,7 +228,7 @@ BookSchema.statics.addComments = (user, content, id) => {
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
         // log(book);
-        Book.findOneAndUpdate({_id:id},{
+        Book.findOneAndUpdate({_id: id}, {
                 $push: {
                     comments: {
                         user: user,
@@ -288,105 +288,105 @@ const Book = mongoose.model('Book', BookSchema);
 
 
 const UserSchema = mongoose.Schema({
-	//13 parameters totally
-	
-	//Those three parameters are required when a user created
+    //13 parameters totally
+
+    //Those three parameters are required when a user created
     name: {
         type: String,
         required: true,
         minlength: 3
     },
-	password:{
-		type:String,
-		required: true,
-		//minlength: 7
-	}
+    password: {
+        type: String,
+        required: true,
+        //minlength: 7
+    },
     email: {
-		type: String,
-		required: true,
-		minlength: 1,
-		trim: true, // trim whitespace
-		unique: true,
-		validate: {
-			validator: validator.isEmail,
-			message: 'Not valid email'
-		}
-	},
-	
-	//Other 4 non-list parameters
-	isAdmin: {
-		type: boolean,
-		required: true,
-		default:0
-	}
-	token: {
-		type: Number,
-		default: 0
-	}
-	followers:{
-		type: Number,
-		default: 0
-	},
+        type: String,
+        required: true,
+        minlength: 1,
+        trim: true, // trim whitespace
+        unique: true,
+        validate: {
+            validator: validator.isEmail,
+            message: 'Not valid email'
+        }
+    },
+
+    //Other 4 non-list parameters
+    isAdmin: {
+        type: boolean,
+        required: true,
+        default: 0
+    },
+    token: {
+        type: Number,
+        default: 0
+    },
+    followers: {
+        type: Number,
+        default: 0
+    },
     image: {
         type: String,
         default: "../img/avatar.jpg"
     },
-	
+
     //list parameters
     bookshelf: [ObjectId],
     writtenBook: [ObjectId],
-	topThreeBooks:[ObjectId],
-    following:[ObjectId],
-	newMessage[ObjectId],
-	oldMessage[ObjectId]
+    topThreeBooks: [ObjectId],
+    following: [ObjectId],
+    newMessage: [ObjectId],
+    oldMessage: [ObjectId]
 });
 
 
-UserSchema.pre('save', function(next) {
-    const user = this
+UserSchema.pre('save', function (next) {
+    const user = this;
 
     if (user.isModified('password')) {
         bcrypt.genSalt(10, (error, salt) => {
             bcrypt.hash(user.password, salt, null, (error, hash) => {
-                user.password = hash
-                next()
-            })
-        })
+                user.password = hash;
+                next();
+            });
+        });
     } else {
         next();
     }
 
-})
+});
 
 // Our own student finding function 
-UserSchema.statics.findByUsernamePassword = function(username, password) {
-    const User = this
-    
-	return User.findOne({name: username}).then((user) => {
-		if (!user) {
-			return Promise.reject()
-			
-		}
-		return new Promise((resolve, reject) => {
-			bcrypt.compare(password, user.password, (error, result) => {
-				if (result) {
-					resolve(user);
-				} else {
-					reject();
-				}
-			})
-		})
-	})
-}
+UserSchema.statics.findByUsernamePassword = function (username, password) {
+    const User = this;
 
-UserSchema.statics.findByName = function(username){
-	const User = this
-	return User.findOne({name:username}).then((user) => {
-		if(!user){
-			return Promise.reject()
-		}
-	})
-}
+    return User.findOne({name: username}).then((user) => {
+        if (!user) {
+            return Promise.reject();
+
+        }
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(password, user.password, (error, result) => {
+                if (result) {
+                    resolve(user);
+                } else {
+                    reject();
+                }
+            });
+        });
+    });
+};
+
+UserSchema.statics.findByName = function (username) {
+    const User = this;
+    return User.findOne({name: username}).then((user) => {
+        if (!user) {
+            return Promise.reject();
+        }
+    });
+};
 
 UserSchema.statics.findUserByID = (id) => {
     // Create a new student
@@ -400,8 +400,8 @@ UserSchema.statics.findUserByID = (id) => {
 
 };
 
-UserSchema.statics.addFollowing = (id,idToFollow) => {
-	//after this the user id will follow user idToFollow
+UserSchema.statics.addFollowing = (id, idToFollow) => {
+    //after this the user id will follow user idToFollow
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $push: {
@@ -415,23 +415,25 @@ UserSchema.statics.addFollowing = (id,idToFollow) => {
             reject({code: 404, error});
         });
     });
-}
+};
 
 //This function we be called iff addFollowing is called ↕
 UserSchema.statics.beFollowed = (id) => {
-	return new Promise((resolve,reject) => {
-		User.findByIdAndUpdate(id, {
-			$inc {{followers: 1}}
-        }).then((result) => {
-            resolve(result);
-        }, (error) => {
-            reject({code: 404, error});
-        });	
-	});
-}
+    return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate(id, {
+            $inc: {followers: 1}
 
-UserSchema.statics.removeFollowing = (id,idToNotFollow) => {
-	//after this the user id will not follow user idToNotFollow anymore
+        });
+    }).then((result) => {
+        resolve(result);
+    }, (error) => {
+        reject({code: 404, error});
+    });
+};
+
+
+UserSchema.statics.removeFollowing = (id, idToNotFollow) => {
+    //after this the user id will not follow user idToNotFollow anymore
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $pull: {
@@ -445,19 +447,22 @@ UserSchema.statics.removeFollowing = (id,idToNotFollow) => {
             reject({code: 404, error});
         });
     });
-}
+};
 // This two functions must be used together ↕
 UserSchema.statics.beNotFollowed = (id) => {
-	return new Promise((resolve,reject) => {
-		User.findByIdAndUpdate(id, {
-			$inc {{followers: -1}}
+    return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate(id, {
+            $inc: {
+                followers: -1
+            }
         }).then((result) => {
             resolve(result);
         }, (error) => {
             reject({code: 404, error});
-        });	
-	});
-}
+        });
+    });
+};
+
 
 const User = mongoose.model('User', UserSchema);
 
