@@ -71,7 +71,6 @@ const BookSchema = mongoose.Schema({
 });
 
 BookSchema.statics.addBook = (req) => {
-    // Create a new student
     return new Promise((resolve, reject) => {
         const book = new Book({
             bookTitle: req.body.bookTitle,
@@ -84,12 +83,9 @@ BookSchema.statics.addBook = (req) => {
             reject({code: 400, error});
         });
     });
-
-
 };
 
 BookSchema.statics.findByGenre = (genre) => {
-    // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({genre: genre}).then((book) => {
             resolve(book);
@@ -102,7 +98,6 @@ BookSchema.statics.findByGenre = (genre) => {
 };
 
 BookSchema.statics.fuzzySearch = (name) => {
-    // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({bookTitle: {$regex: name}}).then((book) => {
             resolve(book);
@@ -115,7 +110,6 @@ BookSchema.statics.fuzzySearch = (name) => {
 };
 
 BookSchema.statics.findByRate = (rate) => {
-    // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({rate: {$gte: rate}}).then((book) => {
             resolve(book);
@@ -128,7 +122,6 @@ BookSchema.statics.findByRate = (rate) => {
 };
 
 BookSchema.statics.findBook = (bookTitle) => {
-    // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({bookTitle}).then((book) => {
             if (book.length === 0) {
@@ -144,7 +137,6 @@ BookSchema.statics.findBook = (bookTitle) => {
 };
 
 BookSchema.statics.findBookByID = (id) => {
-    // Create a new student
     return new Promise((resolve, reject) => {
         Book.findById(id).then((book) => {
             resolve(book);
@@ -166,7 +158,7 @@ BookSchema.statics.updateDescription = (req) => {
             }
 
         }, {
-            returnOriginal: false // gives us back updated arguemnt
+            returnOriginal: false 
         }).then((result) => {
             resolve(result);
         }, (error) => {
@@ -189,7 +181,7 @@ BookSchema.statics.updateImage = ((req) => {
             }
 
         }, {
-            returnOriginal: false // gives us back updated arguemnt
+            returnOriginal: false
         }).then((result) => {
             resolve(result);
         }, (error) => {
@@ -290,7 +282,7 @@ const Book = mongoose.model('Book', BookSchema);
 const UserSchema = mongoose.Schema({
     //13 parameters totally
 
-    //Those three parameters are required when a user created
+    //Those 4 parameters are required when a user created
     name: {
         type: String,
         required: true,
@@ -313,12 +305,12 @@ const UserSchema = mongoose.Schema({
         }
     },
 
-    //Other 4 non-list parameters
     isAdmin: {
         type: Boolean,
-        required: true,
-        default: 0
+        required: true
     },
+
+    //Other 3 non-list parameters
     token: {
         type: Number,
         default: 0
@@ -342,6 +334,27 @@ const UserSchema = mongoose.Schema({
 });
 
 
+//When a new user is created, 4 parameters must be provided: name, password, mail, isAdmin.
+//All the other parameter can be accomplished later
+UserSchema.statics.addNewUser = (req) => {
+	return new Promise((resolve,reject) => {
+		const user = new User({
+			name: req.body.name,
+			password: req.body.password,
+			email: req.body.email,
+			isAdmin:req.body.isAdmin
+		});
+        user.save().then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 400, error});
+        });
+
+	})
+}
+
+
+//idk what's this 
 UserSchema.pre('save', function (next) {
     const user = this;
 
@@ -389,7 +402,6 @@ UserSchema.statics.findByName = function (username) {
 };
 
 UserSchema.statics.findUserByID = (id) => {
-    // Create a new student
     return new Promise((resolve, reject) => {
         User.findById(id).then((user) => {
             resolve(user);
@@ -531,6 +543,21 @@ UserSchema.statics.removeBooksWritten = (uid,bid) => {
 	});
 };
 
+
+UserSchema.statics.addNewUser = (req) => {
+    return new Promise((resolve, reject) => {
+        const newUser = new User({
+            bookTitle: req.body.bookTitle,
+            image: req.body.image
+        });
+        // Save student to the database
+        book.save().then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 400, error});
+        });
+    });
+};
 
 
 const User = mongoose.model('User', UserSchema);
