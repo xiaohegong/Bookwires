@@ -464,6 +464,75 @@ UserSchema.statics.beNotFollowed = (id) => {
 };
 
 
+UserSchema.statics.addNewBookToRead = (uid,bid) => {
+	return new Promise((resolve,reject) => {
+		User.findByIdAndUpdate(uid,{
+			$push: {
+				bookshelf:{
+					id:bid
+				}
+			}
+		}).then((result) => {
+			resolve(result);
+		},(error) => {
+			reject({code:404,error});
+		});
+	});
+};
+
+
+UserSchema.statics.removeBookToRead = (uid,bid) => {
+	return new Promise((resolve,reject) => {
+		User.findByIdAndUpdate(uid,{
+			$pull: {
+				bookshelf:{
+					id:bid
+				}
+			}
+		}).then((result) => {
+			resolve(result);
+		},(error) => {
+			reject({code:404,error});
+		});
+	});
+};
+
+
+UserSchema.statics.addNewBooksWritten = (uid,bid) => {
+	return new Promise((resolve,reject) => {
+		User.findByIdAndUpdate(uid,{
+			$push: {
+				writtenBook:{
+					id:bid
+				}
+			}
+		}).then((result) => {
+			resolve(result);
+		},(error) => {
+			reject({code:404,error});
+		});
+	});
+};
+
+
+UserSchema.statics.removeBooksWritten = (uid,bid) => {
+	return new Promise((resolve,reject) => {
+		User.findByIdAndUpdate(uid,{
+			$pull: {
+				writtenBook:{
+					id:bid
+				}
+			}
+		}).then((result) => {
+			resolve(result);
+		},(error) => {
+			reject({code:404,error});
+		});
+	});
+};
+
+
+
 const User = mongoose.model('User', UserSchema);
 
 
