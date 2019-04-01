@@ -3,26 +3,71 @@ const log = console.log;
 let tempBook = fakeBooks;//server call that gets real info
 let tempUser = fakeUser;//server call that gets real info
 
+async function getAll(url) {
+    return fetch(url).then((res) => res.json())
+        .then((itemJson) => {
+            return itemJson;
+        }).catch(error => log(error));
+}
+
+
+
 const booksRanking = document.querySelector("#InfoContainer");
 const bookNavButton = document.querySelector("#bookNav");
 bookNavButton.addEventListener('click', function () {
-    switchToBook(tempBook);
+    getAll("/db/books").then(res=>{
+        switchToBook(res);
+    });
+
 }, false);
 const UserNavButton = document.querySelector("#userNav");
 UserNavButton.addEventListener('click', function () {
-    switchToUser(tempUser);
+    getAll("/db/users").then(res=>{
+        switchToUser(res);
+    });
+
 }, false);
 
 let curNav = bookNavButton;
 
 function searchBarBookSearch() {
     const searchBar = document.getElementsByClassName('searchBar');
-    switchToBook(fuzzyBookSearch(searchBar[0].value));
+    let data = {
+        word: searchBar[0].value,
+
+    };
+    const request = new Request('/db/fuzzySearch', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+    });
+    getAll(request).then(res => {
+        switchToBook(res);
+
+    });
 }
 
 function searchBarUserSearch() {
     const searchBar = document.getElementsByClassName('searchBar');
-    switchToUser(fuzzyUserSearch(searchBar[0].value));
+    let data = {
+        word: searchBar[0].value,
+
+    };
+    const request = new Request('/db/searchUser', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+    });
+    getAll(request).then(res => {
+        switchToUser(res);
+
+    });
 }
 
 function changeActive(elem) {
@@ -31,7 +76,7 @@ function changeActive(elem) {
     curNav = elem;
 }
 
-function switchToBook(books) {
+function switchToBook(res) {
     changeActive(bookNavButton);
     while (booksRanking.firstChild) {
         booksRanking.removeChild(booksRanking.firstChild);
@@ -48,14 +93,16 @@ function switchToBook(books) {
     searchButtonContainer.appendChild(searchButton);
     searchButtonContainer.onclick = searchBarBookSearch;
     booksRanking.appendChild(searchButtonContainer);
-    for (let i = 0; i < books.length; i++) {
-        let book = books[i];
+
+    for (let i = 0; i < res.length; i++) {
+        let book = res[i];
         // First, add authors
         const anchor = document.createElement("a");
         anchor.setAttribute("href", "");
         const parag = document.createElement("p");
         parag.className = "author";
-        const author = document.createTextNode(book.getAuthor());
+        //TEMP
+        const author = document.createTextNode("HELLO");
         parag.appendChild(author);
         anchor.appendChild(parag);
         // Then add book image to the book shelf
@@ -65,18 +112,19 @@ function switchToBook(books) {
         const divider = document.createElement("div");
         divider.className = "bookDisplay";
         const imgContainer = document.createElement('a');
-        imgContainer.setAttribute('href', 'public/HTML/adminBook.html');
+        imgContainer.setAttribute('href', "./books/" + String(book._id));
         const img = document.createElement("img");
-        img.src = book.getImage();
+        img.src = book.image;
         img.className = "bookDisplayImg";
         imgContainer.appendChild(img);
         const span = document.createElement("span");
         span.className = "bookDisplayText";
         const titleContainer = document.createElement('p');
-        titleContainer.appendChild(document.createTextNode(book.getBookTitle()));
+        titleContainer.id = String(book._id);
+        titleContainer.appendChild(document.createTextNode(book.bookTitle));
         span.appendChild(titleContainer);
-
-        const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre());
+        //temp
+        const info = document.createTextNode("HELLO" + " | " + book.genre);
         const p = document.createElement("p");
         p.className = "displayInfo";
         p.appendChild(info);
@@ -92,9 +140,11 @@ function switchToBook(books) {
 
         booksRanking.appendChild(divider);
     }
+
+
 }
 
-function switchToUser(users) {
+function switchToUser(res) {
     changeActive(UserNavButton);
 
     while (booksRanking.firstChild) {
@@ -113,64 +163,78 @@ function switchToUser(users) {
     searchButtonContainer.appendChild(searchButton);
     searchButtonContainer.onclick = searchBarUserSearch;
     booksRanking.appendChild(searchButtonContainer);
+        for (let i = 0; i < res.length; i++) {
+            let user = res[i];
+            // First, add authors
+            const anchor = document.createElement("a");
+            anchor.setAttribute("href", "");
+            const parag = document.createElement("p");
+            parag.className = "author";
+            const author = document.createTextNode(user.name);
+            parag.appendChild(author);
+            anchor.appendChild(parag);
 
-    for (let i = 0; i < users.length; i++) {
-        let user = users[i];
-        // First, add authors
-        const anchor = document.createElement("a");
-        anchor.setAttribute("href", "");
-        const parag = document.createElement("p");
-        parag.className = "author";
-        const author = document.createTextNode(user.getName());
-        parag.appendChild(author);
-        anchor.appendChild(parag);
+            // Add books to the ranking section
+            const divider = document.createElement("div");
 
-        // Add books to the ranking section
-        const divider = document.createElement("div");
-        divider.className = "bookDisplay";
-        const imgContainer = document.createElement('a');
-        imgContainer.setAttribute('href', 'public/HTML/profile.html');
-        const img = document.createElement("img");
-        if (user.getImage() == null) {
-            img.src = "img/dog.jpeg";
-        } else {
-            img.src = user.getImage();
+            divider.className = "bookDisplay";
+            const imgContainer = document.createElement('a');
+            imgContainer.id = user._id;
+            imgContainer.setAttribute('href', 'public/HTML/profile.html');
+            const img = document.createElement("img");
+            if (user.image == null) {
+                img.src = "img/dog.jpeg";
+            } else {
+                img.src = user.image;
+            }
+            img.className = "userIcon";
+            imgContainer.appendChild(img);
+            const span = document.createElement("span");
+            span.className = "bookDisplayText";
+            span.appendChild(document.createElement("p").appendChild(document.createTextNode(user.name)));
+
+
+            const button = getDeleteButton();
+            button.onclick = deleteUser;
+            divider.appendChild(imgContainer);
+            divider.appendChild(span);
+            divider.appendChild(button);
+
+
+            booksRanking.appendChild(divider);
         }
-        img.className = "userIcon";
-        imgContainer.appendChild(img);
-        const span = document.createElement("span");
-        span.className = "bookDisplayText";
-        span.appendChild(document.createElement("p").appendChild(document.createTextNode(user.getName())));
-
-
-        const button = getDeleteButton();
-        button.onclick = deleteUser;
-        divider.appendChild(imgContainer);
-        divider.appendChild(span);
-        divider.appendChild(button);
-
-
-        booksRanking.appendChild(divider);
-    }
-
 
 }
-
-switchToBook(tempBook);
+getAll("/db/books").then(res=>{
+    switchToBook(res);
+});
 
 
 function deleteBook(e) {
     e.preventDefault();
-    const name = e.target.parentElement.children[1].children[0].innerText;
+    const name = e.target.parentElement.children[1].children[0];
     const statusBar = document.getElementsByClassName("statBox");
     statusBar[0].children[1].innerHTML = parseInt(statusBar[0].children[1].innerHTML) + 1;
-    deleteBookForAllUsers(searchBooksByTitle(name));
+    deleteBookForAllUsers(searchBooksByTitle(name.innerText));
 
     function removeBook(name) {
         return tempBook.filter((fBook) => fBook.bookTitle !== name);
     }
 
-    tempBook = removeBook(name); //this is a server that support to remove a book from the database
+
+    const request = new Request('/db/books/'+name.id, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+    });
+    getAll(request).then(res => {
+        log("OUT");
+
+    });
+
+    tempBook = removeBook(name.innerText); //this is a server that support to remove a book from the database
 
 
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
@@ -179,21 +243,33 @@ function deleteBook(e) {
 
 function deleteUser(e) {
     e.preventDefault();
-    const name = e.target.parentElement.children[1].innerText;
+    const name = e.target.parentElement.children[1];
+    const id = e.target.parentElement.children[0].id;
     const statusBar = document.getElementsByClassName("statBox");
     statusBar[1].children[1].innerHTML = parseInt(statusBar[1].children[1].innerHTML)+1;
 
     function removeUser(name) {
         const targetUser = tempUser.filter((user) => user.name === name);
-        const targetUserAuthoredBooks = targetUser[0].getWrittenBook();
-        targetUserAuthoredBooks.forEach(function(entry) {
-            tempBook = tempBook.filter((fBook) => fBook.bookTitle !== entry.getBookTitle());
-            statusBar[0].children[1].innerHTML = parseInt(statusBar[0].children[1].innerHTML) + 1;
-        });
+        // const targetUserAuthoredBooks = targetUser[0].getWrittenBook();
+        // targetUserAuthoredBooks.forEach(function(entry) {
+        //     tempBook = tempBook.filter((fBook) => fBook.bookTitle !== entry.getBookTitle());
+        //     statusBar[0].children[1].innerHTML = parseInt(statusBar[0].children[1].innerHTML) + 1;
+        // });
         return tempUser.filter((user) => user.name !== name);
     }
+    const request = new Request('/db/users/'+id, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+    });
+    getAll(request).then(res => {
+        log("OUT");
 
-    tempUser = removeUser(name); // this is a server that support to remove user from the database
+    });
+
+    tempUser = removeUser(name.innerText); // this is a server that support to remove user from the database
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
 
 }

@@ -282,7 +282,7 @@ BookSchema.methods.newRate = (rate, book) => {
     });
 };
 
-BookSchema.methods.deleteChapter = (id, chap_id) => {
+BookSchema.statics.deleteChapter = (id, chap_id) => {
 
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
@@ -294,6 +294,19 @@ BookSchema.methods.deleteChapter = (id, chap_id) => {
                 }
             }
         }).then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+};
+
+BookSchema.statics.deleteBook = (id) => {
+
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        Book.findByIdAndDelete(id).then((result) => {
             resolve(result);
         }, (error) => {
             reject({code: 404, error});
@@ -378,6 +391,32 @@ UserSchema.statics.addNewUser = (req) => {
 
 	})
 }
+
+UserSchema.statics.fuzzySearch = (name) => {
+    return new Promise((resolve, reject) => {
+        User.find({name: {$regex: name}}).then((user) => {
+            resolve(user);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+
+
+};
+
+
+UserSchema.statics.deleteUser = (id) => {
+
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        User.findByIdAndDelete(id).then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+};
 
 
 //idk what's this 

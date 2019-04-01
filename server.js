@@ -60,6 +60,11 @@ app.route('/login')
 		res.sendFile(__dirname + '/public/HTML/login.html')
 })
 
+app.route('/admin')
+    .get(sessionChecker, (req, res) => {
+        res.sendFile(__dirname + '/public/HTML/admin.html')
+    });
+
 app.get('/index', (req, res) => {
     // check if we have active session cookie
     res.sendFile(__dirname + '/public/HTML/index.html');
@@ -209,7 +214,6 @@ app.get('/db/books', (req, res) => {
 });
 
 app.put('/db/fuzzySearch', (req, res) => {
-    log(req.body.word);
     Book.fuzzySearch(req.body.word)
         .then((books) => {
             res.send(books);
@@ -245,6 +249,17 @@ app.put('/db/bookByGenre', (req, res) => {
 
 app.put('/db/bookByRate', (req, res) => {
     Book.findByRate(req.body.rate)
+        .then((books) => {
+            res.send(books);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.put('/db/searchUser', (req, res) => {
+    User.fuzzySearch(req.body.word)
         .then((books) => {
             res.send(books);
         })
@@ -371,6 +386,15 @@ app.post('/db/booksComment/:id', (req, res) => {
     Book.addComments(req.body.user, req.body.content, id).then(result => res.send(result));
 });
 
+app.delete('/db/books/:id', (req, res) => {
+    // Validate the id
+    const id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+    Book.deleteBook(id).then(result => res.send(result));
+});
+
 app.delete('/db/books/:id/:chapter_id', (req, res) => {
     // Validate the id and reservation id
     const id = req.params.id;
@@ -457,6 +481,14 @@ app.get('/db/users', (req, res) => {
         );
 });
 
+
+app.delete('/db/users/:id', (req, res) => {
+    const id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+    User.deleteUser(id).then(result => res.send(result));
+});
 // // Set up a POST route to *create* a student
 // app.post('/book', (req, res) => {
 //     Book.addBook(req).then((result) => {
