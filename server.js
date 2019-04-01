@@ -115,13 +115,18 @@ app.post('/user/signup', (req, res) => {
 	// Create a new user
 	const user = new User({
         name: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        isAdmin: false,
+        token: 0,
+        followers: 0,
+        image: "../img/avatar.jpg",
         bookshelf: [],
         writtenBook: [],
-        followers: 0,
-        email: req.body.email,
-        image: "../img/avatar.jpg",
+        topThreeBooks: [],
         following: [],
-        password: req.body.password
+        newMessage: [],
+        oldMessage: []
     })
     
     req.session.user = user._id;
@@ -429,6 +434,9 @@ app.patch('/db/books/:id/:chapter_id', (req, res) => {
 
 });
 
+
+
+
 /* Routes for users */
 // TODO - to be edited after User Schema is posted
 app.get('/profile/:id', (req, res) => {
@@ -443,8 +451,8 @@ app.get('/profile/:id', (req, res) => {
 		if(!user){
 			res.status(404).send()
 		} else{
-            res.render("profile.hbs", 
-            {userid: id})
+            const dir = path.join(__dirname + "/public/HTML/");
+            res.sendFile(dir + 'book.html');
 		}
 	}).catch((error) => {
 		res.status(500).send()

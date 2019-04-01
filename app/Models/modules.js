@@ -333,7 +333,8 @@ const UserSchema = mongoose.Schema({
 
     isAdmin: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
 
     //Other 3 non-list parameters
