@@ -30,9 +30,19 @@ app.use(session({
 	}
 }))
 
+// use to redirect to home if already logged in
 const sessionChecker = (req, res, next) => {
 	if (req.session.user) {
-		res.redirect('index')
+		res.redirect('/index')
+	} else {
+		next();
+	}
+}
+
+// use to redirect if a session has not been created
+const sessionCheckLoggedIn = (req, res, next) => {
+	if (!req.session.user) {
+		res.redirect('/login')
 	} else {
 		next();
 	}
@@ -40,10 +50,7 @@ const sessionChecker = (req, res, next) => {
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
-    // res.redirect('/index');
-    const dir = path.join(__dirname + "/public/HTML/");
-    res.sendFile(dir + 'index.html');
-
+    res.redirect('/index')
     // res.sendFile('../HTML/index.html', {root: __dirname })
 });
 
@@ -54,16 +61,79 @@ app.route('/login')
 })
 
 app.get('/index', (req, res) => {
-	// check if we have active session cookie
-	if (req.session.user) {
-		res.sendFile(__dirname + '/public/HTML/index.html')
-		// res.render('dashboard.hbs', {
-		// 	email: req.session.email
-		// })
-	} else {
-		res.redirect('/login')
-	}
+    // check if we have active session cookie
+    res.sendFile(__dirname + '/public/HTML/index.html');
+	// if (req.session.user) {
+	// 	res.sendFile(__dirname + '/public/HTML/index.html')
+	// } else {
+	// 	res.redirect('/login')
+	// }
 })
+
+app.post('/users/login', (req, res) => {
+	const email = req.body.email
+	const password = req.body.password
+
+	User.findByEmailPassword(email, password).then((user) => {
+		if(!user) {
+            // TODO SEND "invalid username/password error"
+			res.redirect('/login')
+		} else {
+			// Add the user to the session cookie that we will
+            // send to the client
+            
+			req.session.user = user._id;
+			req.session.email = user.email
+			res.redirect('/index')
+		}
+	}).catch((error) => {
+        // TODO SEND "invalid request error"
+		res.status(400).redirect('/login')
+	})
+})
+
+app.get('/users/logout', sessionCheckLoggedIn, (req, res) => {
+	req.session.destroy((error) => {
+		if (error) {
+			res.status(500).send(error)
+		} else {
+			res.redirect('/index')
+		}
+	})
+})
+
+
+app.post('/user/signup', (req, res) => {
+
+	// Create a new user
+	const user = new User({
+		email: req.body.email,
+		password: req.body.password
+    })
+    
+    req.session.user = user._id;
+	req.session.email = user.email
+
+	// save user to database
+	user.save().then((result) => {
+        //TODO AFTER CLIENT RECIEVES THIS, CLIENT SHOULD MAKE A GET REQUEST TO HOME PAGE
+        // OR JUST REDIRECT RIGHT AWAY
+
+        // res.send(user)
+        res.redirect("/index");        
+	}, (error) => {
+		res.status(400).send(error) // 400 for bad request
+	})
+
+})
+
+// route for login
+app.route('/signup')
+	.get(sessionChecker, (req, res) => {
+		res.sendFile(__dirname + '/public/HTML/signUp.html')
+})
+
+
 
 
 
