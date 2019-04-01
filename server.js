@@ -120,13 +120,18 @@ app.post('/user/signup', (req, res) => {
 	// Create a new user
 	const user = new User({
         name: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        isAdmin: false,
+        token: 0,
+        followers: 0,
+        image: "../img/avatar.jpg",
         bookshelf: [],
         writtenBook: [],
-        followers: 0,
-        email: req.body.email,
-        image: "../img/avatar.jpg",
+        topThreeBooks: [],
         following: [],
-        password: req.body.password
+        newMessage: [],
+        oldMessage: []
     })
     
     req.session.user = user._id;
@@ -225,7 +230,6 @@ app.put('/db/fuzzySearch', (req, res) => {
 });
 
 app.put('/db/fuzzySearchwithGenre', (req, res) => {
-    log(req.body.word);
     Book.fuzzySearchWithGenre(req.body.word,req.body.genre)
         .then((books) => {
             res.send(books);
@@ -453,22 +457,55 @@ app.patch('/db/books/:id/:chapter_id', (req, res) => {
 
 });
 
+
+
+
 /* Routes for users */
 // TODO - to be edited after User Schema is posted
+app.get('/profile/:id', (req, res) => {
+    const id = req.params.id;
+
+    User.findById(id)
+    if(!ObjectID.isValid(id)){
+		res.status(404).send();
+    }
+    User.findById(id).then((user) =>{
+        
+		if(!user){
+			res.status(404).send()
+		} else{
+            const dir = path.join(__dirname + "/public/HTML/");
+            res.sendFile(dir + 'book.html');
+		}
+	}).catch((error) => {
+		res.status(500).send()
+	})
+
+});
+
+
+
 app.get('/db/users/:id', (req, res) => {
     const id = req.params.id;
-    User.findUserById(id)
-        .then((user) => {
-            if (!user) {
-                return res.status(404).send();
-            } else {
-                res.send(user);
-            }
-        })
-        .catch((error) => {
-            return res.status(500).send(error);
-        });
+    
+
+    User.findById(id)
+    if(!ObjectID.isValid(id)){
+		res.status(404).send();
+    }
+    User.findById(id).then((user) =>{
+		if(!user){
+			res.status(404).send()
+		} else{
+			res.send(user);
+		}
+	}).catch((error) => {
+		res.status(500).send()
+	})
+
 });
+
+
 
 app.get('/db/users', (req, res) => {
     User.find()
@@ -529,6 +566,7 @@ app.delete('/db/users/:id', (req, res) => {
 // app.post('/newChapter',(req,res)=>{
 //    Chapter.
 // });
+
 
 
 

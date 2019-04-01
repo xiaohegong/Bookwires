@@ -99,7 +99,7 @@ BookSchema.statics.findByGenre = (genre) => {
 
 BookSchema.statics.fuzzySearch = (name) => {
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: {$regex: name}}).then((book) => {
+        Book.find({bookTitle: {$regex: name, '$options' : 'i'}}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
@@ -112,7 +112,7 @@ BookSchema.statics.fuzzySearch = (name) => {
 BookSchema.statics.fuzzySearchWithGenre = (name,genre) => {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: {$regex:name},genre:genre}).then((book) => {
+        Book.find({bookTitle: {$regex:name, '$options' : 'i'}, genre: genre}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
@@ -346,7 +346,8 @@ const UserSchema = mongoose.Schema({
 
     isAdmin: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
 
     //Other 3 non-list parameters
@@ -624,6 +625,23 @@ UserSchema.statics.addNewUser = (req) => {
     });
 };
 
+
+UserSchema.statics.findUserById = function(id) {
+    const User = this
+    
+	return User.findOne({_id: id}).then((user) => {
+		if (!user) {
+			return Promise.reject()
+		}
+		return new Promise((resolve, reject) => {
+            if (result) {
+                resolve(user);
+            } else {
+                reject();
+            }
+		})
+	})
+}
 
 const User = mongoose.model('User', UserSchema);
 
