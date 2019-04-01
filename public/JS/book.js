@@ -116,7 +116,7 @@ getBook().then(res=>{
             newPost.className = 'Chapter';
             const newPostTitle = document.createTextNode(res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
-            newPostTitleContainer.href = "public/HTML/ReadingPage.html";
+            newPostTitleContainer.href = "public/HTML/readingPage.html";
             newPostTitleContainer.appendChild(newPostTitle);
             newPost.appendChild(newPostTitleContainer);
             nextLine.appendChild(newPost);
