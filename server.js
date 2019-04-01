@@ -366,20 +366,50 @@ app.patch('/db/books/:id/:chapter_id', (req, res) => {
 
 /* Routes for users */
 // TODO - to be edited after User Schema is posted
+app.get('/profile/:id', (req, res) => {
+    const id = req.params.id;
+
+    User.findById(id)
+    if(!ObjectID.isValid(id)){
+		res.status(404).send();
+    }
+    User.findById(id).then((user) =>{
+        
+		if(!user){
+			res.status(404).send()
+		} else{
+            res.render("profile.hbs", 
+            {userid: id})
+		}
+	}).catch((error) => {
+		res.status(500).send()
+	})
+
+});
+
+
+
 app.get('/db/users/:id', (req, res) => {
     const id = req.params.id;
-    User.findUserById(id)
-        .then((user) => {
-            if (!user) {
-                return res.status(404).send();
-            } else {
-                res.send(user);
-            }
-        })
-        .catch((error) => {
-            return res.status(500).send(error);
-        });
+    
+
+    User.findById(id)
+    if(!ObjectID.isValid(id)){
+		res.status(404).send();
+    }
+    User.findById(id).then((user) =>{
+		if(!user){
+			res.status(404).send()
+		} else{
+			res.send(user);
+		}
+	}).catch((error) => {
+		res.status(500).send()
+	})
+
 });
+
+
 
 app.get('/db/users', (req, res) => {
     User.find()
@@ -432,6 +462,7 @@ app.get('/db/users', (req, res) => {
 // app.post('/newChapter',(req,res)=>{
 //    Chapter.
 // });
+
 
 
 

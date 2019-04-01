@@ -361,6 +361,23 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
 	})
 }
 
+UserSchema.statics.findUserById = function(id) {
+    const User = this
+    
+	return User.findOne({_id: id}).then((user) => {
+		if (!user) {
+			return Promise.reject()
+		}
+		return new Promise((resolve, reject) => {
+            if (result) {
+                resolve(user);
+            } else {
+                reject();
+            }
+		})
+	})
+}
+
 const User = mongoose.model('User', UserSchema);
 
 
