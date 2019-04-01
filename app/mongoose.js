@@ -5,5 +5,8 @@ mongoose.connect('mongodb+srv://steven:bookwirepass@cluster0-yzvrb.mongodb.net/t
 // mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/books', { useNewUrlParser: true, useCreateIndex: true});
 
 mongoose.set('useFindAndModify', false);
+// Used for silent warning -
+// (node:39380) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+mongoose.set('useCreateIndex', true);
 
 module.exports = { mongoose };

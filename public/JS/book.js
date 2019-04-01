@@ -1,9 +1,8 @@
 'use strict';
 const log = console.log;
 const currentLocation = window.location.href;
-const url = "/db"+new URL(currentLocation).pathname;
-log(url);
 async function getBook() {
+    const url = "/db"+new URL(currentLocation).pathname;
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
             return bookJson;
@@ -131,18 +130,18 @@ getBook().then(res=>{
 
 
 //create author information
-// const author = document.getElementById('authorInfo');
-// const authorDetail = document.getElementById('authorDetail');
-// const authorImageContainer = document.createElement('a');
-// authorImageContainer.href = "public/HTML/profile.html";
-// const authorImage = document.createElement('img');
+const author = document.getElementById('authorInfo');
+const authorDetail = document.getElementById('authorDetail');
+const authorImageContainer = document.createElement('a');
+authorImageContainer.href = "public/HTML/profile.html";
+const authorImage = document.createElement('img');
 // authorImage.className = 'authorPic';
 // authorImage.src = book.author.getImage();
 // authorImageContainer.appendChild(authorImage);
 // author.insertBefore(authorImageContainer, authorDetail);
-// // author.appendChild(authorImage);
-//
-//
+// author.appendChild(authorImage);
+
+
 // const nameContainer = document.createElement('h3');
 // const authorName = document.createTextNode(book.getAuthor());
 // nameContainer.appendChild(authorName);
@@ -167,11 +166,14 @@ for (let i = 0; i < 3; i++) {
 
 //create comments
 const commentsArea = document.getElementById('commentsArea');
-//
-// for (let i = 0; i < book.comments.length; i++) {
-//     const comment = book.comments[i];
-//     addCommentToTable(comment);
-// }
+getBook().then(res=>{
+    for (let i = 0; i < res.comments.length; i++) {
+        const comment = res.comments[i].content;
+        addCommentToTable(comment);
+    }
+});
+
+
 
 // Code for animated menu bar
 const comments = document.getElementById("comments");
