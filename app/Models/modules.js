@@ -288,7 +288,7 @@ const Book = mongoose.model('Book', BookSchema);
 
 
 const UserSchema = mongoose.Schema({
-	//12 parameters totally
+	//13 parameters totally
 	
 	//Those three parameters are required when a user created
     name: {
@@ -313,7 +313,12 @@ const UserSchema = mongoose.Schema({
 		}
 	},
 	
-	//Other 3 non-list parameters
+	//Other 4 non-list parameters
+	isAdmin: {
+		type: boolean,
+		required: true,
+		default:0
+	}
 	token: {
 		type: Number,
 		default: 0
@@ -328,14 +333,14 @@ const UserSchema = mongoose.Schema({
     },
 	
     //list parameters
-    bookshelf: [BookSchema],
-    writtenBook: [BookSchema],
-	topThreeBooks:[BookSchema],
-    following:[UserSchema],
-	newMessage[BookSchema],
-	oldMessage[BookSchema]
-
+    bookshelf: [ObjectId],
+    writtenBook: [ObjectId],
+	topThreeBooks:[ObjectId],
+    following:[ObjectId],
+	newMessage[ObjectId],
+	oldMessage[ObjectId]
 });
+
 
 UserSchema.pre('save', function(next) {
     const user = this
@@ -374,6 +379,14 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
 	})
 }
 
+UserSchema.statics.findByName = function(username){
+	const User = this
+	return User.findOne({name:username}).then((user) => {
+		if(!user){
+			return Promise.reject()
+		}
+	})
+}
 
 UserSchema.statics.findUserByID = (id) => {
     // Create a new student
@@ -386,6 +399,65 @@ UserSchema.statics.findUserByID = (id) => {
     });
 
 };
+
+UserSchema.statics.addFollowing = (id,idToFollow) => {
+	//after this the user id will follow user idToFollow
+    return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate(id, {
+            $push: {
+                following: {
+                    id: idToFollow
+                }
+            }
+        }).then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+}
+
+//This function we be called iff addFollowing is called ↕
+UserSchema.statics.beFollowed = (id) => {
+	return new Promise((resolve,reject) => {
+		User.findByIdAndUpdate(id, {
+			$inc {{followers: 1}}
+        }).then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 404, error});
+        });	
+	});
+}
+
+UserSchema.statics.removeFollowing = (id,idToNotFollow) => {
+	//after this the user id will not follow user idToNotFollow anymore
+    return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate(id, {
+            $pull: {
+                following: {
+                    id: idToNotFollow
+                }
+            }
+        }).then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+}
+// This two functions must be used together ↕
+UserSchema.statics.beNotFollowed = (id) => {
+	return new Promise((resolve,reject) => {
+		User.findByIdAndUpdate(id, {
+			$inc {{followers: -1}}
+        }).then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 404, error});
+        });	
+	});
+}
 
 const User = mongoose.model('User', UserSchema);
 
