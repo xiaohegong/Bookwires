@@ -70,14 +70,14 @@ app.get('/index', (req, res) => {
 	// }
 })
 
-app.post('/users/login', (req, res) => {
+app.post('/user/login', (req, res) => {
 	const username = req.body.username
 	const password = req.body.password
 
 	User.findByUsernamePassword(username, password).then((user) => {
 		if(!user) {
             // TODO SEND "invalid username/password error"
-			res.redirect('/login')
+			res.status(404).send()
 		} else {
 			// Add the user to the session cookie that we will
             // send to the client
@@ -86,9 +86,11 @@ app.post('/users/login', (req, res) => {
 			req.session.name = user.name
 			res.redirect('/index')
 		}
-	}).catch((error) => {
+	},(result) => {
+        res.status(404).send()
+    }).catch((error) => {
         // TODO SEND "invalid request error"
-		res.status(400).redirect('/login')
+		res.status(400).send()
 	})
 })
 
@@ -110,8 +112,6 @@ app.route('/signup')
 
 
 app.post('/user/signup', (req, res) => {
-    console.log(req.body)
-
 	// Create a new user
 	const user = new User({
         name: req.body.username,
@@ -432,6 +432,7 @@ app.get('/db/users', (req, res) => {
 // app.post('/newChapter',(req,res)=>{
 //    Chapter.
 // });
+
 
 
 
