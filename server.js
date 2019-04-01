@@ -214,7 +214,6 @@ app.get('/db/books', (req, res) => {
 });
 
 app.put('/db/fuzzySearch', (req, res) => {
-    log(req.body.word);
     Book.fuzzySearch(req.body.word)
         .then((books) => {
             res.send(books);
@@ -226,7 +225,6 @@ app.put('/db/fuzzySearch', (req, res) => {
 });
 
 app.put('/db/fuzzySearchwithGenre', (req, res) => {
-    log(req.body.word);
     Book.fuzzySearchWithGenre(req.body.word,req.body.genre)
         .then((books) => {
             res.send(books);

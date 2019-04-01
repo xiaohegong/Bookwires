@@ -99,7 +99,7 @@ BookSchema.statics.findByGenre = (genre) => {
 
 BookSchema.statics.fuzzySearch = (name) => {
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: {$regex: name}}).then((book) => {
+        Book.find({bookTitle: {$regex: name, '$options' : 'i'}}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
@@ -112,7 +112,7 @@ BookSchema.statics.fuzzySearch = (name) => {
 BookSchema.statics.fuzzySearchWithGenre = (name,genre) => {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: {$regex:name},genre:genre}).then((book) => {
+        Book.find({bookTitle: {$regex:name, '$options' : 'i'}, genre: genre}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
