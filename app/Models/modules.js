@@ -315,7 +315,7 @@ const UserSchema = mongoose.Schema({
 
     //Other 4 non-list parameters
     isAdmin: {
-        type: boolean,
+        type: Boolean,
         required: true,
         default: 0
     },
