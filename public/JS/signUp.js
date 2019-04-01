@@ -55,7 +55,6 @@ signUpSubmit.onclick = function tryToSignUp(e) {
     fetch("user/signup", {method: 'post', headers: {
         'Content-Type': 'application/json'
       }, body: JSON.stringify(newUserBody)}).then((response) => {
-        console.log("made it in")
         if(response.status !== 200){
             alert("Error signing up");
             return;
