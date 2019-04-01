@@ -1,5 +1,6 @@
 // const log = console.log;
 //
+
 const signUpForm = document.getElementById('signUpForm');
 const signUpSubmit = document.getElementById("signUpButton");
 const close = document.getElementById("close");
@@ -36,16 +37,35 @@ signUpSubmit.onclick = function tryToSignUp(e) {
         return;
     }
 
-    for (let i = 1; i <= numberOfUsers; i++) {
-        if (fakeUser[i - 1].name === userName) {
-            alert("This account already exist, please change another userName");
-            return;
-        }
+    // for (let i = 1; i <= numberOfUsers; i++) {
+    //     if (fakeUser[i - 1].name === userName) {
+    //         alert("This account already exist, please change another userName");
+    //         return;
+    //     }
+    // }
+
+    // fakeUser.push(userCreator(userName, userMail, passWord));
+
+    const newUserBody = {
+        username: userName,
+        email: userMail,
+        password: passWord
     }
 
-    fakeUser.push(userCreator(userName, userMail, passWord));
-    // TODO: add request handling after user is signed up
-    window.location.href = "/index";
+    fetch("user/signup", {method: 'post', headers: {
+        'Content-Type': 'application/json'
+      }, body: JSON.stringify(newUserBody)}).then((response) => {
+        console.log("made it in")
+        if(response.status !== 200){
+            alert("Error signing up");
+            return;
+        }else{
+            window.location.href = "/index";
+        }
+    }).catch((error) => {
+        console.log("fetch error")
+    })
+    
     // signUpForm.style.display = "none";
 };
 

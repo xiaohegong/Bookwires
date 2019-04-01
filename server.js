@@ -71,10 +71,10 @@ app.get('/index', (req, res) => {
 })
 
 app.post('/users/login', (req, res) => {
-	const email = req.body.email
+	const username = req.body.username
 	const password = req.body.password
 
-	User.findByEmailPassword(email, password).then((user) => {
+	User.findByUsernamePassword(username, password).then((user) => {
 		if(!user) {
             // TODO SEND "invalid username/password error"
 			res.redirect('/login')
@@ -83,7 +83,7 @@ app.post('/users/login', (req, res) => {
             // send to the client
             
 			req.session.user = user._id;
-			req.session.email = user.email
+			req.session.name = user.name
 			res.redirect('/index')
 		}
 	}).catch((error) => {
@@ -110,11 +110,18 @@ app.route('/signup')
 
 
 app.post('/user/signup', (req, res) => {
+    console.log(req.body)
 
 	// Create a new user
 	const user = new User({
-		email: req.body.email,
-		password: req.body.password
+        name: req.body.username,
+        bookshelf: [],
+        writtenBook: [],
+        followers: 0,
+        email: req.body.email,
+        image: "../img/avatar.jpg",
+        following: [],
+        password: req.body.password
     })
     
     req.session.user = user._id;
@@ -122,11 +129,9 @@ app.post('/user/signup', (req, res) => {
 
 	// save user to database
 	user.save().then((result) => {
-        //TODO AFTER CLIENT RECIEVES THIS, CLIENT SHOULD MAKE A GET REQUEST TO HOME PAGE
-        // OR JUST REDIRECT RIGHT AWAY
-
-        // res.send(user)
-        res.redirect("/index");        
+        //TODO possible validation
+        res.send(user)
+        // res.redirect("/index");        
 	}, (error) => {
 		res.status(400).send(error) // 400 for bad request
 	})
@@ -429,23 +434,6 @@ app.get('/db/users', (req, res) => {
 // });
 
 
-// UNCOMMENT TO TEST A PUSH TO DB
-
-// app.post('/testing123', (req, res) => {
-//     const user = new User({
-//         name: "bob",
-//         bookshelf: [],
-//         writtenBook: [],
-//         followers: 0,
-//         image: "img/default"
-//     })
-//     console.log("SDSADASd");
-//     user.save().then((result) =>{
-// 		res.send(result);
-// 	}, (error) => {
-// 		res.status(400).send(error) // 400 for bad request
-// 	})
-// });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
