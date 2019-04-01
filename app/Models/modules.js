@@ -2,6 +2,7 @@
 const log = console.log;
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
+const validator = require('validator')
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const {MongoClient, ObjectID} = require('mongodb');
 
@@ -299,6 +300,17 @@ const UserSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    email: {
+		type: String,
+		required: true,
+		minlength: 1,
+		trim: true, // trim whitespace
+		unique: true,
+		validate: {
+			validator: validator.isEmail,
+			message: 'Not valid email'
+		}
+	},
     image: {
         type: String,
         default: "../img/avatar.jpg"
@@ -317,7 +329,7 @@ UserSchema.pre('save', function(next) {
 
     if (user.isModified('password')) {
         bcrypt.genSalt(10, (error, salt) => {
-            bcrypt.hash(user.password, salt, (error, hash) => {
+            bcrypt.hash(user.password, salt, null, (error, hash) => {
                 user.password = hash
                 next()
             })
@@ -327,6 +339,27 @@ UserSchema.pre('save', function(next) {
     }
 
 })
+
+// Our own student finding function 
+UserSchema.statics.findByUsernamePassword = function(username, password) {
+    const User = this
+    
+	return User.findOne({name: username}).then((user) => {
+		if (!user) {
+			return Promise.reject()
+			
+		}
+		return new Promise((resolve, reject) => {
+			bcrypt.compare(password, user.password, (error, result) => {
+				if (result) {
+					resolve(user);
+				} else {
+					reject();
+				}
+			})
+		})
+	})
+}
 
 const User = mongoose.model('User', UserSchema);
 

@@ -30,9 +30,19 @@ app.use(session({
 	}
 }))
 
+// use to redirect to home if already logged in
 const sessionChecker = (req, res, next) => {
 	if (req.session.user) {
-		res.redirect('index')
+		res.redirect('/index')
+	} else {
+		next();
+	}
+}
+
+// use to redirect if a session has not been created
+const sessionCheckLoggedIn = (req, res, next) => {
+	if (!req.session.user) {
+		res.redirect('/login')
 	} else {
 		next();
 	}
@@ -40,10 +50,7 @@ const sessionChecker = (req, res, next) => {
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
-    // res.redirect('/index');
-    const dir = path.join(__dirname + "/public/HTML/");
-    res.sendFile(dir + 'index.html');
-
+    res.redirect('/index')
     // res.sendFile('../HTML/index.html', {root: __dirname })
 });
 
@@ -54,16 +61,86 @@ app.route('/login')
 })
 
 app.get('/index', (req, res) => {
-	// check if we have active session cookie
-	if (req.session.user) {
-		res.sendFile(__dirname + '/public/HTML/index.html')
-		// res.render('dashboard.hbs', {
-		// 	email: req.session.email
-		// })
-	} else {
-		res.redirect('/login')
-	}
+    // check if we have active session cookie
+    res.sendFile(__dirname + '/public/HTML/index.html');
+	// if (req.session.user) {
+	// 	res.sendFile(__dirname + '/public/HTML/index.html')
+	// } else {
+	// 	res.redirect('/login')
+	// }
 })
+
+app.post('/user/login', (req, res) => {
+	const username = req.body.username
+	const password = req.body.password
+
+	User.findByUsernamePassword(username, password).then((user) => {
+		if(!user) {
+            // TODO SEND "invalid username/password error"
+			res.status(404).send()
+		} else {
+			// Add the user to the session cookie that we will
+            // send to the client
+            
+			req.session.user = user._id;
+			req.session.name = user.name
+			res.redirect('/index')
+		}
+	},(result) => {
+        res.status(404).send()
+    }).catch((error) => {
+        // TODO SEND "invalid request error"
+		res.status(400).send()
+	})
+})
+
+app.get('/users/logout', sessionCheckLoggedIn, (req, res) => {
+	req.session.destroy((error) => {
+		if (error) {
+			res.status(500).send(error)
+		} else {
+			res.redirect('/index')
+		}
+	})
+})
+
+// route for signup
+app.route('/signup')
+	.get(sessionChecker, (req, res) => {
+		res.sendFile(__dirname + '/public/HTML/signUp.html')
+})
+
+
+app.post('/user/signup', (req, res) => {
+	// Create a new user
+	const user = new User({
+        name: req.body.username,
+        bookshelf: [],
+        writtenBook: [],
+        followers: 0,
+        email: req.body.email,
+        image: "../img/avatar.jpg",
+        following: [],
+        password: req.body.password
+    })
+    
+    req.session.user = user._id;
+	req.session.email = user.email
+
+	// save user to database
+	user.save().then((result) => {
+        //TODO possible validation
+        res.send(user)
+        // res.redirect("/index");        
+	}, (error) => {
+		res.status(400).send(error) // 400 for bad request
+	})
+
+})
+
+
+
+
 
 
 
@@ -374,23 +451,7 @@ app.get('/db/users', (req, res) => {
 // });
 
 
-// UNCOMMENT TO TEST A PUSH TO DB
 
-// app.post('/testing123', (req, res) => {
-//     const user = new User({
-//         name: "bob",
-//         bookshelf: [],
-//         writtenBook: [],
-//         followers: 0,
-//         image: "img/default"
-//     })
-//     console.log("SDSADASd");
-//     user.save().then((result) =>{
-// 		res.send(result);
-// 	}, (error) => {
-// 		res.status(400).send(error) // 400 for bad request
-// 	})
-// });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
