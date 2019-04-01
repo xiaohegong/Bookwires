@@ -288,18 +288,19 @@ const Book = mongoose.model('Book', BookSchema);
 
 
 const UserSchema = mongoose.Schema({
+	//12 parameters totally
+	
+	//Those three parameters are required when a user created
     name: {
         type: String,
         required: true,
         minlength: 3
     },
-    //Book module
-    bookshelf: [ObjectId],
-    writtenBook: [ObjectId],
-    followers: {
-        type: Number,
-        default: 0
-    },
+	password:{
+		type:String,
+		required: true,
+		//minlength: 7
+	}
     email: {
 		type: String,
 		required: true,
@@ -311,18 +312,30 @@ const UserSchema = mongoose.Schema({
 			message: 'Not valid email'
 		}
 	},
+	
+	//Other 3 non-list parameters
+	token: {
+		type: Number,
+		default: 0
+	}
+	followers:{
+		type: Number,
+		default: 0
+	},
     image: {
         type: String,
         default: "../img/avatar.jpg"
     },
-    //User module
-    following:[ObjectId],
-    password: {
-		type: String,
-		required: true,
-	}
+	
+    //list parameters
+    bookshelf: [BookSchema],
+    writtenBook: [BookSchema],
+	topThreeBooks:[BookSchema],
+    following:[UserSchema],
+	newMessage[BookSchema],
+	oldMessage[BookSchema]
 
-    });
+});
 
 UserSchema.pre('save', function(next) {
     const user = this
@@ -360,6 +373,19 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
 		})
 	})
 }
+
+
+UserSchema.statics.findUserByID = (id) => {
+    // Create a new student
+    return new Promise((resolve, reject) => {
+        User.findById(id).then((user) => {
+            resolve(user);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+
+};
 
 const User = mongoose.model('User', UserSchema);
 
