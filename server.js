@@ -131,6 +131,18 @@ app.get('/db/books', (req, res) => {
         );
 });
 
+app.put('/db/fuzzySearch', (req, res) => {
+    log(req.body.word);
+    Book.fuzzySearch(req.body.word)
+        .then((books) => {
+            res.send(books);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
 app.get('/search', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
     res.sendFile(dir + 'search.html');

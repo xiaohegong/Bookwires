@@ -13,6 +13,17 @@ async function getAllBook(url) {
 getAllBook("/db/books").then(res=>{
     bookSetUp(res);
 });
+
+function fuzzyBookSearch(input, inputList) {
+    const outputList = [];
+    //name search, similarity limit is .75
+    for (let index = 0; index < inputList.length; index++) {
+        if (stringCompByLevenshteinDistance(input, inputList[index].bookTitle) > 0.5) {
+            outputList.push(inputList[index]);
+        }
+    }
+    return outputList;
+}
 // getBook().then(res=>log(res.image));
 // A function to generating stars with the given num
 function makeStars(num) {
@@ -35,10 +46,26 @@ function makeStars(num) {
     return div;
 }
 
-// For search bar algorithm
+
 function searchBarSearch() {
     const searchBar = document.getElementById('searchBar');
-    bookSetUp(fuzzyBookSearch(searchBar.value));
+    let data = {
+        word: searchBar.value
+    };
+    //bookSetUp(fuzzyBookSearch(searchBar.value,res));
+    const request = new Request('/db/fuzzySearch', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },});
+    getAllBook(request).then(res=>{
+        bookSetUp(res);
+        // const searchBar = document.getElementById('searchBar');
+        // bookSetUp(fuzzyBookSearch(searchBar.value,res));
+    });
+
 }
 
 // DOM element helper function for displaying search results
@@ -68,7 +95,7 @@ function bookSetUp(books) {
         const divider = document.createElement("div");
         divider.className = "bookDisplay";
         const imgContainer = document.createElement('a');
-        imgContainer.setAttribute('href', 'public/HTML/book.html');
+        imgContainer.setAttribute('href', "./books/" + String(book._id));
         const img = document.createElement("img");
         img.src = book.image;
         img.className = "bookDisplayImg";
