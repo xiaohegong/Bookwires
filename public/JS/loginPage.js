@@ -6,18 +6,18 @@ const quit = document.getElementById("quit");
 
 window.onclick = function (event) {
     if (event.target === logInForm) {
-        window.location.href = "./index.html";
+        window.location.href = "/index";
     }
 };
 // Setting login pop up box animation
 closeBox.onclick = function (e) {
     e.preventDefault();
-    window.location.href = "./index.html";
+    window.location.href = "/index";
 };
 
 toSignUp.onclick = function (e) {
     e.preventDefault();
-    window.location.href = "./signUp.html";
+    window.location.href = "/signup";
 };
 
 // Validation for log in
@@ -50,6 +50,6 @@ loginSubmit.onclick = function (e) {
 
     // Change DOM elements to display logged in status
     // TODO: add request handling after user is logged in
-    window.location.href = "./index.html";
+    window.location.href = "/index";
     // userLoggedIn(userName, isAdmin);
 };

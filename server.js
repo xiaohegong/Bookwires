@@ -102,6 +102,12 @@ app.get('/users/logout', sessionCheckLoggedIn, (req, res) => {
 	})
 })
 
+// route for signup
+app.route('/signup')
+	.get(sessionChecker, (req, res) => {
+		res.sendFile(__dirname + '/public/HTML/signUp.html')
+})
+
 
 app.post('/user/signup', (req, res) => {
 
@@ -127,11 +133,7 @@ app.post('/user/signup', (req, res) => {
 
 })
 
-// route for login
-app.route('/signup')
-	.get(sessionChecker, (req, res) => {
-		res.sendFile(__dirname + '/public/HTML/signUp.html')
-})
+
 
 
 
