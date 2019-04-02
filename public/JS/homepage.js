@@ -13,6 +13,12 @@ searchBtn.href = "#";
 const toast = document.querySelector(".toast");
 const toastBody = document.querySelector(".toast-body");
 
+// First check if user is logged in, update DOM element if is
+if (document.cookie) {
+    const cookie = Cookies.get();
+    userLoggedIn(cookie.name);
+}
+
 // All books from the database
 const url = '/db/books';
 let books = [];
@@ -194,18 +200,23 @@ function sortAuthorsByPopularity(authors, num) {
 //server call to check login in the database
 function userLoggedIn(user) {
     // Remove old buttons
-    const username = user.name;
+    // const username = user.name;
+    let username = user;
+    if (username.trim().split(" ").length > 1) {
+        username = username.trim().split(" ")[0];
+    }
     menu.removeChild(menu.children[0]);
     menu.removeChild(menu.children[0]);
     const welcomeText = document.createTextNode("Welcome " + username + "!");
     const link = document.createElement("a");
 
-    // Check user type to direct to correct pages
-    if (user.isAdmin) {
-        link.href = "./";
-    } else {
-        link.href = "public/HTML/profile.html";
-    }
+    // Check user type to direct to correct pages TODO
+    link.href = "";
+    // if (user.isAdmin) {
+    //     link.href = "./";
+    // } else {
+    //     link.href = "public/HTML/profile.html";
+    // }
 
     // Create the welcome message
     link.appendChild(welcomeText);
@@ -217,12 +228,13 @@ function userLoggedIn(user) {
     // Create the quit button
     const quitText = document.createTextNode("Quit");
     const quit = document.createElement("a");
-    quit.href = "index";
+    quit.href = "../users/logout";
     quit.appendChild(quitText);
     const span2 = document.createElement("span");
     span2.appendChild(quit);
     span2.className = "welcomeMsg";
     span2.id = "quit";
+
     menu.appendChild(span2);
 
     // Adding toast when user logged in
