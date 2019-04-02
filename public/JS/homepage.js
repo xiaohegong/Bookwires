@@ -32,17 +32,61 @@ const numTopBooks = 2; // total number of books on popular books
 
 // TODO - Replace author sec below with user obj
 for (let i = 0; i < fakeBooks.length; i++) {
-
     let book = fakeBooks[i];
-    // First, add authors
-    const anchor = document.createElement("a");
-    anchor.href = "profile.html";
-    const parag = document.createElement("p");
-    parag.className = "author";
-    const author = document.createTextNode(book.getAuthor());
-    parag.appendChild(author);
-    anchor.appendChild(parag);
-    authors.appendChild(anchor);
+    const author = book.getAuthor();
+    const divider = document.createElement("div");
+    divider.className = "bookDisplay";
+    const link = document.createElement("a");
+    // link.href = hrefURL + String(book._id);
+    link.href = "";
+    const img = document.createElement("img");
+    img.src = author.image;
+    img.className = "authorImg";
+    link.appendChild(img);
+
+    // Add book info to the block
+    const span = document.createElement("span");
+    span.className = "bookDisplayText";
+    const authorName = document.createTextNode(author.name);
+
+    span.appendChild(document.createElement("p").appendChild(authorName));
+    span.appendChild(document.createElement("p"));
+
+    // const info = document.createTextNode(book.getAuthor() + " | " + book.getGenre()); // TODO
+    const info = document.createTextNode("Followers: " + author.followers);
+    const p = document.createElement("p");
+
+    p.className = "displayInfo";
+    p.appendChild(info);
+    span.appendChild(p);
+
+    divider.appendChild(link);
+    divider.appendChild(span);
+    authors.appendChild(divider);
+
+
+    //
+    // // First, add authors
+    // const div = document.createElement("div");
+    // div.className = "bookDisplay";
+    // const sp = document.createElement("span");
+    //
+    // const anchor = document.createElement("a");
+    // anchor.href = "profile.html";
+    // const parag = document.createElement("p");
+    // parag.className = "author";
+    // const author = book.getAuthor();
+    // const authorName = document.createTextNode(author.name);
+    // const img = document.createElement("img");
+    // img.src = author.getImage();
+    // img.className = "bookDisplayImg";
+    //
+    // parag.appendChild(authorName);
+    // anchor.appendChild(img);
+    // sp.appendChild(parag);
+    // div.append(anchor);
+    // div.appendChild(sp);
+    // authors.appendChild(div);
 }
 
 const hrefURL = "./books/";
@@ -97,6 +141,9 @@ fetchBooks().then((b) => {
         divider.appendChild(span);
         booksRanking.appendChild(divider);
     }
+
+    /*********** Code for making <popular authors> section ***********/
+    // const popularAuthors = sortAuthorsByPopularity()
 });
 
 
