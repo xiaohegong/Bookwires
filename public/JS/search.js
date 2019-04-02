@@ -10,6 +10,9 @@ if (query && query.length === 2) {
     // Link in the form of <genre=xx>
     if (query[0] === "genre") {
         genre = query[1];
+        if (genre === "Science-Fiction"){
+            genre = "Science Fiction";
+        }
     }
     // Link in the form of <word=xx>
     else if (query[0] === "word") {
