@@ -577,7 +577,6 @@ UserSchema.statics.removeBookToRead = (uid,bid) => {
 
 
 UserSchema.statics.addNewBooksWritten = (uid,bid) => {
-    log(uid,bid)
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$push: {

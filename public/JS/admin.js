@@ -124,11 +124,14 @@ function switchToBook(res) {
         titleContainer.appendChild(document.createTextNode(book.bookTitle));
         span.appendChild(titleContainer);
         //temp
-        const info = document.createTextNode("HELLO" + " | " + book.genre);
-        const p = document.createElement("p");
-        p.className = "displayInfo";
-        p.appendChild(info);
-        span.appendChild(p);
+        getAll("/db/users/"+book.user).then(res=>{
+            const info = document.createTextNode(res.name + " | " + book.genre);
+            const p = document.createElement("p");
+            p.className = "displayInfo";
+            p.appendChild(info);
+            span.appendChild(p);
+        });
+
 
         const button = getDeleteButton();
         button.onclick = deleteBook;

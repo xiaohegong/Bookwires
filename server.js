@@ -468,8 +468,6 @@ app.patch('/db/books/:id/:chapter_id', (req, res) => {
 // TODO - to be edited after User Schema is posted
 app.get('/profile/:id', (req, res) => {
     const id = req.params.id;
-
-    User.findById(id)
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
     }
@@ -491,9 +489,7 @@ app.get('/profile/:id', (req, res) => {
 
 app.get('/db/users/:id', (req, res) => {
     const id = req.params.id;
-    
 
-    User.findById(id)
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
     }
