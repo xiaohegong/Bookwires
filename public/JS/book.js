@@ -2,12 +2,18 @@
 const log = console.log;
 const currentLocation = window.location.href;
 const url = "/db"+new URL(currentLocation).pathname;
+
+const read = document.getElementById("read");
 async function getInfo(url) {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
             return bookJson;
         }).catch(error => log(error));
 }
+getInfo(url).then(book=>{
+    read.href = "/"+book._id+"/"+0;
+
+});
 
 const save = document.getElementById("save");
 const commentBox = document.getElementById('commentBox');
@@ -19,6 +25,11 @@ const isAdmin = function () {
     return window.location.pathname.includes("admin");
 };
 
+if (document.cookie) {
+    const cookie = Cookies.get();
+    log(cookie.id.split(":")[1])
+}
+
 // Call back function for cancel button
 cancelBtn.onclick = function cancelComment() {
     commentBox.value = "";
@@ -27,16 +38,43 @@ cancelBtn.onclick = function cancelComment() {
 
 // Call back function for enter button
 enterBtn.onclick = function enterComment() {
-    const comment = new Comment(fakeUser[0], commentBox.value);
-    book.newComment(comment);// server call that save the comment into database
-    commentBox.value = "";
-    addCommentToTable(comment);
+    let data;
+    if (document.cookie) {
+        const cookie = Cookies.get();
+        data = {
+            user: cookie.id.split(":")[1].slice(1,-1),
+            content: commentBox.value
+        };
+        getInfo(url).then(book=>{
+
+            const request = new Request('/db/booksComment/'+book._id, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+            });
+            return getInfo(request);
+        }).then(res=>{
+            addCommentToTable(data)});
+            commentBox.value = "";
+    }else{
+        location.href = "/login";
+    }
+
+
+    // book.newComment(comment);// server call that save the comment into database
+
+
 };
 
 save.onclick = function saveToShelf(e) {
     e.preventDefault();
     book.save(fakeUser[0]); // server call that update the corresponding info
 };
+
+
 
 function addCommentToTable(comment) {
     getInfo("/db/users/"+comment.user).then(res=>{
@@ -199,6 +237,7 @@ const commentsArea = document.getElementById('commentsArea');
 getInfo(url).then(res=>{
     for (let i = 0; i < res.comments.length; i++) {
         // const comment = res.comments[i].content;
+        log(res.comments[i])
         addCommentToTable(res.comments[i]);
     }
 });

@@ -315,6 +315,23 @@ BookSchema.statics.deleteBook = (id) => {
     });
 };
 
+BookSchema.statics.deleteComment = (id,cid) => {
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        Book.findByIdAndUpdate(id,{
+            $pull: {
+                comments:{_id:cid}
+
+            }
+        }, { 'new': true }).then((result) => {
+            resolve(result);
+        },(error) => {
+            reject({code:404,error});
+        });
+    });
+};
+
 
 const Book = mongoose.model('Book', BookSchema);
 
@@ -595,23 +612,23 @@ UserSchema.statics.addNewBooksWritten = (uid,bid) => {
 UserSchema.statics.removeBooksWritten = (uid,bid) => {
 
     return new Promise((resolve,reject) => {
-	    User.findById(uid).then(res=>{
-	        res.writtenBook.remove(bid);
-            res.save();
-            resolve(res);
-        }).catch(error=>
-            reject(error)
-        );
-		// User.findByIdAndUpdate(uid,{
-		// 	$pull: {
-		// 		writtenBook:bid
-        //
-		// 	}
-		// }, { 'new': true }).then((result) => {
-		// 	resolve(result);
-		// },(error) => {
-		// 	reject({code:404,error});
-		// });
+	    // User.findById(uid).then(res=>{
+	    //     res.writtenBook.remove(bid);
+        //     res.save();
+        //     resolve(res);
+        // }).catch(error=>
+        //     reject(error)
+        // );
+		User.findByIdAndUpdate(uid,{
+			$pull: {
+				writtenBook:bid
+
+			}
+		}, { 'new': true }).then((result) => {
+			resolve(result);
+		},(error) => {
+			reject({code:404,error});
+		});
 	});
 };
 
