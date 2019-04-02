@@ -45,10 +45,10 @@ const BookSchema = mongoose.Schema({
         default: 0
     },
 
-    // user: {
-    //     // User module
-    //     type: ObjectId
-    // },
+    user: {
+        // User module
+        type: ObjectId
+    },
     image: {
         type: String,
         default: "./img/default.jpg"
@@ -99,7 +99,7 @@ BookSchema.statics.findByGenre = (genre) => {
 
 BookSchema.statics.fuzzySearch = (name) => {
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: {$regex: name}}).then((book) => {
+        Book.find({bookTitle: {$regex: name, '$options' : 'i'}}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
@@ -112,7 +112,7 @@ BookSchema.statics.fuzzySearch = (name) => {
 BookSchema.statics.fuzzySearchWithGenre = (name,genre) => {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.find({bookTitle: {$regex:name},genre:genre}).then((book) => {
+        Book.find({bookTitle: {$regex:name, '$options' : 'i'}, genre: genre}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
@@ -134,7 +134,7 @@ BookSchema.statics.findByRate = (rate) => {
 
 };
 
-BookSchema.statics.findByRate = (rate,genre) => {
+BookSchema.statics.findByRateWithGenre = (rate,genre) => {
     // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({rate: {$gte: rate},genre:genre}).then((book) => {
@@ -282,7 +282,7 @@ BookSchema.methods.newRate = (rate, book) => {
     });
 };
 
-BookSchema.methods.deleteChapter = (id, chap_id) => {
+BookSchema.statics.deleteChapter = (id, chap_id) => {
 
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
@@ -294,6 +294,19 @@ BookSchema.methods.deleteChapter = (id, chap_id) => {
                 }
             }
         }).then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+};
+
+BookSchema.statics.deleteBook = (id) => {
+
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        Book.findByIdAndDelete(id).then((result) => {
             resolve(result);
         }, (error) => {
             reject({code: 404, error});
@@ -352,7 +365,7 @@ const UserSchema = mongoose.Schema({
     },
 
     //list parameters
-    bookshelf: [ObjectId],
+    bookshelf: [{type: ObjectId}],
     writtenBook: [ObjectId],
     topThreeBooks: [ObjectId],
     following: [ObjectId],
@@ -379,6 +392,32 @@ UserSchema.statics.addNewUser = (req) => {
 
 	})
 }
+
+UserSchema.statics.fuzzySearch = (name) => {
+    return new Promise((resolve, reject) => {
+        User.find({name: {$regex: name}}).then((user) => {
+            resolve(user);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+
+
+};
+
+
+UserSchema.statics.deleteUser = (id) => {
+
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        User.findByIdAndDelete(id).then((result) => {
+            resolve(result);
+        }, (error) => {
+            reject({code: 404, error});
+        });
+    });
+};
 
 
 //idk what's this 
@@ -541,9 +580,7 @@ UserSchema.statics.addNewBooksWritten = (uid,bid) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$push: {
-				writtenBook:{
-					id:bid
-				}
+				writtenBook:bid
 			}
 		}).then((result) => {
 			resolve(result);
@@ -587,22 +624,6 @@ UserSchema.statics.addNewUser = (req) => {
 };
 
 
-UserSchema.statics.findUserById = function(id) {
-    const User = this
-    
-	return User.findOne({_id: id}).then((user) => {
-		if (!user) {
-			return Promise.reject()
-		}
-		return new Promise((resolve, reject) => {
-            if (result) {
-                resolve(user);
-            } else {
-                reject();
-            }
-		})
-	})
-}
 
 const User = mongoose.model('User', UserSchema);
 

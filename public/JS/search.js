@@ -1,7 +1,21 @@
 "use strict";
 const log = console.log;
 const booksRanking = document.querySelector("#ranking");
-const genre = window.location.search.substring(1);
+
+// Parse the query from the link
+const query = window.location.search.substring(1).split("=");
+let genre = "";
+let word = "";
+if (query && query.length === 2) {
+    // Link in the form of <genre=xx>
+    if (query[0] === "genre") {
+        genre = query[1];
+    }
+    // Link in the form of <word=xx>
+    else if (query[0] === "word") {
+        word = query[1];
+    }
+}
 
 
 async function getAllBook(url) {
@@ -10,8 +24,9 @@ async function getAllBook(url) {
             return bookJson;
         }).catch(error => log(error));
 }
-if(genre !== ""){
-    (function(){
+
+if (genre !== "") {
+    (function () {
         let data = {
             genre: genre
         };
@@ -21,14 +36,31 @@ if(genre !== ""){
             headers: {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
-            },});
-        getAllBook(request).then(res=>{
+            },
+        });
+        getAllBook(request).then(res => {
             bookSetUp(res);
         });
     })();
-}
-else{
-    getAllBook("/db/books").then(res=>{
+} else if (word !== "") {
+    (function () {
+        let data = {
+            word: word
+        };
+        const request = new Request('/db/fuzzySearch', {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+        });
+        getAllBook(request).then(res => {
+            bookSetUp(res);
+        });
+    })();
+} else {
+    getAllBook("/db/books").then(res => {
         bookSetUp(res);
     });
 }
@@ -55,8 +87,9 @@ function makeStars(num) {
 
     return div;
 }
-function searchByRate(rate){
-    if(genre === "") {
+
+function searchByRate(rate) {
+    if (genre === "") {
         let data = {
             rate: rate
 
@@ -73,11 +106,10 @@ function searchByRate(rate){
             bookSetUp(res);
 
         });
-    }
-    else{
+    } else {
         let data = {
-            rate:rate,
-            genre:genre
+            rate: rate,
+            genre: genre
 
         };
         const request = new Request('/db/bookByRateWithGenre', {
@@ -86,8 +118,9 @@ function searchByRate(rate){
             headers: {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
-            },});
-        getAllBook(request).then(res=>{
+            },
+        });
+        getAllBook(request).then(res => {
             bookSetUp(res);
 
         });
@@ -97,10 +130,9 @@ function searchByRate(rate){
 
 function searchBarSearch() {
     const searchBar = document.getElementById('searchBar');
-    if(genre === "") {
+    if (genre === "") {
         let data = {
-            word: searchBar.value,
-
+            word: searchBar.value
         };
         const request = new Request('/db/fuzzySearch', {
             method: 'PUT',
@@ -114,12 +146,10 @@ function searchBarSearch() {
             bookSetUp(res);
 
         });
-    }
-    else{
+    } else {
         let data = {
             word: searchBar.value,
-            genre:genre
-
+            genre: genre
         };
         const request = new Request('/db/fuzzySearchWithGenre', {
             method: 'PUT',
@@ -127,8 +157,9 @@ function searchBarSearch() {
             headers: {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
-            },});
-        getAllBook(request).then(res=>{
+            },
+        });
+        getAllBook(request).then(res => {
             bookSetUp(res);
 
         });
@@ -175,14 +206,15 @@ function bookSetUp(books) {
         span.className = "bookDisplayText";
         span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.bookTitle)));
         //TEMP
-        const info = document.createTextNode("WHAT" + " | " + book.genre);
-        const p = document.createElement("p");
-        p.className = "displayInfo";
-        p.appendChild(info);
-        span.appendChild(p);
-        
-        const rating = makeStars(book.rating);
-        span.appendChild(rating);
+        getAllBook("/db/users/"+book.user).then(res=>{
+            const info = document.createTextNode(res.name + " | " + book.genre);
+            const p = document.createElement("p");
+            p.className = "displayInfo";
+            p.appendChild(info);
+            span.appendChild(p);
+            const rating = makeStars(book.rating);
+            span.appendChild(rating);
+        });
 
         divider.appendChild(imgContainer);
         divider.appendChild(span);

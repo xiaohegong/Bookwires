@@ -1,14 +1,13 @@
 'use strict';
 const log = console.log;
 const currentLocation = window.location.href;
-async function getBook() {
-    const url = "/db"+new URL(currentLocation).pathname;
+const url = "/db"+new URL(currentLocation).pathname;
+async function getInfo(url) {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
             return bookJson;
         }).catch(error => log(error));
 }
-getBook().then(res=>log(res.image));
 
 const save = document.getElementById("save");
 const commentBox = document.getElementById('commentBox');
@@ -78,10 +77,10 @@ const bookInformation = document.getElementById("bookInformation");
 
 // Let's create a new chapter
 (function () {
-    getBook().then(res=>{
+    getInfo(url).then(res=>{
         const authorTitle = document.createTextNode(res.bookTitle);
         //TEMP
-        const authorName = document.createTextNode("WUXE");
+
         const bookdesription = document.createTextNode(res.description);
         const bookNameContainer = document.createElement('h1');
         const zoom = document.getElementsByClassName("zoom")[0];
@@ -91,20 +90,64 @@ const bookInformation = document.getElementById("bookInformation");
         zoom.appendChild(bookImage);
 
         bookNameContainer.appendChild(authorTitle);
-        const AuthorNameContainer = document.createElement('h3');
-        AuthorNameContainer.appendChild(authorName);
+
         //AuthorNameContainer.href = 'www.google.ca'
         const desriptionContainer = document.createElement('p');
         desriptionContainer.appendChild(bookdesription);
         bookInformation.insertBefore(bookNameContainer, bookInformation.lastElementChild);
-        bookInformation.insertBefore(AuthorNameContainer, bookInformation.lastElementChild);
+
         bookInformation.insertBefore(desriptionContainer, bookInformation.lastElementChild);
+        return getInfo("/db/users/"+res.user);
+    }).then(res=>{
+        (function(){
+            const authorName = document.createTextNode(res.name);
+            const AuthorNameContainer = document.createElement('h3');
+            AuthorNameContainer.user = res;
+            AuthorNameContainer.appendChild(authorName);
+            bookInformation.insertBefore(AuthorNameContainer, bookInformation.lastElementChild.previousSibling);
+        })();
+
+
+        //Author Bar
+        const authorName = document.createTextNode(res.name);
+        const author = document.getElementById('authorInfo');
+        const authorDetail = document.getElementById('authorDetail');
+        const authorImageContainer = document.createElement('a');
+        authorImageContainer.href = "public/HTML/profile.html";
+        const authorImage = document.createElement('img');
+        authorImage.className = 'authorPic';
+        authorImage.src = res.image;
+        authorImageContainer.appendChild(authorImage);
+        author.insertBefore(authorImageContainer, authorDetail);
+        const nameContainer = document.createElement('h3');
+        nameContainer.appendChild(authorName);
+        author.insertBefore(nameContainer, authorDetail);
+
+        // author.appendChild(nameContainer);
+
+
+        //other books
+        const slider = document.getElementsByClassName("carousel-inner");
+
+        for (let i = 0; i < 3; i++) {
+            const bookImage = document.createElement('img');
+            bookImage.src = '../img/WanderingEarth.jpg';
+            bookImage.className = 'otherBookImg';
+            slider[0].children[i].appendChild(bookImage);
+            const bookname = document.createTextNode('BOOK NAME');
+            const otherbooknameContainer = document.createElement('h3');
+            otherbooknameContainer.className = 'center';
+            otherbooknameContainer.appendChild(bookname);
+            slider[0].children[i].appendChild(otherbooknameContainer);
+        }
+
     });
 
 })();
 
+
 let i = 0;
-getBook().then(res=>{
+getInfo(url).then(res=>{
     while (i < res.chapters.length) {
         const nextLine = document.createElement('tr');
 
@@ -116,7 +159,7 @@ getBook().then(res=>{
             newPost.className = 'Chapter';
             const newPostTitle = document.createTextNode(res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
-            newPostTitleContainer.href = "public/HTML/ReadingPage.html";
+            newPostTitleContainer.href = "public/HTML/readingPage.html";
             newPostTitleContainer.appendChild(newPostTitle);
             newPost.appendChild(newPostTitleContainer);
             nextLine.appendChild(newPost);
@@ -130,43 +173,16 @@ getBook().then(res=>{
 
 
 //create author information
-const author = document.getElementById('authorInfo');
-const authorDetail = document.getElementById('authorDetail');
-const authorImageContainer = document.createElement('a');
-authorImageContainer.href = "public/HTML/profile.html";
-const authorImage = document.createElement('img');
-// authorImage.className = 'authorPic';
-// authorImage.src = book.author.getImage();
-// authorImageContainer.appendChild(authorImage);
-// author.insertBefore(authorImageContainer, authorDetail);
-// author.appendChild(authorImage);
 
 
-// const nameContainer = document.createElement('h3');
-// const authorName = document.createTextNode(book.getAuthor());
-// nameContainer.appendChild(authorName);
-// author.insertBefore(nameContainer, authorDetail);
 
-// author.appendChild(nameContainer);
+
 
 //other book written by this author
-const slider = document.getElementsByClassName("carousel-inner");
-
-for (let i = 0; i < 3; i++) {
-    const bookImage = document.createElement('img');
-    bookImage.src = '../img/WanderingEarth.jpg';
-    bookImage.className = 'otherBookImg';
-    slider[0].children[i].appendChild(bookImage);
-    const bookname = document.createTextNode('BOOK NAME');
-    const otherbooknameContainer = document.createElement('h3');
-    otherbooknameContainer.className = 'center';
-    otherbooknameContainer.appendChild(bookname);
-    slider[0].children[i].appendChild(otherbooknameContainer);
-}
 
 //create comments
 const commentsArea = document.getElementById('commentsArea');
-getBook().then(res=>{
+getInfo(url).then(res=>{
     for (let i = 0; i < res.comments.length; i++) {
         const comment = res.comments[i].content;
         addCommentToTable(comment);

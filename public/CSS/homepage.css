@@ -129,7 +129,7 @@ h4 {
     text-decoration: none;
     font-size: 16px;
     margin-bottom: 21px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 #authorRec a {
@@ -139,6 +139,15 @@ h4 {
 
 .author {
     display: block;
+}
+
+.authorImg {
+    width: 50px;
+    height: 50px;
+    display: block;
+    float: left;
+    border-radius: 50%;
+    margin-right: 15px;
 }
 
 /******* Toast styling *******/

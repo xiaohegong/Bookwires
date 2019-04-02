@@ -15,7 +15,7 @@
     cursor: pointer;
 }
 
-#category {
+.category {
     text-align: center;
     margin: 10px;
     color: white;
@@ -24,7 +24,7 @@
     font-size: 16px;
 }
 
-#categories a {
+.categories a {
     text-decoration: none;
 }
 

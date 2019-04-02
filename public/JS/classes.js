@@ -30,7 +30,8 @@ class Book {
     }
 
     getAuthor() {
-        return this.author.getName();
+        return this.author;
+        // return this.author.getName();
     }
 
     getImage() {
@@ -148,7 +149,7 @@ class user {
         this.following = [];
         this.mailAddress = "";
         this.passWord = "";
-        this.image = null;
+        this.image = "./img/avatar.png";
         this.newMessages = [];
         this.oldMessages = [];
     }
