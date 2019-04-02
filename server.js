@@ -452,7 +452,7 @@ app.get('/profile/:id', (req, res) => {
 			res.status(404).send()
 		} else{
             const dir = path.join(__dirname + "/public/HTML/");
-            res.sendFile(dir + 'book.html');
+            res.sendFile(dir + 'profile.html');
 		}
 	}).catch((error) => {
 		res.status(500).send()
@@ -462,7 +462,7 @@ app.get('/profile/:id', (req, res) => {
 
 
 
-app.get('/db/users/:id', (req, res) => {
+app.get('/db/profile/:id', (req, res) => {
     const id = req.params.id;
     
 
