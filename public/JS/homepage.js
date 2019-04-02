@@ -26,8 +26,8 @@ const fetchBooks = () => {
         });
 };
 
-const numEditorPicks = 3; // total number of books on the shelf
-const numTopBooks = 3; // total number of books on popular books
+const numEditorPicks = 2; // total number of books on the shelf
+const numTopBooks = 2; // total number of books on popular books
 
 
 // TODO - Replace author sec below with user obj
@@ -132,16 +132,17 @@ function sortBooksByRate(books, num) {
 // Handles DOM set up when user is logged in by adding welcome messages and quit button.
 // Removes the old log in and sign up button and direct to correct pages
 //server call to check login in the database
-function userLoggedIn(username, isAdmin) {
+function userLoggedIn(user) {
     // Remove old buttons
+    const username = user.name;
     menu.removeChild(menu.children[0]);
     menu.removeChild(menu.children[0]);
     const welcomeText = document.createTextNode("Welcome " + username + "!");
     const link = document.createElement("a");
 
     // Check user type to direct to correct pages
-    if (isAdmin) {
-        link.href = "public/HTML/admin.html";
+    if (user.isAdmin) {
+        link.href = "./";
     } else {
         link.href = "public/HTML/profile.html";
     }
@@ -156,7 +157,7 @@ function userLoggedIn(username, isAdmin) {
     // Create the quit button
     const quitText = document.createTextNode("Quit");
     const quit = document.createElement("a");
-    quit.href = "index.html";
+    quit.href = "index";
     quit.appendChild(quitText);
     const span2 = document.createElement("span");
     span2.appendChild(quit);
@@ -165,16 +166,16 @@ function userLoggedIn(username, isAdmin) {
     menu.appendChild(span2);
 
     // Adding toast when user logged in
-    if (sampleUser.newMessages.length > 0) {
-        toastBody.innerHTML = "You have " + sampleUser.newMessages.length + " new notifications.";
-        toast.setAttribute("data-autohide", "false");
-        toast.style.display = "block";
-        $(document).ready(function () {
-            $('.toast').toast('show');
-        });
-
-        sampleUser.moveNewMsgToOld();
-    }
+    // if (sampleUser.newMessages.length > 0) {
+    //     toastBody.innerHTML = "You have " + sampleUser.newMessages.length + " new notifications.";
+    //     toast.setAttribute("data-autohide", "false");
+    //     toast.style.display = "block";
+    //     $(document).ready(function () {
+    //         $('.toast').toast('show');
+    //     });
+    //
+    //     sampleUser.moveNewMsgToOld();
+    // }
 
     // document.querySelector("#bookShelf").style.pointerEvents = "all";
     // document.querySelector("#searchLogo").style.pointerEvents = "all";
