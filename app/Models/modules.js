@@ -615,33 +615,23 @@ UserSchema.statics.removeBooksWritten = (uid,bid) => {
         }).catch(error=>
             reject(error)
         );
-		// User.findByIdAndUpdate(uid,{
-		// 	$pull: {
-		// 		writtenBook:bid
-        //
-		// 	}
-		// }, { 'new': true }).then((result) => {
-		// 	resolve(result);
-		// },(error) => {
-		// 	reject({code:404,error});
-		// });
+
 	});
 };
 
-UserSchema.statics.addNewReadingHistory = (sid,bid,chapNum) =>{
+//This function should be called when a book is removed from bookshelf
+UserSchema.statics.removeReadingHistory = (sid,bid) =>{
     return new Promise((resolve,reject) => {
-        User.findByIdAndUpdate(uid, {
-            $push: {
-                bookshelf:{
-                    book_id: bid,
-                    chapter_num: chapNum
-                }
-            }
-        }).then((result)=> {
-            resolve(result);
-        },(error) => {
-            reject({code:404,error});
-        });
+        User.findById(uid).then(user=>{
+            let history = user.bookshelf.filter((history)=>{history.book_id == bid});
+            history.remove();
+            user.save().then((result)=> {
+                resolve(result);
+            },(error) => {
+                reject({code:404,error});
+            });
+        })
+
     });
 };
 
@@ -664,23 +654,22 @@ UserSchema.statics.addNewReadingHistory = (sid,bid,chapNum) =>{
 };
 
 
-//TODO: update history and remove history
 
-
-UserSchema.statics.updateReadingHistory = (sid,bid,chapNum) =>{
+//This function should be called every time user going to next chapter
+UserSchema.statics.updateReadingHistory = (uid,bid,chapNum) =>{
     return new Promise((resolve,reject) => {
-        User.findByIdAndUpdate(uid, {
-            $pull: {
-                bookshelf:{
-                    book_id: bid,
-                    chapter_num: chapNum
-                }
+        User.findById(uid).then((user)=>{
+            let historyWeWant = user.bookshelf.filter((history)=>{history.book_id == bid});
+            if(!historyWeWant){
+                reject("not in bookshelf");
             }
-        }).then((result)=> {
-            resolve(result);
-        },(error) => {
-            reject({code:404,error});
-        });
+            historyWeWant.chapter_num = chapNum;
+            user.save().then((result)=> {
+                resolve(result);
+            },(error) => {
+                reject({code:404,error});
+            });
+        })
     });
 };
 
