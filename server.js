@@ -88,7 +88,9 @@ app.post('/user/login', (req, res) => {
             // send to the client
             
 			req.session.user = user._id;
-			req.session.name = user.name
+            req.session.name = user.name
+            res.cookie("name", user.name)
+            res.cookie("id", user._id)
 			res.redirect('/index')
 		}
 	},(result) => {
