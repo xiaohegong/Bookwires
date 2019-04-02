@@ -297,7 +297,7 @@ app.post('/db/books', (req, res) => {
         "bookTitle": req.body.bookTitle,
         // "rating": req.body.rating,
         // "numOfRate": req.body.numOfRate,
-        // "user": req.body.user,
+         "user": req.body.user,
         "image": req.body.image,
         "description": req.body.description,
         "genre": req.body.genre
@@ -313,8 +313,8 @@ app.post('/db/books', (req, res) => {
 
     newBook.save()
         .then((book) => {
-            res.send(book);
-        })
+            return User.addNewBooksWritten(req.body.user,book._id)
+        }).then((result)=>res.send(result))
         .catch(error => {
             return res.status(400).send(error);
         });
