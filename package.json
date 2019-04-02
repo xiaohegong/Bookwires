@@ -18,12 +18,12 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "handlebars": "^4.0.12",
+    "hbs": "^4.0.1",
     "install": "^0.12.2",
     "mongodb": "^3.2.2",
     "mongoose": "^5.4.20",
     "path": "^0.12.7",
-    "validator": "^10.9.0",
-    "handlebars": "^4.0.12",
-    "hbs": "^4.0.1"
+    "validator": "^10.11.0"
   }
 }
