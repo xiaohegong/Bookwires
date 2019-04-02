@@ -70,6 +70,7 @@ h4 {
     clear: right;
     display: inline-block;
     margin-left: 5px;
+    min-height: 70px;
 }
 
 .bookDisplayImg {
@@ -80,9 +81,10 @@ h4 {
 }
 
 .bookDisplayText {
-    float: left;
-    margin-left: 10px;
-    font-size: 15px;
+    float: right;
+    margin-left: 5px;
+    font-size: 13px;
+    width: 180px;
 }
 
 .displayInfo {
@@ -129,7 +131,7 @@ h4 {
     text-decoration: none;
     font-size: 16px;
     margin-bottom: 21px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 #authorRec a {
@@ -139,6 +141,27 @@ h4 {
 
 .author {
     display: block;
+}
+
+.authorImg {
+    width: 50px;
+    height: 50px;
+    display: block;
+    float: left;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.authorDisplay {
+    clear: right;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.authorDisplayText {
+    float: right;
+    margin-left: 10px;
+    font-size: 15px;
 }
 
 /******* Toast styling *******/
@@ -155,11 +178,11 @@ h4 {
 
 #toast-button {
     right: 0;
-    top:0;
+    top: 0;
     border: none;
 }
 
-#toast-button span{
+#toast-button span {
     color: black;
 }
 
@@ -171,7 +194,7 @@ h4 {
     /*pointer-events: none;*/
 }
 
-#searchLogo{
+#searchLogo {
     /*pointer-events: none;*/
 }
 

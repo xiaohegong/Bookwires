@@ -34,9 +34,8 @@ h1 {
 }
 
 #menuBar {
-    overflow: hidden;
     width: 200px;
-    height: 60px;
+    height: 20px;
     margin-top: 10px;
     margin-left: 40px;
     float: right;
@@ -44,7 +43,7 @@ h1 {
 
 #menuBar a {
     float: left;
-    font-size: 16px;
+    font-size: 12px;
     color: #67898a;
     text-align: center;
     padding: 8px;

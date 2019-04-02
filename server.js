@@ -88,7 +88,9 @@ app.post('/user/login', (req, res) => {
             // send to the client
             
 			req.session.user = user._id;
-			req.session.name = user.name
+            req.session.name = user.name
+            res.cookie("name", user.name)
+            res.cookie("id", user._id)
 			res.redirect('/index')
 		}
 	},(result) => {
@@ -189,6 +191,8 @@ app.get('/db/books/:id', (req, res) => {
             return res.status(500).send(error);
         });
 });
+
+
 
 app.get('/books/:id', (req, res) => {
     const id = req.params.id;
@@ -291,13 +295,17 @@ app.get('/search', (req, res) => {
     res.sendFile(dir + 'search.html');
 });
 
+app.get('/search/:query', (req, res) => {
+    const dir = path.join(__dirname + "/public/HTML/");
+    res.sendFile(dir + 'search.html');
+});
 
 app.post('/db/books', (req, res) => {
     const newBook = new Book({
         "bookTitle": req.body.bookTitle,
         // "rating": req.body.rating,
         // "numOfRate": req.body.numOfRate,
-        // "user": req.body.user,
+         "user": req.body.user,
         "image": req.body.image,
         "description": req.body.description,
         "genre": req.body.genre
@@ -313,35 +321,15 @@ app.post('/db/books', (req, res) => {
 
     newBook.save()
         .then((book) => {
-            res.send(book);
-        })
+            return User.addNewBooksWritten(req.body.user,book._id)
+        }).then((result)=>res.send(result))
         .catch(error => {
             return res.status(400).send(error);
         });
 
 });
 
-app.get('/db/books/:id', (req, res) => {
-    const id = req.params.id;
 
-    // Validate the id
-    if (!ObjectID.isValid(id)) {
-        return res.status(404).send();
-    }
-
-    // Otherwise, find book by id and send back
-    Book.findBookByID(id)
-        .then((book) => {
-            if (!book) {
-                return res.status(404).send();
-            } else {
-                res.send(book);
-            }
-        })
-        .catch((error) => {
-            return res.status(500).send(error);
-        });
-});
 
 app.post('/db/booksChapter/:id', (req, res) => {
     // Validate the id
@@ -398,6 +386,8 @@ app.delete('/db/books/:id', (req, res) => {
     }
     Book.deleteBook(id).then(result => res.send(result));
 });
+
+
 
 app.delete('/db/books/:id/:chapter_id', (req, res) => {
     // Validate the id and reservation id
@@ -464,8 +454,6 @@ app.patch('/db/books/:id/:chapter_id', (req, res) => {
 // TODO - to be edited after User Schema is posted
 app.get('/profile/:id', (req, res) => {
     const id = req.params.id;
-
-    User.findById(id)
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
     }
@@ -475,7 +463,7 @@ app.get('/profile/:id', (req, res) => {
 			res.status(404).send()
 		} else{
             const dir = path.join(__dirname + "/public/HTML/");
-            res.sendFile(dir + 'book.html');
+            res.sendFile(dir + 'profile.html');
 		}
 	}).catch((error) => {
 		res.status(500).send()
@@ -485,11 +473,9 @@ app.get('/profile/:id', (req, res) => {
 
 
 
-app.get('/db/users/:id', (req, res) => {
+app.get('/db/profile/:id', (req, res) => {
     const id = req.params.id;
-    
 
-    User.findById(id)
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
     }
@@ -518,6 +504,22 @@ app.get('/db/users', (req, res) => {
         );
 });
 
+app.get('/db/users/:id', (req, res) => {
+    const id = req.params.id;
+    if(!ObjectID.isValid(id)){
+        res.status(404).send();
+    }
+    User.findById(id).then((user) =>{
+        if(!user){
+            res.status(404).send()
+        } else{
+            res.send(user);
+        }
+    }).catch((error) => {
+        res.status(500).send()
+    })
+
+});
 
 app.delete('/db/users/:id', (req, res) => {
     const id = req.params.id;

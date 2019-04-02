@@ -1,4 +1,38 @@
 'use strict';
+const log = console.log;
+const currentLocation = window.location.href;
+async function getUser() {
+    const url = "/db"+new URL(currentLocation).pathname;
+    log(url)
+    return fetch(url).then((res) => {
+        if(res.status !== 200){
+            alert("Error finding User");
+            return
+        }
+        return res.json()
+    }).then((userJson) => {
+            return userJson;
+        }).catch(error => log(error));
+}
+
+// async function getUser() {
+//     return fetch(`/db/users/${userid}`).then((response) => {
+//         if(response.status !== 200){
+//             alert("Error finding User");
+//             return
+//         }
+//         response.json().then((userJson) => {
+//             console.log("ASDSADSADAS")
+//             console.log(userJson);
+//             return userJson;
+//         })
+//         }).catch(error => log(error));
+// }
+// const profileUser = getUser().then().then(res => {return res});
+// console.log(profileUser)
+// getBook().then(res=>log(res.image));
+
+// fetch("/db/users/:id")
 
 // **NOTE**: for this page we use sampleUser as the user that this profile represents.
 //          Sample user is stored in classes.js and realistically a server call would be

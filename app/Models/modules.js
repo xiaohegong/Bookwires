@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const validator = require('validator');
 const ObjectId = mongoose.Schema.Types.ObjectId;
-//const {MongoClient, ObjectId} = require('mongodb');
+const TypeId = mongoose.Types.ObjectId;
+const Schema = mongoose.Schema;
+const {MongoClient, ObjectID} = require('mongodb');
 
 const ChapterSchema = mongoose.Schema({
     chapterTitle: {
@@ -45,10 +47,10 @@ const BookSchema = mongoose.Schema({
         default: 0
     },
 
-    // user: {
-    //     // User module
-    //     type: ObjectId
-    // },
+    user: {
+        // User module
+        type: ObjectId
+    },
     image: {
         type: String,
         default: "./img/default.jpg"
@@ -134,7 +136,7 @@ BookSchema.statics.findByRate = (rate) => {
 
 };
 
-BookSchema.statics.findByRate = (rate,genre) => {
+BookSchema.statics.findByRateWithGenre = (rate,genre) => {
     // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({rate: {$gte: rate},genre:genre}).then((book) => {
@@ -302,11 +304,10 @@ BookSchema.statics.deleteChapter = (id, chap_id) => {
 };
 
 BookSchema.statics.deleteBook = (id) => {
-
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
         // log(book);
-        Book.findByIdAndDelete(id).then((result) => {
+        Book.findByIdAndRemove(id).then((result) => {
             resolve(result);
         }, (error) => {
             reject({code: 404, error});
@@ -379,7 +380,7 @@ const UserSchema = mongoose.Schema({
 
     //list parameters
     bookshelf: [readingHistory],
-    writtenBook: [ObjectId],
+    writtenBook: [{type:Schema.Types.ObjectId,ref:'Book'}],
     topThreeBooks: [ObjectId],
     following: [ObjectId],
     newMessage: [ObjectId],
@@ -593,9 +594,7 @@ UserSchema.statics.addNewBooksWritten = (uid,bid) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$push: {
-				writtenBook:{
-					id:bid
-				}
+				writtenBook:bid
 			}
 		}).then((result) => {
 			resolve(result);
@@ -607,16 +606,25 @@ UserSchema.statics.addNewBooksWritten = (uid,bid) => {
 
 
 UserSchema.statics.removeBooksWritten = (uid,bid) => {
-	return new Promise((resolve,reject) => {
-		User.findByIdAndUpdate(uid,{
-			$pull: {
-				writtenBook:bid
-			}
-		}).then((result) => {
-			resolve(result);
-		},(error) => {
-			reject({code:404,error});
-		});
+
+    return new Promise((resolve,reject) => {
+	    User.findById(uid).then(res=>{
+	        res.writtenBook.remove(bid);
+            res.save();
+            resolve(res);
+        }).catch(error=>
+            reject(error)
+        );
+		// User.findByIdAndUpdate(uid,{
+		// 	$pull: {
+		// 		writtenBook:bid
+        //
+		// 	}
+		// }, { 'new': true }).then((result) => {
+		// 	resolve(result);
+		// },(error) => {
+		// 	reject({code:404,error});
+		// });
 	});
 };
 
