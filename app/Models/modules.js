@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const validator = require('validator');
 const ObjectId = mongoose.Schema.Types.ObjectId;
-const {MongoClient, ObjectID} = require('mongodb');
+//const {MongoClient, ObjectId} = require('mongodb');
 
 const ChapterSchema = mongoose.Schema({
     chapterTitle: {
@@ -318,6 +318,19 @@ BookSchema.statics.deleteBook = (id) => {
 const Book = mongoose.model('Book', BookSchema);
 
 
+const readingHistory = mongoose.Schema({
+    book_id:{
+        type:ObjectId,
+        required:true
+    },
+    chapter_num:{
+        type:Number,
+        required:true
+    }
+});
+
+
+
 const UserSchema = mongoose.Schema({
     //13 parameters totally
 
@@ -365,7 +378,7 @@ const UserSchema = mongoose.Schema({
     },
 
     //list parameters
-    bookshelf: [ObjectId],
+    bookshelf: [readingHistory],
     writtenBook: [ObjectId],
     topThreeBooks: [ObjectId],
     following: [ObjectId],
@@ -542,7 +555,7 @@ UserSchema.statics.beNotFollowed = (id) => {
 };
 
 
-UserSchema.statics.addNewBookToRead = (uid,bid) => {
+UserSchema.statics.addNewBookToRead = (uid,bid,chapNum) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$push: {
@@ -597,9 +610,7 @@ UserSchema.statics.removeBooksWritten = (uid,bid) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$pull: {
-				writtenBook:{
-					id:bid
-				}
+				writtenBook:bid
 			}
 		}).then((result) => {
 			resolve(result);
@@ -609,22 +620,61 @@ UserSchema.statics.removeBooksWritten = (uid,bid) => {
 	});
 };
 
-
-UserSchema.statics.addNewUser = (req) => {
-    return new Promise((resolve, reject) => {
-        const newUser = new User({
-            bookTitle: req.body.bookTitle,
-            image: req.body.image
-        });
-        // Save student to the database
-        book.save().then((result) => {
+UserSchema.statics.addNewReadingHistory = (sid,bid,chapNum) =>{
+    return new Promise((resolve,reject) => {
+        User.findByIdAndUpdate(uid, {
+            $push: {
+                bookshelf:{
+                    book_id: bid,
+                    chapter_num: chapNum
+                }
+            }
+        }).then((result)=> {
             resolve(result);
-        }, (error) => {
-            reject({code: 400, error});
+        },(error) => {
+            reject({code:404,error});
         });
     });
 };
 
+//This function should be called when a book is added to the shelf of a user
+UserSchema.statics.addNewReadingHistory = (sid,bid,chapNum) =>{
+    return new Promise((resolve,reject) => {
+        User.findByIdAndUpdate(uid, {
+            $push: {
+                bookshelf:{
+                    book_id: bid,
+                    chapter_num: chapNum
+                }
+            }
+        }).then((result)=> {
+            resolve(result);
+        },(error) => {
+            reject({code:404,error});
+        });
+    });
+};
+
+
+//TODO: update history and remove history
+
+
+UserSchema.statics.updateReadingHistory = (sid,bid,chapNum) =>{
+    return new Promise((resolve,reject) => {
+        User.findByIdAndUpdate(uid, {
+            $pull: {
+                bookshelf:{
+                    book_id: bid,
+                    chapter_num: chapNum
+                }
+            }
+        }).then((result)=> {
+            resolve(result);
+        },(error) => {
+            reject({code:404,error});
+        });
+    });
+};
 
 
 const User = mongoose.model('User', UserSchema);
