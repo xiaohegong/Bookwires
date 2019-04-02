@@ -206,14 +206,15 @@ function bookSetUp(books) {
         span.className = "bookDisplayText";
         span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.bookTitle)));
         //TEMP
-        const info = document.createTextNode("WHAT" + " | " + book.genre);
-        const p = document.createElement("p");
-        p.className = "displayInfo";
-        p.appendChild(info);
-        span.appendChild(p);
-
-        const rating = makeStars(book.rating);
-        span.appendChild(rating);
+        getAllBook("/db/users/"+book.user).then(res=>{
+            const info = document.createTextNode(res.name + " | " + book.genre);
+            const p = document.createElement("p");
+            p.className = "displayInfo";
+            p.appendChild(info);
+            span.appendChild(p);
+            const rating = makeStars(book.rating);
+            span.appendChild(rating);
+        });
 
         divider.appendChild(imgContainer);
         divider.appendChild(span);
