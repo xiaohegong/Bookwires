@@ -334,15 +334,25 @@ app.post('/db/books', (req, res) => {
 
 });
 
-// app.delete('/db/a/:id/:pid', (req, res) => {
-//     const id = req.params.id;
-//     const pid = req.params.id;
-//     User.removeBooksWritten(id,pid).then((result)=>res.send(result))
-//         .catch(error => {
-//             return res.status(400).send(error);
-//         });
-//
-// });
+app.delete('/db/a/:id/:pid', (req, res) => {
+    const id = req.params.id;
+    const pid = req.params.pid;
+    User.removeBooksWritten(id,pid).then((result)=>res.send(result))
+        .catch(error => {
+            return res.status(400).send(error);
+        });
+
+});
+
+app.delete('/db/com/:id/:pid', (req, res) => {
+    const id = req.params.id;
+    const pid = req.params.pid;
+    Book.deleteComment(id,pid).then((result)=>res.send(result))
+        .catch(error => {
+            return res.status(400).send(error);
+        });
+
+});
 
 
 
@@ -399,7 +409,11 @@ app.delete('/db/books/:id', (req, res) => {
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
-    Book.deleteBook(id).then(result => res.send(result));
+    Book.deleteBook(id).then(result => {
+        User.removeBooksWritten(result.user,result.id)
+    }).then(res=>{
+        log(res);
+    });
 });
 
 
