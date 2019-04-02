@@ -594,7 +594,13 @@ app.delete('/db/users/:id', (req, res) => {
 // });
 
 
-
+app.get('/db/reading/:bid/:cid',(req,res) =>{
+    const bid = req.params.bid;
+    const cid = req.params.cid;
+    if (!ObjectID.isValid(bid)||!ObjectID.isValid) {
+        return res.status(404).send();
+    }
+})
 
 
 const port = process.env.PORT || 3000;
