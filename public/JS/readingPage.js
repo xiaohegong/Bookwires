@@ -1,38 +1,69 @@
 const log = console.log;
 
-//get the id of book and chapter from somewhere, which i haven't got the idea how to do so
-const book_id = 123;
-const chap_id = 1;
-//////////////////////////
+//get the id of book and chapter from somewhere
+const path = window.location.pathname.split("/")
+let book_id = path[1];
+log(book_id)
+let chapter_index = parseInt(path[2]);
+log(chapter_index)
+//
 
-function getChapterReading(book_id,chap_num){
-    let url = '/db/reading/'+book_id+'/'+chap_num;
+function getChaptersReading(book_id){
+    let url = '/db/reading/'+book_id;
     log(url);
     return fetch(url).then((res) => res.json())
         .then((chapJson) => {
             log(chapJson);
+            //when we enter a reading page, we update the current page and show the content automatically
+
             return chapJson;
         }).catch(error => log(error));
 }
 
 
-function updateReadingPage(chapterReading){
-    //get the attibutes ready, should be two string
-    const chapterTitle = chapterReading.chapterTitle;
-    const chapterContent = chapterReading.content;
 
+
+function updateReadingPage(chapters){
     //get the elements we want to update
     let nameBox = document.getElementById('chapterNameBox');
     let contentBox = document.getElementById('mainText');
 
-    nameBox.innerHTML = chapterTitle;
-    contentBox.innerHTML = chapterContent;
+    log(chapters);
+    chapters.then((array)=>{
+        nameBox.innerHTML = array[chapter_index].chapterTitle;
+        contentBox.innerHTML = array[chapter_index].content;
+    });
+
 }
 
-let chap = getChapterReading(book_id,chap_id);
-updateReadingPage(chap);
+let chapters = getChaptersReading(book_id);
+updateReadingPage(chapters);
 
 
-////////////////////////////////////
-//TODO 4 buttons
-////////////////////////////////////
+// those two functions will be assign to the onclick of the buttons on 4 corner of the reading pages
+function showNextChapter(){
+    chapter_index += 1;
+    updateReadingPage(chapters);
+}
+
+function showLastChapter(){
+    chapter_index -= 1;
+    updateReadingPage(chapters);
+}
+
+function activateButtons(){
+    let upperLeftButton = document.getElementById('upperLeftButton');
+    let upperRightButton = document.getElementById('upperRightButton');
+    let lowerLeftButton = document.getElementById('lowerLeftButton');
+    let lowerRightButton = document.getElementById('lowerRightButton');
+
+    upperLeftButton.onclick = showLastChapter;
+    lowerRightButton.onclick = showNextChapter;
+    upperRightButton.onclick = showNextChapter;
+    lowerLeftButton.onclick = showLastChapter;
+}
+
+//activate the buttons' functions
+activateButtons();
+
+log("end of hard code")

@@ -300,6 +300,11 @@ app.get('/search/:query', (req, res) => {
     res.sendFile(dir + 'search.html');
 });
 
+app.get('/:bid/:chap', (req, res) => {
+    const dir = path.join(__dirname + "/public/HTML/");
+    res.sendFile(dir + 'readingPage.html');
+});
+
 app.post('/db/books', (req, res) => {
     const newBook = new Book({
         "bookTitle": req.body.bookTitle,
@@ -579,14 +584,21 @@ app.delete('/db/users/:id', (req, res) => {
 //    Chapter.
 // });
 
-
-app.get('/db/reading/:bid/:cid',(req,res) =>{
+//get all the chapter from the book
+app.get('/db/reading/:bid/',(req,res) =>{
     const bid = req.params.bid;
-    const cid = req.params.cid;
-    if (!ObjectID.isValid(bid)||!ObjectID.isValid) {
+    if (!ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
-})
+    Book.findById(bid).then((book)=>{
+            if(!book){
+                res.status(404).send()
+            }else{
+                res.send(book.chapters)
+            }
+        }
+    )
+});
 
 
 const port = process.env.PORT || 3000;
