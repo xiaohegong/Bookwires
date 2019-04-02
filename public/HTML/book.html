@@ -14,10 +14,12 @@
 <body>
 <div id="wrapper">
     <div id="header">
-        <!-- Twitter logo goes in here -->
         <a href="/index"><img id='bookLogo' src="../img/book.png"/>
             <span id="title">Bookwires</span></a>
-
+        <div id="menuBar">
+            <a href="/login">Log in</a>
+            <a href="/signup">Sign up</a>
+        </div>
     </div>
     <div class="container">
 
@@ -155,9 +157,10 @@
 
 </div>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script type="text/javascript" src="../JS/classes.js"></script>
 <script type="text/javascript" src="../JS/book.js"></script>
+<script type="text/javascript" src="../JS/util.js"></script>
 
 <!-- bootstrap import -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

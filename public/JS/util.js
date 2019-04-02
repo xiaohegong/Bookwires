@@ -21,3 +21,74 @@ function getCookie(name) {
 
 
    */
+
+  /*****  Set logged in status ******/
+const menuBar = document.getElementById("menuBar");
+
+// If a user is logged in
+if (document.cookie) {
+    const cookie = Cookies.get();
+    userLoggedIn(cookie.name);
+}
+
+function userLoggedIn(user) {
+    const menu = menuBar;
+    // Remove old buttons
+    // const username = user.name;
+    let username = user;
+    if (username.trim().split(" ").length > 1) {
+        username = username.trim().split(" ")[0];
+    }
+    if (menu && menu.children.length > 1){
+        menu.removeChild(menu.children[0]);
+        menu.removeChild(menu.children[0]);
+    }
+
+    const welcomeText = document.createTextNode("Welcome " + username + "!");
+    const link = document.createElement("a");
+
+    // Check user type to direct to correct pages
+    link.href = "";
+    // if (user.isAdmin) { TODO
+    //     link.href = "./";
+    // } else {
+    //     link.href = "public/HTML/profile.html";
+    // }
+
+    // Create the welcome message
+    link.appendChild(welcomeText);
+    const span = document.createElement("span");
+    span.appendChild(link);
+    span.className = "welcomeMsg";
+    menu.appendChild(span);
+
+    // Create the quit button
+    const quitText = document.createTextNode("Quit");
+    const quit = document.createElement("a");
+    quit.href = "../users/logout";
+    quit.appendChild(quitText);
+    const span2 = document.createElement("span");
+    span2.appendChild(quit);
+    span2.className = "welcomeMsg";
+    span2.id = "quit";
+
+    menu.appendChild(span2);
+
+    // Adding toast when user logged in
+    // if (sampleUser.newMessages.length > 0) {
+    //     toastBody.innerHTML = "You have " + sampleUser.newMessages.length + " new notifications.";
+    //     toast.setAttribute("data-autohide", "false");
+    //     toast.style.display = "block";
+    //     $(document).ready(function () {
+    //         $('.toast').toast('show');
+    //     });
+    //
+    //     sampleUser.moveNewMsgToOld();
+    // }
+
+    // document.querySelector("#bookShelf").style.pointerEvents = "all";
+    // document.querySelector("#searchLogo").style.pointerEvents = "all";
+    // document.querySelector("#leftSideBar").style.pointerEvents = "all";
+    // document.querySelector("#rightSideBar").style.pointerEvents = "all";
+    // document.querySelector("#searchLogo").style.pointerEvents = "all";
+}
