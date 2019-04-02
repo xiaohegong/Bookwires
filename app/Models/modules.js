@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const validator = require('validator');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const TypeId = mongoose.Types.ObjectId;
+const Schema = mongoose.Schema;
 const {MongoClient, ObjectID} = require('mongodb');
 
 const ChapterSchema = mongoose.Schema({
@@ -302,11 +304,10 @@ BookSchema.statics.deleteChapter = (id, chap_id) => {
 };
 
 BookSchema.statics.deleteBook = (id) => {
-
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
         // log(book);
-        Book.findByIdAndDelete(id).then((result) => {
+        Book.findByIdAndRemove(id).then((result) => {
             resolve(result);
         }, (error) => {
             reject({code: 404, error});
@@ -366,7 +367,7 @@ const UserSchema = mongoose.Schema({
 
     //list parameters
     bookshelf: [{type: ObjectId}],
-    writtenBook: [ObjectId],
+    writtenBook: [{type:Schema.Types.ObjectId,ref:'Book'}],
     topThreeBooks: [ObjectId],
     following: [ObjectId],
     newMessage: [ObjectId],
@@ -592,18 +593,25 @@ UserSchema.statics.addNewBooksWritten = (uid,bid) => {
 
 
 UserSchema.statics.removeBooksWritten = (uid,bid) => {
-	return new Promise((resolve,reject) => {
-		User.findByIdAndUpdate(uid,{
-			$pull: {
-				writtenBook:{
-					id:bid
-				}
-			}
-		}).then((result) => {
-			resolve(result);
-		},(error) => {
-			reject({code:404,error});
-		});
+
+    return new Promise((resolve,reject) => {
+	    User.findById(uid).then(res=>{
+	        res.writtenBook.remove(bid);
+            res.save();
+            resolve(res);
+        }).catch(error=>
+            reject(error)
+        );
+		// User.findByIdAndUpdate(uid,{
+		// 	$pull: {
+		// 		writtenBook:bid
+        //
+		// 	}
+		// }, { 'new': true }).then((result) => {
+		// 	resolve(result);
+		// },(error) => {
+		// 	reject({code:404,error});
+		// });
 	});
 };
 
