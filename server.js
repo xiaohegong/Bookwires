@@ -32,7 +32,7 @@ app.use(session({
 
 // use to redirect to home if already logged in
 const sessionChecker = (req, res, next) => {
-	if (req.session.user) {
+	if (req.session.userId) {
 		res.redirect('/index')
 	} else {
 		next();
@@ -41,7 +41,7 @@ const sessionChecker = (req, res, next) => {
 
 // use to redirect if a session has not been created
 const sessionCheckLoggedIn = (req, res, next) => {
-	if (!req.session.user) {
+	if (!req.session.userId) {
 		res.redirect('/login')
 	} else {
 		next();
@@ -68,7 +68,7 @@ app.route('/admin')
 app.get('/index', (req, res) => {
     // check if we have active session cookie
     res.sendFile(__dirname + '/public/HTML/index.html');
-	// if (req.session.user) {
+	// if (req.session.userId) {
 	// 	res.sendFile(__dirname + '/public/HTML/index.html')
 	// } else {
 	// 	res.redirect('/login')
@@ -87,10 +87,10 @@ app.post('/user/login', (req, res) => {
 			// Add the user to the session cookie that we will
             // send to the client
             
-			req.session.user = user._id;
+			req.session.userId = user._id;
             req.session.name = user.name
-            res.cookie("name", user.name)
-            res.cookie("id", user._id)
+            res.cookie("name", user.name, { maxAge: 600000, httpOnly: false})
+            res.cookie("id", user._id, { maxAge: 600000, httpOnly: false})
 			res.redirect('/index')
 		}
 	},(result) => {
@@ -106,6 +106,8 @@ app.get('/users/logout', sessionCheckLoggedIn, (req, res) => {
 		if (error) {
 			res.status(500).send(error)
 		} else {
+            res.clearCookie("name")
+            res.clearCookie("id")
 			res.redirect('/index')
 		}
 	})
@@ -136,7 +138,7 @@ app.post('/user/signup', (req, res) => {
         oldMessage: []
     })
     
-    req.session.user = user._id;
+    req.session.userId = user._id;
 	req.session.email = user.email
 
 	// save user to database
@@ -487,10 +489,42 @@ app.get('/profile/:id', (req, res) => {
 
 });
 
+class userOwner {
+    constructor(name, description, id, email, isAdmin, token, followers, image, bookshelf, writtenBook, following, newMessage, oldMessage) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.email = email;
+        this.isAdmin = isAdmin;
+        this.token = token;
+        this.followers = followers;
+        this.image = image;
+        this.bookshelf = bookshelf;
+        this.writtenBook = writtenBook;
+        this.following = following;
+        this.newMessage = newMessage;
+        this.oldMessage = oldMessage;
+    }
+}
 
+class userNonOwner {
+    constructor(name, description, id, isAdmin, followers, image, bookshelf, writtenBook, following) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.isAdmin = isAdmin;
+        this.followers = followers;
+        this.image = image;
+        this.bookshelf = bookshelf;
+        this.writtenBook = writtenBook;
+        this.following = following;
+    }
+}
 
 app.get('/db/profile/:id', (req, res) => {
     const id = req.params.id;
+
+    // TODO: check if id is session id. send a modified user
 
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
@@ -499,7 +533,20 @@ app.get('/db/profile/:id', (req, res) => {
 		if(!user){
 			res.status(404).send()
 		} else{
-			res.send(user);
+            log(req.params.id)
+            log(req.session.userId)
+            if(req.params.id === req.session.userId){
+                const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin, 
+                    user.token, user.followers, user.image, user.bookshelf, user.writtenBook, 
+                    user.following, user.newMessage, user.oldMessage)
+                    res.send(userToSend)
+            }
+            else{
+                const userToSend = new userNonOwner(user.name, user.description, user._id, user.isAdmin, user.followers, 
+                    user.image, user.bookshelf, user.writtenBook, user.following)
+                    res.send(userToSend)
+            }
+			// res.send(user);
 		}
 	}).catch((error) => {
 		res.status(500).send()

@@ -327,6 +327,11 @@ const UserSchema = mongoose.Schema({
         required: true,
         minlength: 3
     },
+    description: {
+        type: String,
+        required: false,
+        default: ""
+    },
     password: {
         type: String,
         required: true,
