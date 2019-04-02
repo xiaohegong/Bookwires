@@ -2,11 +2,11 @@ const log = console.log;
 
 //get the id of book and chapter from somewhere, which i haven't got the idea how to do so
 const book_id = 123;
-const chap_id = 456;
+const chap_id = 1;
 //////////////////////////
 
-function getChapterReading(book_id,chap_id){
-    let url = '/db/reading/'+book_id+'/'+chap_id;
+function getChapterReading(book_id,chap_num){
+    let url = '/db/reading/'+book_id+'/'+chap_num;
     log(url);
     return fetch(url).then((res) => res.json())
         .then((chapJson) => {

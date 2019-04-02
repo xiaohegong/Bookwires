@@ -149,7 +149,7 @@ class user {
         this.following = [];
         this.mailAddress = "";
         this.passWord = "";
-        this.image = "./img/avatar.png";
+        this.image = "./img/avatar.jpg";
         this.newMessages = [];
         this.oldMessages = [];
     }

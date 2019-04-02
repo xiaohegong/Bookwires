@@ -39,35 +39,51 @@ save.onclick = function saveToShelf(e) {
 };
 
 function addCommentToTable(comment) {
-    const newComments = document.createElement('div');
-    commentsArea.appendChild(newComments);
-    newComments.className = 'comment';
-    const CommentUserImage = document.createElement('img');
-    CommentUserImage.src = comment.user.getImage();
-    CommentUserImage.className = 'CommentUserImage';
-    newComments.appendChild(CommentUserImage);
+    getInfo("/db/users/"+comment.user).then(res=>{
+        const newComments = document.createElement('div');
+        commentsArea.appendChild(newComments);
+        newComments.className = 'comment';
+        const CommentUserImage = document.createElement('img');
+        CommentUserImage.src = res.image;
+        CommentUserImage.className = 'CommentUserImage';
+        newComments.appendChild(CommentUserImage);
 
-    const CommentUserNameContainer = document.createElement('h5');
-    CommentUserNameContainer.className = 'CommentUserName';
-    const CommentUserName = document.createTextNode(comment.user.getName());
-    CommentUserNameContainer.appendChild(CommentUserName);
-    newComments.appendChild(CommentUserNameContainer);
+        const CommentUserNameContainer = document.createElement('h5');
+        CommentUserNameContainer.className = 'CommentUserName';
+        const CommentUserName = document.createTextNode(res.name);
+        CommentUserNameContainer.appendChild(CommentUserName);
+        newComments.appendChild(CommentUserNameContainer);
 
-    const UserCommentContainer = document.createElement('p');
-    const UserComment = document.createTextNode(comment.getContent());
-    UserCommentContainer.appendChild(UserComment);
-    newComments.appendChild(UserCommentContainer);
-
-    if (isAdmin()) {
-        const deleteButton = document.createElement('button');
-        deleteButton.innerText = "delete";
-        deleteButton.className = "btn btn-info deleteButton";
-        deleteButton.onclick = function () {
-            deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
-        };
-        newComments.appendChild(deleteButton);
+        const UserCommentContainer = document.createElement('p');
+        const UserComment = document.createTextNode(comment.content);
+        UserCommentContainer.appendChild(UserComment);
         newComments.appendChild(UserCommentContainer);
-    }
+
+        if (isAdmin()) {
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = "delete";
+            deleteButton.className = "btn btn-info deleteButton";
+            deleteButton.onclick = function () {
+                deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
+            };
+            newComments.appendChild(deleteButton);
+            newComments.appendChild(UserCommentContainer);
+        }
+    });
+
+}
+
+function addOtherBook(book,i){
+    const slider = document.getElementsByClassName("carousel-inner");
+    const bookImage = document.createElement('img');
+    bookImage.src = book.image;
+    bookImage.className = 'otherBookImg';
+    slider[0].children[i].appendChild(bookImage);
+    const bookname = document.createTextNode(book.bookTitle);
+    const otherbooknameContainer = document.createElement('h3');
+    otherbooknameContainer.className = 'center';
+    otherbooknameContainer.appendChild(bookname);
+    slider[0].children[i].appendChild(otherbooknameContainer);
 }
 
 const chapters = document.getElementById("chapters");
@@ -127,18 +143,16 @@ const bookInformation = document.getElementById("bookInformation");
 
 
         //other books
-        const slider = document.getElementsByClassName("carousel-inner");
 
-        for (let i = 0; i < 3; i++) {
-            const bookImage = document.createElement('img');
-            bookImage.src = '../img/WanderingEarth.jpg';
-            bookImage.className = 'otherBookImg';
-            slider[0].children[i].appendChild(bookImage);
-            const bookname = document.createTextNode('BOOK NAME');
-            const otherbooknameContainer = document.createElement('h3');
-            otherbooknameContainer.className = 'center';
-            otherbooknameContainer.appendChild(bookname);
-            slider[0].children[i].appendChild(otherbooknameContainer);
+        for (let i = 0; i < res.writtenBook.length; i++) {
+            getInfo("/db/books/"+res.writtenBook[i]).then(book=>{
+                if (book!=null){
+                    addOtherBook(book,i)
+                }else{
+                    log("NO BOOK")
+                }
+
+            });
         }
 
     });
@@ -159,7 +173,7 @@ getInfo(url).then(res=>{
             newPost.className = 'Chapter';
             const newPostTitle = document.createTextNode(res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
-            newPostTitleContainer.href = "public/HTML/readingPage.html";
+            newPostTitleContainer.href = "/"+res._id+"/"+i;
             newPostTitleContainer.appendChild(newPostTitle);
             newPost.appendChild(newPostTitleContainer);
             nextLine.appendChild(newPost);
@@ -184,8 +198,8 @@ getInfo(url).then(res=>{
 const commentsArea = document.getElementById('commentsArea');
 getInfo(url).then(res=>{
     for (let i = 0; i < res.comments.length; i++) {
-        const comment = res.comments[i].content;
-        addCommentToTable(comment);
+        // const comment = res.comments[i].content;
+        addCommentToTable(res.comments[i]);
     }
 });
 

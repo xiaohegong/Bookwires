@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const validator = require('validator');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const TypeId = mongoose.Types.ObjectId;
+const Schema = mongoose.Schema;
 const {MongoClient, ObjectID} = require('mongodb');
 
 const ChapterSchema = mongoose.Schema({
@@ -302,11 +304,10 @@ BookSchema.statics.deleteChapter = (id, chap_id) => {
 };
 
 BookSchema.statics.deleteBook = (id) => {
-
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
         // log(book);
-        Book.findByIdAndDelete(id).then((result) => {
+        Book.findByIdAndRemove(id).then((result) => {
             resolve(result);
         }, (error) => {
             reject({code: 404, error});
@@ -316,6 +317,19 @@ BookSchema.statics.deleteBook = (id) => {
 
 
 const Book = mongoose.model('Book', BookSchema);
+
+
+const readingHistory = mongoose.Schema({
+    book_id:{
+        type:ObjectId,
+        required:true
+    },
+    chapter_num:{
+        type:Number,
+        required:true
+    }
+});
+
 
 
 const UserSchema = mongoose.Schema({
@@ -370,8 +384,8 @@ const UserSchema = mongoose.Schema({
     },
 
     //list parameters
-    bookshelf: [{type: ObjectId}],
-    writtenBook: [ObjectId],
+    bookshelf: [readingHistory],
+    writtenBook: [{type:Schema.Types.ObjectId,ref:'Book'}],
     topThreeBooks: [ObjectId],
     following: [ObjectId],
     newMessage: [ObjectId],
@@ -547,7 +561,7 @@ UserSchema.statics.beNotFollowed = (id) => {
 };
 
 
-UserSchema.statics.addNewBookToRead = (uid,bid) => {
+UserSchema.statics.addNewBookToRead = (uid,bid,chapNum) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$push: {
@@ -597,37 +611,72 @@ UserSchema.statics.addNewBooksWritten = (uid,bid) => {
 
 
 UserSchema.statics.removeBooksWritten = (uid,bid) => {
-	return new Promise((resolve,reject) => {
-		User.findByIdAndUpdate(uid,{
-			$pull: {
-				writtenBook:{
-					id:bid
-				}
-			}
-		}).then((result) => {
-			resolve(result);
-		},(error) => {
-			reject({code:404,error});
-		});
+
+    return new Promise((resolve,reject) => {
+	    User.findById(uid).then(res=>{
+	        res.writtenBook.remove(bid);
+            res.save();
+            resolve(res);
+        }).catch(error=>
+            reject(error)
+        );
+
 	});
 };
 
+//This function should be called when a book is removed from bookshelf
+UserSchema.statics.removeReadingHistory = (sid,bid) =>{
+    return new Promise((resolve,reject) => {
+        User.findById(uid).then(user=>{
+            let history = user.bookshelf.filter((history)=>{history.book_id == bid});
+            history.remove();
+            user.save().then((result)=> {
+                resolve(result);
+            },(error) => {
+                reject({code:404,error});
+            });
+        })
 
-UserSchema.statics.addNewUser = (req) => {
-    return new Promise((resolve, reject) => {
-        const newUser = new User({
-            bookTitle: req.body.bookTitle,
-            image: req.body.image
-        });
-        // Save student to the database
-        book.save().then((result) => {
+    });
+};
+
+//This function should be called when a book is added to the shelf of a user
+UserSchema.statics.addNewReadingHistory = (sid,bid,chapNum) =>{
+    return new Promise((resolve,reject) => {
+        User.findByIdAndUpdate(uid, {
+            $push: {
+                bookshelf:{
+                    book_id: bid,
+                    chapter_num: chapNum
+                }
+            }
+        }).then((result)=> {
             resolve(result);
-        }, (error) => {
-            reject({code: 400, error});
+        },(error) => {
+            reject({code:404,error});
         });
     });
 };
 
+
+
+//This function should be called every time user going to next chapter
+UserSchema.statics.updateReadingHistory = (uid,bid,chapNum) =>{
+    return new Promise((resolve,reject) => {
+        User.findById(uid).then((user)=>{
+            let historyWeWant = user.bookshelf.filter((history)=>{history.book_id == bid});
+            if(!historyWeWant){
+                reject("not in bookshelf");
+            }
+            historyWeWant.chapter_num = chapNum;
+            user.save().then((result)=> {
+                resolve(result);
+            },(error) => {
+                reject({code:404,error});
+            });
+        })
+    });
+};
 
 
 const User = mongoose.model('User', UserSchema);

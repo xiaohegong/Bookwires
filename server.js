@@ -194,6 +194,8 @@ app.get('/db/books/:id', (req, res) => {
         });
 });
 
+
+
 app.get('/books/:id', (req, res) => {
     const id = req.params.id;
     Book.findBookByID(id)
@@ -329,27 +331,17 @@ app.post('/db/books', (req, res) => {
 
 });
 
-app.get('/db/books/:id', (req, res) => {
-    const id = req.params.id;
+// app.delete('/db/a/:id/:pid', (req, res) => {
+//     const id = req.params.id;
+//     const pid = req.params.id;
+//     User.removeBooksWritten(id,pid).then((result)=>res.send(result))
+//         .catch(error => {
+//             return res.status(400).send(error);
+//         });
+//
+// });
 
-    // Validate the id
-    if (!ObjectID.isValid(id)) {
-        return res.status(404).send();
-    }
 
-    // Otherwise, find book by id and send back
-    Book.findBookByID(id)
-        .then((book) => {
-            if (!book) {
-                return res.status(404).send();
-            } else {
-                res.send(book);
-            }
-        })
-        .catch((error) => {
-            return res.status(500).send(error);
-        });
-});
 
 app.post('/db/booksChapter/:id', (req, res) => {
     // Validate the id
@@ -406,6 +398,8 @@ app.delete('/db/books/:id', (req, res) => {
     }
     Book.deleteBook(id).then(result => res.send(result));
 });
+
+
 
 app.delete('/db/books/:id/:chapter_id', (req, res) => {
     // Validate the id and reservation id
@@ -567,6 +561,22 @@ app.get('/db/users', (req, res) => {
         );
 });
 
+app.get('/db/users/:id', (req, res) => {
+    const id = req.params.id;
+    if(!ObjectID.isValid(id)){
+        res.status(404).send();
+    }
+    User.findById(id).then((user) =>{
+        if(!user){
+            res.status(404).send()
+        } else{
+            res.send(user);
+        }
+    }).catch((error) => {
+        res.status(500).send()
+    })
+
+});
 
 app.delete('/db/users/:id', (req, res) => {
     const id = req.params.id;
@@ -617,7 +627,13 @@ app.delete('/db/users/:id', (req, res) => {
 // });
 
 
-
+app.get('/db/reading/:bid/:cid',(req,res) =>{
+    const bid = req.params.bid;
+    const cid = req.params.cid;
+    if (!ObjectID.isValid(bid)||!ObjectID.isValid) {
+        return res.status(404).send();
+    }
+})
 
 
 const port = process.env.PORT || 3000;
