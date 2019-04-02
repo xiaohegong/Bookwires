@@ -45,10 +45,10 @@ const BookSchema = mongoose.Schema({
         default: 0
     },
 
-    // user: {
-    //     // User module
-    //     type: ObjectId
-    // },
+    user: {
+        // User module
+        type: ObjectId
+    },
     image: {
         type: String,
         default: "./img/default.jpg"
@@ -134,7 +134,7 @@ BookSchema.statics.findByRate = (rate) => {
 
 };
 
-BookSchema.statics.findByRate = (rate,genre) => {
+BookSchema.statics.findByRateWithGenre = (rate,genre) => {
     // Create a new student
     return new Promise((resolve, reject) => {
         Book.find({rate: {$gte: rate},genre:genre}).then((book) => {
@@ -365,7 +365,7 @@ const UserSchema = mongoose.Schema({
     },
 
     //list parameters
-    bookshelf: [ObjectId],
+    bookshelf: [{type: ObjectId}],
     writtenBook: [ObjectId],
     topThreeBooks: [ObjectId],
     following: [ObjectId],
@@ -577,12 +577,11 @@ UserSchema.statics.removeBookToRead = (uid,bid) => {
 
 
 UserSchema.statics.addNewBooksWritten = (uid,bid) => {
+    log(uid,bid)
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$push: {
-				writtenBook:{
-					id:bid
-				}
+				writtenBook:bid
 			}
 		}).then((result) => {
 			resolve(result);
