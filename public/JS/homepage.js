@@ -5,6 +5,10 @@ const authors = document.querySelector("#authorRec");
 const booksDisplayed = document.querySelector("#books");
 const booksRanking = document.querySelector("#ranking");
 const menu = document.getElementById("menuBar");
+const searchBtn = document.getElementById("searchBtn");
+const searchVal = document.getElementById("searchVal");
+searchBtn.onclick = searchBook;
+searchBtn.href = "#";
 
 const toast = document.querySelector(".toast");
 const toastBody = document.querySelector(".toast-body");
@@ -28,6 +32,15 @@ const fetchBooks = () => {
 
 const numEditorPicks = 2; // total number of books on the shelf
 const numTopBooks = 2; // total number of books on popular books
+
+function searchBook(){
+    const val = searchVal.value;
+    if (val.length > 45){
+        location.href = "../";
+    }
+    location.href = "../search?word=" + val;
+    return true;
+}
 
 
 // TODO - Replace author sec below with user obj

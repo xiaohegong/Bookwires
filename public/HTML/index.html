@@ -20,8 +20,8 @@
 <div id="header">
     <a href="../"><img id='bookLogo' src="../img/book.png"/>
         <span id="title">Bookwires</span></a>
-    <input class="searchBar" type="search" placeholder=" Search books...">
-    <a href=""><img id="searchLogo" src="../img/search.png"></a>
+    <input id="searchVal" class="searchBar" type="search" placeholder=" Search books...">
+    <a id="searchBtn"><img id="searchLogo" src="../img/search.png"></a>
     <div id="menuBar">
         <a href="/login">Log in</a>
         <a href="/signup">Sign up</a>
@@ -36,25 +36,25 @@
         </h4>
     </div>
     <div id="categories">
-        <a href="/search?Mysteries"><p class="category">
+        <a href="/search?genre=Mysteries"><p class="category">
             Mysteries
         </p></a>
-        <a href="/search?Science-Fiction"><p class="category">
+        <a href="/search?genre=Science-Fiction"><p class="category">
             Science Fiction
         </p></a>
-        <a href="/search?Fantasy"><p class="category">
+        <a href="/search?genre=Fantasy"><p class="category">
             Fantasy
         </p></a>
-        <a href="/search?Horror"><p class="category">
+        <a href="/search?genre=Horror"><p class="category">
             Horror
         </p></a>
-        <a href="/search?Romance"><p class="category">
+        <a href="/search?genre=Romance"><p class="category">
             Romance
         </p></a>
-        <a href="/search?Historical"><p class="category">
+        <a href="/search?genre=Historical"><p class="category">
             Historical
         </p></a>
-        <a href="/search?Suspense"><p class="category">
+        <a href="/search?genre=Suspense"><p class="category">
             Suspense
         </p></a>
     </div>
@@ -168,6 +168,7 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
 <script type="text/javascript" src="../JS/classes.js"></script>
 <script type="text/javascript" src="../JS/homepage.js"></script>
 
