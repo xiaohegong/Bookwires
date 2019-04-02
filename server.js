@@ -329,6 +329,16 @@ app.post('/db/books', (req, res) => {
 
 });
 
+// app.delete('/db/a/:id/:pid', (req, res) => {
+//     const id = req.params.id;
+//     const pid = req.params.id;
+//     User.removeBooksWritten(id,pid).then((result)=>res.send(result))
+//         .catch(error => {
+//             return res.status(400).send(error);
+//         });
+//
+// });
+
 
 
 app.post('/db/booksChapter/:id', (req, res) => {
