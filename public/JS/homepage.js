@@ -190,8 +190,9 @@ function sortBooksByRate(books, num) {
 
 function sortAuthorsByPopularity(authors, num) {
     authors.sort(function (a, b) {
-        return parseFloat(a.followers) - parseFloat(b.followers);
+        return parseFloat(b.followers) - parseFloat(a.followers);
     });
+
     return authors.slice(0, num + 1);
 }
 
