@@ -1,6 +1,5 @@
 'use strict';
 const log = console.log;
-let tempBook = fakeBooks;//server call that gets real info
 let tempUser = fakeUser;//server call that gets real info
 
 async function getAll(url) {
@@ -10,7 +9,13 @@ async function getAll(url) {
         }).catch(error => log(error));
 }
 
-
+if (document.cookie && Cookies.get().admin === "true") {
+    const name = document.getElementsByClassName("profileHeader")[0];
+    name.innerHTML = Cookies.get().name;
+}else{
+    log(Cookies.get().admin)
+    location.href = "/index";
+}
 
 const booksRanking = document.querySelector("#InfoContainer");
 const bookNavButton = document.querySelector("#bookNav");
@@ -97,14 +102,7 @@ function switchToBook(res) {
     for (let i = 0; i < res.length; i++) {
         let book = res[i];
         // First, add authors
-        const anchor = document.createElement("a");
-        anchor.setAttribute("href", "");
-        const parag = document.createElement("p");
-        parag.className = "author";
-        //TEMP
-        const author = document.createTextNode("HELLO");
-        parag.appendChild(author);
-        anchor.appendChild(parag);
+
         // Then add book image to the book shelf
         // booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.src = book.getImage();
 
@@ -220,9 +218,6 @@ function deleteBook(e) {
     statusBar[0].children[1].innerHTML = parseInt(statusBar[0].children[1].innerHTML) + 1;
     deleteBookForAllUsers(searchBooksByTitle(name.innerText));
 
-    function removeBook(name) {
-        return tempBook.filter((fBook) => fBook.bookTitle !== name);
-    }
 
 
     const request = new Request('/db/books/'+name.id, {
@@ -236,9 +231,6 @@ function deleteBook(e) {
         log("OUT");
 
     });
-
-    tempBook = removeBook(name.innerText); //this is a server that support to remove a book from the database
-
 
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
 
