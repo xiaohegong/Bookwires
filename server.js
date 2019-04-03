@@ -140,7 +140,7 @@ app.post('/user/signup', (req, res) => {
         followers: 0,
         image: "/img/avatar.jpg",
         bookshelf: [],
-        bookShelfIds: [],
+        bookshelfIds: [],
         writtenBook: [],
         topThreeBooks: [],
         following: [],
@@ -567,14 +567,14 @@ app.get('/db/profile/:id', (req, res) => {
 		if(!user){
 			res.status(404).send()
 		} else{
-            Promise.all([getBooksForProfile(user.bookShelfIds), getBooksForProfile(user.writtenBook), getFollowersForProfile(user)])
+            Promise.all([getBooksForProfile(user.bookshelfIds), getBooksForProfile(user.writtenBook), getFollowersForProfile(user)])
             .then(valueArray => {
                 const bookShelfInfo = [];
                 for(let i=0; i<valueArray[0].length; i++){
                     const bookshelfBookObj = {
                         id: valueArray[0][i]._id,
                         image: valueArray[0][i].image,
-                        name: valueArray[0][i].name
+                        bookTitle: valueArray[0][i].bookTitle
                     }
                     bookShelfInfo.push(bookshelfBookObj);
                 }
@@ -584,7 +584,7 @@ app.get('/db/profile/:id', (req, res) => {
                     const writtenBookObj = {
                         id: valueArray[1][i]._id,
                         image: valueArray[1][i].image,
-                        name: valueArray[1][i].name
+                        bookTitle: valueArray[1][i].bookTitle
                     }
                     writtenBookInfo.push(writtenBookObj);
                 }
@@ -625,7 +625,6 @@ app.get('/db/profile/:id', (req, res) => {
 			// res.send(user);
 		}
 	}).catch((error) => {
-        log("ASDSADSA")
 		res.status(500).send()
 	})
 

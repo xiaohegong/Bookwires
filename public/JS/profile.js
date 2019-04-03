@@ -208,20 +208,11 @@ function setUpCarousel(bookList) {
                 const newLi = document.createElement("li");
                 const newImg = document.createElement("img");
 
-                //SERVER CALL TO GET BOOKTITLE AND IMAGE
-
-                const bookToAdd = fetch('/books/' + bookList[(i * 15 + j * 5 + b)]).then(res => res.json())
-                .then((bookJson) => {
-                    return bookJson;
-                }).catch(error => log(error));
-                log(bookToAdd)
-                continue
-
-                // const bookToAdd = bookList[(i * 15 + j * 5 + b)];
+                const bookToAdd = bookList[(i * 15 + j * 5 + b)];
                 newImg.src = bookToAdd.image;
                 newImg.title = bookToAdd.bookTitle;
                 newImg.onclick = function () {
-                    location.href = "public/HTML/book.html";
+                    location.href = "/books/" + String(bookToAdd.id);
                 };
 
                 // check if the "viewer" is the profile owner.
@@ -300,8 +291,9 @@ function setUpUserPage() {
 (function(){
     getUser(url).then(res =>{
         profileUser = res;
+        // profileOwner = getCookie("id") === res.id;
         log(res);
-        // setUpUserPage();
+        setUpUserPage();
     })
 
 })();
