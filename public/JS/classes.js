@@ -278,14 +278,14 @@ fakeUser.push(userCreator("JK Rowling", "jkR@gmail.com", "123456", false));
 fakeUser.push(userCreator("admin", "liucixin@gmail.com", "admin", true));
 fakeUser.push(userCreator("user", "jkR@gmail.com", "user", false));
 fakeUser.push(userCreator("1", "1", "1", false));
-fakeUser[0].setImage("../img/XieWu.png");
-fakeUser[2].setImage("../img/jk.jpg");
+fakeUser[0].setImage("/img/XieWu.png");
+fakeUser[2].setImage("/img/jk.jpg");
 
 const fakeBooks = [];
-newBook(fakeUser[2], new Book('Harry Potter', fakeUser[2], '1999/10/1', '../img/harryPotter.jpg', 'fantasy'));
-newBook(fakeUser[0], new Book('Time Raiders', fakeUser[0], '2002/4/5', '../img/TimeRaiders.jpg', 'fantasy'));
-newBook(fakeUser[1], new Book('Wandering Earth', fakeUser[1], '2008/8/8', '../img/WanderingEarth.jpg', 'Sci-fi'));
-newBook(fakeUser[1], new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', '../img/threebody.jpg', 'Sci-fi'));
+newBook(fakeUser[2], new Book('Harry Potter', fakeUser[2], '1999/10/1', '/img/harryPotter.jpg', 'fantasy'));
+newBook(fakeUser[0], new Book('Time Raiders', fakeUser[0], '2002/4/5', '/img/TimeRaiders.jpg', 'fantasy'));
+newBook(fakeUser[1], new Book('Wandering Earth', fakeUser[1], '2008/8/8', '/img/WanderingEarth.jpg', 'Sci-fi'));
+newBook(fakeUser[1], new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', '/img/threebody.jpg', 'Sci-fi'));
 
 // Add many new chapters for visualization
 for (let i = 1; i < 30; i++) {
@@ -310,18 +310,18 @@ sampleUser.description = "Lorem ipsum dolor sit amet consectetur adipisicing eli
 // this requires an actual server call to get the user whose profile it is
 const sampleBooks = [];
 for (let p = 0; p < 7; p++) {
-    sampleBooks.push(new Book('Harry Potter', fakeUser[2], '1999/10/1', '../img/harryPotter.jpg', 'fantasy'));
-    sampleBooks.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', '../img/TimeRaiders.jpg', 'fantasy'));
-    sampleBooks.push(new Book('Wandering Earth', fakeUser[1], '2008/8/8', '../img/WanderingEarth.jpg', 'Sci-fi'));
-    sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', '../img/threebody.jpg', 'Sci-fi'));
+    sampleBooks.push(new Book('Harry Potter', fakeUser[2], '1999/10/1', '/img/harryPotter.jpg', 'fantasy'));
+    sampleBooks.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', '/img/TimeRaiders.jpg', 'fantasy'));
+    sampleBooks.push(new Book('Wandering Earth', fakeUser[1], '2008/8/8', '/img/WanderingEarth.jpg', 'Sci-fi'));
+    sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', '/img/threebody.jpg', 'Sci-fi'));
     sampleUser.following.push(sampleUser);
 
 }
-sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', '../img/threebody.jpg', 'Sci-fi'));
+sampleBooks.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', '/img/threebody.jpg', 'Sci-fi'));
 sampleUser.bookshelf = sampleBooks;
-sampleUser.newMessages.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', '../img/threebody.jpg', 'Sci-fi'));
-sampleUser.newMessages.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', '../img/TimeRaiders.jpg', 'fantasy'));
-sampleUser.writtenBook.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', '../img/TimeRaiders.jpg', 'fantasy'));
+sampleUser.newMessages.push(new Book('ThreeBody Problem', fakeUser[1], '2010/5/3', '/img/threebody.jpg', 'Sci-fi'));
+sampleUser.newMessages.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', '/img/TimeRaiders.jpg', 'fantasy'));
+sampleUser.writtenBook.push(new Book('Time Raiders', fakeUser[0], '2002/4/5', '/img/TimeRaiders.jpg', 'fantasy'));
 sampleUser.writtenBook[0].addChapter(new Chapter(1, 'The First Chapter'));
 
 //currentUserId shows the current login user's id. 0 means user0 has logined, -1 means no one hsa logined yet.

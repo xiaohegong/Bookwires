@@ -138,7 +138,7 @@ app.post('/user/signup', (req, res) => {
         isAdmin: false,
         token: 0,
         followers: 0,
-        image: "../img/avatar.jpg",
+        image: "/img/avatar.jpg",
         bookshelf: [],
         writtenBook: [],
         topThreeBooks: [],
