@@ -12,7 +12,7 @@ async function getInfo(url) {
         }).catch(error => log(error));
 }
 getInfo(url).then(book=>{
-    read.href = "./"+book._id+"/"+0;
+    read.href = "/book/"+book._id+"?"+0;
 
 });
 
@@ -278,7 +278,7 @@ getInfo(url).then(res=>{
             newPost.className = 'Chapter';
             const newPostTitle = document.createTextNode((i+1)+" : "+res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
-            newPostTitleContainer.href = "./"+res._id+"/"+i;
+            newPostTitleContainer.href = "/book/"+res._id+"?"+i;
             newPostTitleContainer.appendChild(newPostTitle);
             newPost.appendChild(newPostTitleContainer);
             nextLine.appendChild(newPost);
