@@ -12,7 +12,7 @@ async function getInfo(url) {
         }).catch(error => log(error));
 }
 getInfo(url).then(book=>{
-    read.href = "/"+book._id+"/"+0;
+    read.href = "./"+book._id+"/"+0;
 
 });
 
@@ -22,10 +22,7 @@ const enterBtn = document.getElementById("enterBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const ratingBtn = document.getElementsByClassName("rating")[0];
 
-// Check whether this is the admin's view
-const isAdmin = function () {
-    return window.location.pathname.includes("admin");
-};
+
 
 ratingBtn.onclick = function rateBook(){
     const input = document.getElementsByName("rating");
@@ -185,10 +182,13 @@ function addOtherBook(book,i){
     bookImage.className = 'otherBookImg';
     slider[0].children[i].appendChild(bookImage);
     const bookname = document.createTextNode(book.bookTitle);
+    const li = document.createElement('a');
+    li.href = "/books/" + String(book._id);
     const otherbooknameContainer = document.createElement('h3');
     otherbooknameContainer.className = 'center';
     otherbooknameContainer.appendChild(bookname);
-    slider[0].children[i].appendChild(otherbooknameContainer);
+    li.appendChild(otherbooknameContainer);
+    slider[0].children[i].appendChild(li);
 }
 
 const chapters = document.getElementById("chapters");
@@ -196,7 +196,6 @@ const chapterTable = document.getElementById("chapterTable");
 const bookInformation = document.getElementById("bookInformation");
 
 
-// Let's create a new chapter
 (function () {
     getInfo(url).then(res=>{
         const authorTitle = document.createTextNode(res.bookTitle);
@@ -265,6 +264,7 @@ const bookInformation = document.getElementById("bookInformation");
 })();
 
 
+//create chapters
 let i = 0;
 getInfo(url).then(res=>{
     while (i < res.chapters.length) {
