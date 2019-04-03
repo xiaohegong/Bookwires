@@ -214,9 +214,6 @@ getAll("/db/books").then(res=>{
 function deleteBook(e) {
     e.preventDefault();
     const name = e.target.parentElement.children[1].children[0];
-    const statusBar = document.getElementsByClassName("statBox");
-    statusBar[0].children[1].innerHTML = parseInt(statusBar[0].children[1].innerHTML) + 1;
-    deleteBookForAllUsers(searchBooksByTitle(name.innerText));
 
 
 
@@ -238,20 +235,9 @@ function deleteBook(e) {
 
 function deleteUser(e) {
     e.preventDefault();
-    const name = e.target.parentElement.children[1];
     const id = e.target.parentElement.children[0].id;
-    const statusBar = document.getElementsByClassName("statBox");
-    statusBar[1].children[1].innerHTML = parseInt(statusBar[1].children[1].innerHTML)+1;
 
-    function removeUser(name) {
-        const targetUser = tempUser.filter((user) => user.name === name);
-        // const targetUserAuthoredBooks = targetUser[0].getWrittenBook();
-        // targetUserAuthoredBooks.forEach(function(entry) {
-        //     tempBook = tempBook.filter((fBook) => fBook.bookTitle !== entry.getBookTitle());
-        //     statusBar[0].children[1].innerHTML = parseInt(statusBar[0].children[1].innerHTML) + 1;
-        // });
-        return tempUser.filter((user) => user.name !== name);
-    }
+
     const request = new Request('/db/users/'+id, {
         method: 'DELETE',
         headers: {
@@ -264,7 +250,6 @@ function deleteUser(e) {
 
     });
 
-    tempUser = removeUser(name.innerText); // this is a server that support to remove user from the database
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
 
 }
