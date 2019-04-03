@@ -53,7 +53,7 @@ const BookSchema = mongoose.Schema({
     },
     image: {
         type: String,
-        default: "./img/default.jpg"
+        default: "/img/default.jpg"
     },
     description: {
         type: String,

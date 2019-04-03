@@ -17,6 +17,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "express-fileupload": "^1.1.4",
     "express-session": "^1.15.6",
     "handlebars": "^4.0.12",
     "hbs": "^4.0.1",

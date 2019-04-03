@@ -5,6 +5,7 @@ const log = console.log;
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 const bodyParser = require('body-parser'); // middleware for parsing HTTP body
@@ -15,9 +16,7 @@ const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }))
-
-
-
+app.use(fileUpload());
 
 
 app.use(session({
@@ -147,7 +146,7 @@ app.post('/user/signup', (req, res) => {
         newMessage: [],
         oldMessage: []
     })
-    
+
     req.session.userId = user._id;
 	req.session.email = user.email
 
@@ -601,8 +600,8 @@ app.get('/db/profile/:id', (req, res) => {
                 }
                 // if(id === req.session.id){
                 if(1===1){
-                    const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin, 
-                        user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo, 
+                    const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin,
+                        user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo,
                         followingInfo, user.newMessage, user.oldMessage)
                         res.send(userToSend)
                 }
@@ -743,6 +742,17 @@ app.get('/db/reading/:bid/',(req,res) =>{
     )
 });
 
+app.post('/upload', function(req, res) {
+    const image = req.files.img;
+    // Use the mv() method to place the file somewhere on the server
+    image.mv( 'public/img/' + image.name , function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("uploaded");
+        }
+    })
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
