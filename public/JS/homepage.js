@@ -96,7 +96,6 @@ fetchAuthors().then((a) => {
     const bookHrefURL = "./books/";
 // Async function that sets the books array by fetch
     fetchBooks().then((b) => {
-        log(allAuthors);
         /*********** Code for making <Editor's Pick> section ***********/
         for (let i = 0; i < numEditorPicks; i++) {
             if (books.length < 1) {
