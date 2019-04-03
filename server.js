@@ -311,7 +311,7 @@ app.get('/search/:query', (req, res) => {
     res.sendFile(dir + 'search.html');
 });
 
-app.get('/books/:bid/:chap', (req, res) => {
+app.get('/book/:bid', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
     res.sendFile(dir + 'readingPage.html');
 });
