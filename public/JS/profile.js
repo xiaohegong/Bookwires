@@ -626,7 +626,37 @@ function removeBookBookshelf(e) {
     e.preventDefault();
     const bookToRemove = e.target.parentNode.bookReference;
     //remove the book from user (reuqires server call)
-    profileUser.removeBookFromBookshelf(bookToRemove);
+    const bookid = bookToRemove.id;
+
+    const patchUrl = url + "/bookshelf/" + bookid.toString();
+    
+    fetch(patchUrl, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PATCH'                                       
+      }).then((res) => {
+        if(res.status !== 200){
+            alert("Error removing follow");
+            return
+        }
+        return res.json()
+    }).then((userJson) => {
+            return userJson;
+        }).then(res => {
+            if(res.resolved){
+                for (let j = 0; j < profileUser.bookshelf.length; j++) {
+                    if (profileUser.bookshelf[j].id === bookid) {
+                        profileUser.bookshelf.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+            
+        }).catch(error => log(error));
+
+
+    // profileUser.removeBookFromBookshelf(bookToRemove);
     e.target.parentNode.removeChild(e.target);
     setUpCarousel(profileUser.bookshelf);
 }

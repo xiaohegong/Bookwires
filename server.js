@@ -708,6 +708,25 @@ app.patch('/db/profile/:id/', (req, res) => {
 
 })
 
+app.patch('/db/profile/:id/bookshelf/:bookid', (req, res) => {
+    const id = req.params.id;
+    const bookid = req.params.bookid;
+
+    if (!ObjectID.isValid(id) || !ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    User.METHOD(id, bookid).then((result) => {
+        if(result){
+            res.send({resolved: true});
+        }
+    }).catch((error) => {
+        log(error)
+        return res.status(500).send(error);
+    });
+
+})
+
 
 // // Set up a POST route to *create* a student
 // app.post('/book', (req, res) => {
