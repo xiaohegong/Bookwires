@@ -29,7 +29,7 @@ if (document.cookie) {
     try {
         const cookie = Cookies.get();
         const id = cookie.id.split(":")[1].slice(1, -1);
-        const isAdmin = cookie.admin;
+        const isAdmin = cookie.admin === "true";
         userLoggedIn(cookie.name, id, isAdmin);
     } catch {
     }

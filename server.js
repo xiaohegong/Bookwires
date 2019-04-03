@@ -35,6 +35,9 @@ const sessionChecker = (req, res, next) => {
 	if (req.session.userId) {
 		res.redirect('/index')
 	} else {
+        res.clearCookie("name")
+        res.clearCookie("id")
+        res.clearCookie("admin")
 		next();
 	}
 }
@@ -42,11 +45,15 @@ const sessionChecker = (req, res, next) => {
 // use to redirect if a session has not been created
 const sessionCheckLoggedIn = (req, res, next) => {
 	if (!req.session.userId) {
+        res.clearCookie("name")
+        res.clearCookie("id")
+        res.clearCookie("admin")
 		res.redirect('/login')
 	} else {
 		next();
 	}
 }
+
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
@@ -61,7 +68,7 @@ app.route('/login')
 })
 
 app.route('/admin')
-    .get(sessionChecker, (req, res) => {
+    .get(sessionCheckLoggedIn, (req, res) => {
         res.sendFile(__dirname + '/public/HTML/admin.html')
     });
 
