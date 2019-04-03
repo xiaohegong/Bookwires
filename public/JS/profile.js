@@ -532,7 +532,8 @@ function changeEditable(e) {
     username.value = profileUser.name;
     username.readOnly = false;
 
-    pass.value = profileUser.password;
+    // pass.value = profileUser.password;
+    pass.value = '';
     pass.readOnly = false;
 
     descriptionEditable.value = profileUser.description;
@@ -544,10 +545,40 @@ function confirmChanges(e) {
     e.preventDefault();
     // update User values
     // requires server call to update user data
-    profileUser.email = emailaddress.value;
-    profileUser.name = username.value;
-    profileUser.password = pass.value;
-    profileUser.description = descriptionEditable.value;
+
+    const patchUrl = url;
+    
+    fetch(patchUrl, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PATCH',
+        body: JSON.stringify({
+            name: username.value,
+            email: emailaddress.value,
+            password: pass.value,
+            description: descriptionEditable.value
+        })
+      }).then((res) => {
+        if(res.status !== 200){
+            alert("Error updating user info");
+            return
+        }
+        return res.json()
+    }).then((userJson) => {
+            return userJson;
+        }).then(res => {
+            if(res.resolved){
+                profileUser.email = emailaddress.value;
+                profileUser.name = username.value;
+                profileUser.password = pass.value;
+                profileUser.description = descriptionEditable.value;
+            }
+            
+        }).catch(error => log(error));
+
+    
+    
 
     // reset buttons
     confirmButton.disabled = true;
@@ -566,7 +597,7 @@ function confirmChanges(e) {
     emailaddress.placeholder = profileUser.email;
     descriptionEditable.readOnly = true;
     descriptionEditable.placeholder = profileUser.description;
-    ppass.readOnly = true;
+    pass.readOnly = true;
 }
 
 /** Cancels any changes that were made while editing settings and resets the forms */

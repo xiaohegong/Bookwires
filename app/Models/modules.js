@@ -736,6 +736,43 @@ UserSchema.statics.updateReadingHistory = (uid,bid,chapNum) =>{
 };
 
 
+UserSchema.statics.updateProfileInfo = (id, name, email, password, description) => {
+	return new Promise((resolve,reject) => {
+        if(!validator.isEmail(email) || ( password !=='' && password.length < 6 )){
+            reject({code:404,error});
+            return
+        }
+
+        var salt = bcrypt.genSaltSync(10);
+        const hashpass = bcrypt.hashSync(password, salt);
+
+		User.findByIdAndUpdate(id,{
+			$set: {
+                name: name,
+                email: email,
+                password: hashpass,
+                description: description
+			}
+		}).then((result) => {
+			resolve(result);
+		},(error) => {
+			reject({code:404,error});
+		});
+	});
+};
+
+
+// if (user.isModified('password')) {
+//     bcrypt.genSalt(10, (error, salt) => {
+//         bcrypt.hash(user.password, salt, null, (error, hash) => {
+//             user.password = hash;
+//             next();
+//         });
+//     });
+// } else {
+//     next();
+// }
+
 const User = mongoose.model('User', UserSchema);
 
 
