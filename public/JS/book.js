@@ -278,7 +278,7 @@ getInfo(url).then(res=>{
             newPost.className = 'Chapter';
             const newPostTitle = document.createTextNode((i+1)+" : "+res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
-            newPostTitleContainer.href = "/"+res._id+"/"+i;
+            newPostTitleContainer.href = "./"+res._id+"/"+i;
             newPostTitleContainer.appendChild(newPostTitle);
             newPost.appendChild(newPostTitleContainer);
             nextLine.appendChild(newPost);

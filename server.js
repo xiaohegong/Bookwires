@@ -301,7 +301,7 @@ app.get('/search/:query', (req, res) => {
     res.sendFile(dir + 'search.html');
 });
 
-app.get('/:bid/:chap', (req, res) => {
+app.get('/books/:bid/:chap', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
     res.sendFile(dir + 'readingPage.html');
 });
@@ -482,7 +482,7 @@ app.get('/profile/:id', (req, res) => {
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
     }
-    User.findById(id).then((user) =>{
+    User.findUserByID(id).then((user) =>{
         
 		if(!user){
 			res.status(404).send()
