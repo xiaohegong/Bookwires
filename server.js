@@ -685,6 +685,30 @@ app.get('/db/users', (req, res) => {
         );
 });
 
+app.post('/db/follow', (req, res) => {
+    const following = req.body.following;
+    const beingFollowed  = req.body.beingFollowed;
+    Promise.all(User.follow(following,beingFollowed),User.followed(beingFollowed)).then((users) => {
+            res.send(users);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.post('/db/unfollow', (req, res) => {
+    const following = req.body.following;
+    const beingFollowed  = req.body.beingFollowed;
+    Promise.all(User.unfollow(following,beingFollowed),User.unfollowed(beingFollowed)).then((users) => {
+        res.send(users);
+    })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
 app.get('/db/users/:id', (req, res) => {
     const id = req.params.id;
     if(!ObjectID.isValid(id)){
