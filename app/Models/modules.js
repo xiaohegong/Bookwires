@@ -265,18 +265,13 @@ BookSchema.statics.addComments = (user, content, id) => {
     });
 };
 
-BookSchema.methods.newRate = (rate, book) => {
-
+BookSchema.statics.newRate = (rate, book) => {
     return new Promise((resolve, reject) => {
         // book.chapters.push(chapter);
-        // log(book);
-        const newRate = (book.rate * book.numOfRate + rate) / (book.numOfRate + 1);
-        book.update({
-                $inc: {numOfRate: 1},
-
-                $set: {rate: newRate}
-            }
-        ).then((result) => {
+        Book.findByIdAndUpdate(book,{
+            $set: {rating: rate},
+             $inc: {numOfRate: 1}
+        }).then((result) => {
             resolve(result);
         }, (error) => {
             reject({code: 404, error});
@@ -573,13 +568,15 @@ UserSchema.statics.beNotFollowed = (id) => {
 };
 
 
-UserSchema.statics.addNewBookToRead = (uid,bid,chapNum) => {
+UserSchema.statics.addNewBookToRead = (uid,bid) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$push: {
-				bookshelf:{
-					id:bid
-				}
+				bookshelf: {
+				    book_id: bid,
+                    chapter_num:0
+                }
+
 			}
 		}).then((result) => {
 			resolve(result);
@@ -594,9 +591,8 @@ UserSchema.statics.removeBookToRead = (uid,bid) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$pull: {
-				bookshelf:{
-					id:bid
-				}
+				bookshelf: bid
+
 			}
 		}).then((result) => {
 			resolve(result);

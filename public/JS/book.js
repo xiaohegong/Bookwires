@@ -2,6 +2,7 @@
 const log = console.log;
 const currentLocation = window.location.href;
 const url = "/db"+new URL(currentLocation).pathname;
+const bookId = url.split("/")[3];
 
 const read = document.getElementById("read");
 async function getInfo(url) {
@@ -19,16 +20,47 @@ const save = document.getElementById("save");
 const commentBox = document.getElementById('commentBox');
 const enterBtn = document.getElementById("enterBtn");
 const cancelBtn = document.getElementById("cancelBtn");
+const ratingBtn = document.getElementsByClassName("rating")[0];
 
 // Check whether this is the admin's view
 const isAdmin = function () {
     return window.location.pathname.includes("admin");
 };
 
-if (document.cookie) {
-    const cookie = Cookies.get();
-    log(cookie.id.split(":")[1])
-}
+ratingBtn.onclick = function rateBook(){
+    const input = document.getElementsByName("rating");
+    if (document.cookie) {
+
+        for (let i = 0, length = input.length; i < length; i++) {
+            if (input[i].checked) {
+                // do whatever you want with the checked radio
+                getInfo(url).then(res => {
+                    return (res.numOfRate * res.rating + parseInt(input[i].value)) / (res.numOfRate + 1);
+                }).then(res => {
+                    const data = {
+                        book: bookId,
+                        rate: res
+                    };
+                    const request = new Request('/db/rateBook', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                    });
+                    return getInfo(request);
+                }).then(res => {
+                    ratingBtn.disabled = true;
+                });
+
+                break;
+            }
+        }
+    }else{
+        location.href = "/login";
+    }
+};
 
 // Call back function for cancel button
 cancelBtn.onclick = function cancelComment() {
@@ -38,10 +70,9 @@ cancelBtn.onclick = function cancelComment() {
 
 // Call back function for enter button
 enterBtn.onclick = function enterComment() {
-    let data;
     if (document.cookie) {
         const cookie = Cookies.get();
-        data = {
+        let data = {
             user: cookie.id.split(":")[1].slice(1,-1),
             content: commentBox.value
         };
@@ -71,7 +102,29 @@ enterBtn.onclick = function enterComment() {
 
 save.onclick = function saveToShelf(e) {
     e.preventDefault();
-    book.save(fakeUser[0]); // server call that update the corresponding info
+    if (document.cookie) {
+        const cookie = Cookies.get();
+
+        getInfo(url).then(book=>{
+            let data = {
+                user: cookie.id.split(":")[1].slice(1,-1),
+                book: book._id
+            };
+            const request = new Request('/db/BookToRead/', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+            });
+            return getInfo(request);
+        }).then(res=>{
+           log(res)});
+    }else{
+        location.href = "/login";
+    }
+
 };
 
 
@@ -96,13 +149,27 @@ function addCommentToTable(comment) {
         const UserComment = document.createTextNode(comment.content);
         UserCommentContainer.appendChild(UserComment);
         newComments.appendChild(UserCommentContainer);
-
-        if (isAdmin()) {
+        if (document.cookie && Cookies.get().admin === "true") {
             const deleteButton = document.createElement('button');
             deleteButton.innerText = "delete";
             deleteButton.className = "btn btn-info deleteButton";
             deleteButton.onclick = function () {
-                deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
+                let data = {
+                    comment: comment._id,
+                    book: bookId
+                };
+                const request = new Request('/db/deleteComment', {
+                    method: 'DELETE',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                });
+                getInfo(request).then(res=>{
+                    deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
+                })
+
             };
             newComments.appendChild(deleteButton);
             newComments.appendChild(UserCommentContainer);
@@ -209,7 +276,7 @@ getInfo(url).then(res=>{
             }
             const newPost = document.createElement('td');
             newPost.className = 'Chapter';
-            const newPostTitle = document.createTextNode(res.chapters[i].chapterTitle);
+            const newPostTitle = document.createTextNode((i+1)+" : "+res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
             newPostTitleContainer.href = "/"+res._id+"/"+i;
             newPostTitleContainer.appendChild(newPostTitle);
@@ -237,7 +304,6 @@ const commentsArea = document.getElementById('commentsArea');
 getInfo(url).then(res=>{
     for (let i = 0; i < res.comments.length; i++) {
         // const comment = res.comments[i].content;
-        log(res.comments[i])
         addCommentToTable(res.comments[i]);
     }
 });
