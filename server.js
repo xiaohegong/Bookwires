@@ -89,8 +89,14 @@ app.post('/user/login', (req, res) => {
             
 			req.session.userId = user._id;
             req.session.name = user.name
+<<<<<<< HEAD
             res.cookie("name", user.name, { maxAge: 600000, httpOnly: false})
             res.cookie("id", user._id, { maxAge: 600000, httpOnly: false})
+=======
+            res.cookie("name", user.name)
+            res.cookie("id", user._id)
+            res.cookie("admin", user.isAdmin)
+>>>>>>> 7c0fa962e7a81f78ee54695c19aecf114d6e80b8
 			res.redirect('/index')
 		}
 	},(result) => {
@@ -302,6 +308,11 @@ app.get('/search/:query', (req, res) => {
     res.sendFile(dir + 'search.html');
 });
 
+app.get('/books/:bid/:chap', (req, res) => {
+    const dir = path.join(__dirname + "/public/HTML/");
+    res.sendFile(dir + 'readingPage.html');
+});
+
 app.post('/db/books', (req, res) => {
     const newBook = new Book({
         "bookTitle": req.body.bookTitle,
@@ -331,15 +342,25 @@ app.post('/db/books', (req, res) => {
 
 });
 
-// app.delete('/db/a/:id/:pid', (req, res) => {
-//     const id = req.params.id;
-//     const pid = req.params.id;
-//     User.removeBooksWritten(id,pid).then((result)=>res.send(result))
-//         .catch(error => {
-//             return res.status(400).send(error);
-//         });
-//
-// });
+app.delete('/db/a/:id/:pid', (req, res) => {
+    const id = req.params.id;
+    const pid = req.params.pid;
+    User.removeBooksWritten(id,pid).then((result)=>res.send(result))
+        .catch(error => {
+            return res.status(400).send(error);
+        });
+
+});
+
+app.delete('/db/deleteComment', (req, res) => {
+    const bid = req.body.book;
+    const cid = req.body.comment;
+    Book.deleteComment(bid,cid).then((result)=>res.send(result))
+        .catch(error => {
+            return res.status(400).send(error);
+        });
+
+});
 
 
 
@@ -351,34 +372,6 @@ app.post('/db/booksChapter/:id', (req, res) => {
     }
     Book.addChapter(req.body.chapterTitle, req.body.content, id).then(result=>res.send(result));
 
-    // Check if the inputs are valid
-    // const newChapter = new Chapter({
-    //     "chapterTitle": req.body.chapterTitle,
-    //     "content": req.body.content
-    // });
-    // if (!newChapter.chapterTitle || !newChapter.content)
-    //     return res.status(400).send();
-    //
-    // // Otherwise, find book by id and send back
-    // Book.findBookByID(id)
-    //     .then((book) => {
-    //         // Save chapter to queried book
-    //         book.addChapter(req.body.chapterTitle, req.body.content, book);
-    //
-    //         // book.chapters.push(newChapter);
-    //         // book.save().then(
-    //         //     (updated) => {
-    //         //         res.send({
-    //         //             "reservation": newChapter,
-    //         //             "restaurant": updated
-    //         //         });
-    //         //     }, (error) => {
-    //         //         return res.status(400).send(error); // 400 for bad request
-    //         //     });
-    //     })
-    //     .catch((error) => {
-    //         return res.status(500).send(error);
-    //     });
 
 });
 app.post('/db/booksComment/:id', (req, res) => {
@@ -389,6 +382,29 @@ app.post('/db/booksComment/:id', (req, res) => {
     }
     Book.addComments(req.body.user, req.body.content, id).then(result => res.send(result));
 });
+app.post('/db/rateBook', (req, res) => {
+    Book.newRate(req.body.rate,req.body.book)
+        .then((books) => {
+            res.send(books);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.post('/db/BookToRead', (req, res) => {
+    // Validate the id
+    const id = req.body.user;
+    const bid = req.body.book;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+    if (!ObjectID.isValid(bid)) {
+        return res.status(404).send();
+    }
+    User.addNewBookToRead(id,bid).then(result => res.send(result));
+});
 
 app.delete('/db/books/:id', (req, res) => {
     // Validate the id
@@ -396,7 +412,11 @@ app.delete('/db/books/:id', (req, res) => {
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
-    Book.deleteBook(id).then(result => res.send(result));
+    Book.deleteBook(id).then(result => {
+        User.removeBooksWritten(result.user,result.id)
+    }).then(res=>{
+        log(res);
+    });
 });
 
 
@@ -469,7 +489,7 @@ app.get('/profile/:id', (req, res) => {
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
     }
-    User.findById(id).then((user) =>{
+    User.findUserByID(id).then((user) =>{
         
 		if(!user){
 			res.status(404).send()
@@ -636,14 +656,21 @@ app.delete('/db/users/:id', (req, res) => {
 //    Chapter.
 // });
 
-
-app.get('/db/reading/:bid/:cid',(req,res) =>{
+//get all the chapter from the book
+app.get('/db/reading/:bid/',(req,res) =>{
     const bid = req.params.bid;
-    const cid = req.params.cid;
-    if (!ObjectID.isValid(bid)||!ObjectID.isValid) {
+    if (!ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
-})
+    Book.findById(bid).then((book)=>{
+            if(!book){
+                res.status(404).send()
+            }else{
+                res.send(book.chapters)
+            }
+        }
+    )
+});
 
 
 const port = process.env.PORT || 3000;

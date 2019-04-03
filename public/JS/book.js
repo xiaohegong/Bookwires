@@ -2,21 +2,64 @@
 const log = console.log;
 const currentLocation = window.location.href;
 const url = "/db"+new URL(currentLocation).pathname;
+const bookId = url.split("/")[3];
+
+const read = document.getElementById("read");
 async function getInfo(url) {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
             return bookJson;
         }).catch(error => log(error));
 }
+getInfo(url).then(book=>{
+    read.href = "/"+book._id+"/"+0;
+
+});
 
 const save = document.getElementById("save");
 const commentBox = document.getElementById('commentBox');
 const enterBtn = document.getElementById("enterBtn");
 const cancelBtn = document.getElementById("cancelBtn");
+const ratingBtn = document.getElementsByClassName("rating")[0];
 
 // Check whether this is the admin's view
 const isAdmin = function () {
     return window.location.pathname.includes("admin");
+};
+
+ratingBtn.onclick = function rateBook(){
+    const input = document.getElementsByName("rating");
+    if (document.cookie) {
+
+        for (let i = 0, length = input.length; i < length; i++) {
+            if (input[i].checked) {
+                // do whatever you want with the checked radio
+                getInfo(url).then(res => {
+                    return (res.numOfRate * res.rating + parseInt(input[i].value)) / (res.numOfRate + 1);
+                }).then(res => {
+                    const data = {
+                        book: bookId,
+                        rate: res
+                    };
+                    const request = new Request('/db/rateBook', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                    });
+                    return getInfo(request);
+                }).then(res => {
+                    ratingBtn.disabled = true;
+                });
+
+                break;
+            }
+        }
+    }else{
+        location.href = "/login";
+    }
 };
 
 // Call back function for cancel button
@@ -27,16 +70,64 @@ cancelBtn.onclick = function cancelComment() {
 
 // Call back function for enter button
 enterBtn.onclick = function enterComment() {
-    const comment = new Comment(fakeUser[0], commentBox.value);
-    book.newComment(comment);// server call that save the comment into database
-    commentBox.value = "";
-    addCommentToTable(comment);
+    if (document.cookie) {
+        const cookie = Cookies.get();
+        let data = {
+            user: cookie.id.split(":")[1].slice(1,-1),
+            content: commentBox.value
+        };
+        getInfo(url).then(book=>{
+
+            const request = new Request('/db/booksComment/'+book._id, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+            });
+            return getInfo(request);
+        }).then(res=>{
+            addCommentToTable(data)});
+            commentBox.value = "";
+    }else{
+        location.href = "/login";
+    }
+
+
+    // book.newComment(comment);// server call that save the comment into database
+
+
 };
 
 save.onclick = function saveToShelf(e) {
     e.preventDefault();
-    book.save(fakeUser[0]); // server call that update the corresponding info
+    if (document.cookie) {
+        const cookie = Cookies.get();
+
+        getInfo(url).then(book=>{
+            let data = {
+                user: cookie.id.split(":")[1].slice(1,-1),
+                book: book._id
+            };
+            const request = new Request('/db/BookToRead/', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+            });
+            return getInfo(request);
+        }).then(res=>{
+           log(res)});
+    }else{
+        location.href = "/login";
+    }
+
 };
+
+
 
 function addCommentToTable(comment) {
     getInfo("/db/users/"+comment.user).then(res=>{
@@ -58,13 +149,27 @@ function addCommentToTable(comment) {
         const UserComment = document.createTextNode(comment.content);
         UserCommentContainer.appendChild(UserComment);
         newComments.appendChild(UserCommentContainer);
-
-        if (isAdmin()) {
+        if (document.cookie && Cookies.get().admin === "true") {
             const deleteButton = document.createElement('button');
             deleteButton.innerText = "delete";
             deleteButton.className = "btn btn-info deleteButton";
             deleteButton.onclick = function () {
-                deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
+                let data = {
+                    comment: comment._id,
+                    book: bookId
+                };
+                const request = new Request('/db/deleteComment', {
+                    method: 'DELETE',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                });
+                getInfo(request).then(res=>{
+                    deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
+                })
+
             };
             newComments.appendChild(deleteButton);
             newComments.appendChild(UserCommentContainer);
@@ -171,9 +276,9 @@ getInfo(url).then(res=>{
             }
             const newPost = document.createElement('td');
             newPost.className = 'Chapter';
-            const newPostTitle = document.createTextNode(res.chapters[i].chapterTitle);
+            const newPostTitle = document.createTextNode((i+1)+" : "+res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
-            newPostTitleContainer.href = "/"+res._id+"/"+i;
+            newPostTitleContainer.href = "./"+res._id+"/"+i;
             newPostTitleContainer.appendChild(newPostTitle);
             newPost.appendChild(newPostTitleContainer);
             nextLine.appendChild(newPost);
