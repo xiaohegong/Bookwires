@@ -684,6 +684,29 @@ app.patch('/db/profile/:uid/:fid', (req, res) => {
     });
 })
 
+app.patch('/db/profile/:id/', (req, res) => {
+    const id = req.params.id;
+
+    const email = req.body.email;
+    const name= req.body.name;
+    const password = req.body.password;
+    const description = req.body.description;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    User.updateProfileInfo(id, name, email, password, description).then((result) => {
+        if(result){
+            res.send({resolved: true});
+        }
+    }).catch((error) => {
+        log(error)
+        return res.status(500).send(error);
+    });
+
+})
+
 
 // // Set up a POST route to *create* a student
 // app.post('/book', (req, res) => {
