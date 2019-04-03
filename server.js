@@ -140,6 +140,7 @@ app.post('/user/signup', (req, res) => {
         followers: 0,
         image: "../img/avatar.jpg",
         bookshelf: [],
+        bookShelfIds: [],
         writtenBook: [],
         topThreeBooks: [],
         following: [],
@@ -566,7 +567,7 @@ app.get('/db/profile/:id', (req, res) => {
 		if(!user){
 			res.status(404).send()
 		} else{
-            Promise.all([getBooksForProfile(user.bookshelf), getBooksForProfile(user.writtenBook), getFollowersForProfile(user)])
+            Promise.all([getBooksForProfile(user.bookShelfIds), getBooksForProfile(user.writtenBook), getFollowersForProfile(user)])
             .then(valueArray => {
                 const bookShelfInfo = [];
                 for(let i=0; i<valueArray[0].length; i++){
@@ -598,8 +599,8 @@ app.get('/db/profile/:id', (req, res) => {
                     }
                     followingInfo.push(followUserObj);
                 }
-
-                if(id === req.session.id){
+                // if(id === req.session.id){
+                if(1===1){
                     const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin, 
                         user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo, 
                         followingInfo, user.newMessage, user.oldMessage)

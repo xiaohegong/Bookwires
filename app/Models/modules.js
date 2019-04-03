@@ -403,6 +403,7 @@ const UserSchema = mongoose.Schema({
 
     //list parameters
     bookshelf: [readingHistory],
+    bookshelfIds: [ObjectId],
     writtenBook: [{type:Schema.Types.ObjectId,ref:'Book'}],
     topThreeBooks: [ObjectId],
     following: [ObjectId],
@@ -586,8 +587,8 @@ UserSchema.statics.addNewBookToRead = (uid,bid) => {
 				bookshelf: {
 				    book_id: bid,
                     chapter_num:0
-                }
-
+                },
+                bookshelfIds: bid
 			}
 		}).then((result) => {
 			resolve(result);
@@ -602,8 +603,8 @@ UserSchema.statics.removeBookToRead = (uid,bid) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$pull: {
-				bookshelf: bid
-
+                bookshelf: bid,
+                bookshelfIds: bid
 			}
 		}).then((result) => {
 			resolve(result);
@@ -676,7 +677,8 @@ UserSchema.statics.addNewReadingHistory = (sid,bid,chapNum) =>{
                 bookshelf:{
                     book_id: bid,
                     chapter_num: chapNum
-                }
+                },
+                bookshelfIds: bid
             }
         }).then((result)=> {
             resolve(result);
