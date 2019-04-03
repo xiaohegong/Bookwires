@@ -89,14 +89,9 @@ app.post('/user/login', (req, res) => {
             
 			req.session.userId = user._id;
             req.session.name = user.name
-<<<<<<< HEAD
-            res.cookie("name", user.name, { maxAge: 600000, httpOnly: false})
-            res.cookie("id", user._id, { maxAge: 600000, httpOnly: false})
-=======
             res.cookie("name", user.name)
             res.cookie("id", user._id)
             res.cookie("admin", user.isAdmin)
->>>>>>> 7c0fa962e7a81f78ee54695c19aecf114d6e80b8
 			res.redirect('/index')
 		}
 	},(result) => {
