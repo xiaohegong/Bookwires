@@ -109,6 +109,7 @@ app.get('/users/logout', sessionCheckLoggedIn, (req, res) => {
 		} else {
             res.clearCookie("name")
             res.clearCookie("id")
+            res.clearCookie("admin")
 			res.redirect('/index')
 		}
 	})
