@@ -35,6 +35,9 @@ const sessionChecker = (req, res, next) => {
 	if (req.session.userId) {
 		res.redirect('/index')
 	} else {
+        res.clearCookie("name")
+        res.clearCookie("id")
+        res.clearCookie("admin")
 		next();
 	}
 }
@@ -42,11 +45,15 @@ const sessionChecker = (req, res, next) => {
 // use to redirect if a session has not been created
 const sessionCheckLoggedIn = (req, res, next) => {
 	if (!req.session.userId) {
+        res.clearCookie("name")
+        res.clearCookie("id")
+        res.clearCookie("admin")
 		res.redirect('/login')
 	} else {
 		next();
 	}
 }
+
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
@@ -61,7 +68,7 @@ app.route('/login')
 })
 
 app.route('/admin')
-    .get(sessionChecker, (req, res) => {
+    .get(sessionCheckLoggedIn, (req, res) => {
         res.sendFile(__dirname + '/public/HTML/admin.html')
     });
 
@@ -523,30 +530,31 @@ class userNonOwner {
     }
 }
 
-async function findUser(id){
-    User.findById(id).then((user) => {
-        if(!user){
-            throw "error finding user";
-        }
-        return user;
-    }).catch((error) => {
-        throw "error finding user";
+function getFollowersForProfile(user){
+    return new Promise((resolve, reject) => {
+        User.find({'_id': { $in: user.following}})
+        .then(user => {
+            resolve(user)
+        }).catch(error => {
+            reject({code: 404, error})
+        });
     })
 }
 
-async function findBook(id){
-    Book.findById(id).then((book) => {
-        if(!book){
-            throw "error finding user";
-        }
-        return book;
-    }).catch((error) => {
-        throw "error finding user";
+function getBooksForProfile(bookIdArray){
+    return new Promise((resolve, reject) => {
+        Book.find({'_id': { $in: bookIdArray}})
+        .then(books => {
+            resolve(books)
+        }).catch(error => {
+            reject({code: 404, error})
+        });
     })
 }
 
 app.get('/db/profile/:id', (req, res) => {
     const id = req.params.id;
+    
 
     // TODO: check if id is session id. send a modified user
 
@@ -554,13 +562,69 @@ app.get('/db/profile/:id', (req, res) => {
 		res.status(404).send();
     }
     User.findById(id).then((user) =>{
+        
 		if(!user){
 			res.status(404).send()
 		} else{
-            Promise.all().then
+            Promise.all([getBooksForProfile(user.bookshelf), getBooksForProfile(user.writtenBook), getFollowersForProfile(user)])
+            .then(valueArray => {
+                const bookShelfInfo = [];
+                for(let i=0; i<valueArray[0].length; i++){
+                    const bookshelfBookObj = {
+                        id: valueArray[0][i]._id,
+                        image: valueArray[0][i].image,
+                        name: valueArray[0][i].name
+                    }
+                    bookShelfInfo.push(bookshelfBookObj);
+                }
+
+                const writtenBookInfo = []
+                for(let i=0; i<valueArray[1].length; i++){                   
+                    const writtenBookObj = {
+                        id: valueArray[1][i]._id,
+                        image: valueArray[1][i].image,
+                        name: valueArray[1][i].name
+                    }
+                    writtenBookInfo.push(writtenBookObj);
+                }
+
+                const followingInfo = [];
+                for(let i=0; i<valueArray[2].length; i++){
+                    const followUserObj = {
+                        id: valueArray[2][i]._id,
+                        name: valueArray[2][i].name,
+                        image: valueArray[2][i].image,
+                        writenCount: valueArray[2][i].writtenBook.length
+                    }
+                    followingInfo.push(followUserObj);
+                }
+
+                if(id === req.session.id){
+                    const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin, 
+                        user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo, 
+                        followingInfo, user.newMessage, user.oldMessage)
+                        res.send(userToSend)
+                }
+                else{
+                    const userToSend = new userNonOwner(user.name, user.description, user._id, user.isAdmin, user.followers, 
+                        user.image, bookShelfInfo, writtenBookInfo, followingInfo)
+                        res.send(userToSend)
+                }
+
+                // getBooksForProfile(user.bookshelf).then((result) => {
+                //     log(result)
+                
+                //     res.send()
+    
+    
+                // })
+            }).catch((error) => {
+                res.status(500).send()
+            })
 			// res.send(user);
 		}
 	}).catch((error) => {
+        log("ASDSADSA")
 		res.status(500).send()
 	})
 
@@ -667,4 +731,21 @@ app.listen(port, () => {
 });  // common local host development port 3000
 // we've bound that port to localhost to go to our express server
 // Must restart web server whenyou make changes to route handlers
+
+
+// const idddd = "5ca2e2259e04deeca4a75ff9";
+// User.findById(idddd).then((user) =>{
+//     if(!user){
+//         res.status(404).send()
+//     } else{
+//         Book.find({
+//             '_id': { $in: user.writtenBook}
+//         }).then((ids => {
+//             log(ids);
+//         }))
+//         // res.send(user);
+//     }
+// }).catch((error) => {
+//     res.status(500).send()
+// })
 
