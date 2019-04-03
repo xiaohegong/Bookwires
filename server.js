@@ -409,8 +409,10 @@ app.post('/db/userReadingChapter', (req, res) => {
     if (!ObjectID.isValid(book)) {
         return res.status(404).send();
     }
-    User.getReadingChapter(user,book).then(result => res.send(result)).catch(error=>{
-        res.status(error.code).send(error.error);
+    User.getReadingChapter(user,book).then(result => {
+        res.send(result)
+    }).catch(error=>{
+        res.send([])
     });
 });
 

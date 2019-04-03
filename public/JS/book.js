@@ -30,12 +30,16 @@ if (document.cookie) {
         }
     });
     getInfo(request).then(res=>{
-        read.href = "/books/"+bookId+"/"+res.chapter_num;
-        save.innerText = "SAVED";
-        save.onclick = function (e) {
-            e.preventDefault();
-            log("ALREADY SAVED");
+        if(res.length === 0){
+            read.href = "/books/"+bookId+"/"+0;
+        }else{
+            read.href = "/books/"+bookId+"/"+res.chapter_num;
+            save.innerText = "SAVED";
+            save.onclick = function (e) {
+                e.preventDefault();
+            }
         }
+
     }).catch(error=>{
         log(error)
     });
