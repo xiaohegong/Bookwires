@@ -595,7 +595,7 @@ app.get('/db/profile/:id', (req, res) => {
                         id: valueArray[2][i]._id,
                         name: valueArray[2][i].name,
                         image: valueArray[2][i].image,
-                        writenCount: valueArray[2][i].writtenBook.length
+                        writtenCount: valueArray[2][i].writtenBook.length
                     }
                     followingInfo.push(followUserObj);
                 }
@@ -667,6 +667,25 @@ app.delete('/db/users/:id', (req, res) => {
     }
     User.deleteUser(id).then(result => Book.deleteByAuthor(result._id));
 });
+
+app.patch('/db/profile/:uid/:fid', (req, res) => {
+    const id = req.params.uid;
+    const fid = req.params.fid;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    Promise.all([User.removeFollowing(id, fid), User.beNotFollowed(fid)]).then( (results) => {
+        if(results[0] && results[1]){
+            res.send({resolved: true});
+        }
+    }).catch((error) => {
+        return res.status(500).send(error);
+    });
+})
+
+
 // // Set up a POST route to *create* a student
 // app.post('/book', (req, res) => {
 //     Book.addBook(req).then((result) => {
@@ -749,3 +768,4 @@ app.listen(port, () => {
 //     res.status(500).send()
 // })
 
+// User.addFollowing("5ca43565877585494830691b", "5ca3c2dddbdcc462627e76b8").then(res => log(res)).catch(error => log(error))

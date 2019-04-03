@@ -14,6 +14,7 @@ async function getUser() {
         }).catch(error => log(error));
 }
 
+
 let profileUser;
 
 // async function getUser() {
@@ -343,11 +344,42 @@ function setUpSettings(e) {
 function removeFollowerTotal(e) {
     e.preventDefault();
     const elem = e.target.parentNode;
-    const name = elem.querySelector("h3").innerHTML;
+    // const name = elem.querySelector("h3").innerHTML;
+
+    const fid = elem.dataset.followId;
 
     elem.parentNode.removeChild(elem);
-    profileUser.removeFollowing(name);
-    following.innerHTML = profileUser.following.length;
+
+    const patchUrl = url + "/" + fid.toString();
+    
+    fetch(patchUrl, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PATCH'                                       
+      }).then((res) => {
+        if(res.status !== 200){
+            alert("Error removing follow");
+            return
+        }
+        return res.json()
+    }).then((userJson) => {
+            return userJson;
+        }).then(res => {
+            if(res.resolved){
+                for (let j = 0; j < profileUser.following.length; j++) {
+                    if (profileUser.following[j].id === fid) {
+                        profileUser.following.splice(j, 1);
+                        break;
+                    }
+                }
+                following.innerHTML = profileUser.following.length;
+            }
+            
+        }).catch(error => log(error));
+
+    // profileUser.removeFollowing(name);
+    // following.innerHTML = profileUser.following.length;
 }
 
 /** Called when Following is selected in that nav menu.
@@ -368,20 +400,22 @@ function setUpFollowingList(e) {
     for (let i = 0; i < profileUser.following.length; i++) {
         const newFollowCont = document.createElement("li");
         newFollowCont.className = "following-container";
+        newFollowCont.dataset.followId = profileUser.following[i].id;
 
         const followingImg = document.createElement("img");
         followingImg.src = profileUser.following[i].image;
         followingImg.onclick = function () {
-            location.href = "profile.html";
+            location.href = "/profile/" + String(profileUser.following[i].id);
         };
 
         const followingInfo = document.createElement("div");
         followingInfo.className = "following-info";
+        
 
         const followingName = document.createElement("h3");
         followingName.innerHTML = profileUser.following[i].name;
         followingName.onclick = function () {
-            location.href = "profile.html";
+            location.href = "/profile/" + String(profileUser.following[i].id);
         };
 
         followingInfo.appendChild(followingName);
@@ -390,7 +424,7 @@ function setUpFollowingList(e) {
         followingWritten.innerHTML = "Books Written: ";
 
         const followingWrittenCount = document.createElement("span");
-        followingWrittenCount.innerHTML = profileUser.following[i].writtenBook.length;
+        followingWrittenCount.innerHTML = profileUser.following[i].writtenCount;
 
         const unFollowButton = document.createElement("button");
         unFollowButton.className = "btn btn-danger";

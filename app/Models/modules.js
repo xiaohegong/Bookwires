@@ -521,9 +521,7 @@ UserSchema.statics.addFollowing = (id, idToFollow) => {
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $push: {
-                following: {
-                    id: idToFollow
-                }
+                following: idToFollow
             }
         }).then((result) => {
             resolve(result);
@@ -548,14 +546,13 @@ UserSchema.statics.beFollowed = (id) => {
 };
 
 
-UserSchema.statics.removeFollowing = (id, idToNotFollow) => {
+UserSchema.statics.removeFollowing = (id, idToNotFollow, ) => {
     //after this the user id will not follow user idToNotFollow anymore
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $pull: {
-                following: {
-                    id: idToNotFollow
-                }
+                following: idToNotFollow
+
             }
         }).then((result) => {
             resolve(result);
