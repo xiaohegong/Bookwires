@@ -516,6 +516,36 @@ UserSchema.statics.findUserByID = (id) => {
 
 };
 
+UserSchema.statics.updateReadingChapter = (user,chapter,book) => {
+    return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate(user,{
+            $set:{
+                "bookshelf.$[elem].chapter_num":chapter
+            }
+        },{
+            arrayFilters: [ { "elem.book_id": book } ]
+        }).then((user) => {
+            resolve(user)
+        }).catch(error=>{
+            reject({code: 404, error});
+        });
+    });
+
+};
+
+UserSchema.statics.getReadingChapter = (user,book) => {
+    return new Promise((resolve, reject) => {
+        User.findOne({_id:user,"bookshelf.book_id":book}, {
+            'bookshelf.$': 1
+        }).then((user) => {
+            resolve(user.bookshelf[0])
+        }).catch(error=>{
+            reject({code: 404, error});
+        });
+    });
+
+};
+
 UserSchema.statics.addFollowing = (id, idToFollow) => {
     //after this the user id will follow user idToFollow
     return new Promise((resolve, reject) => {

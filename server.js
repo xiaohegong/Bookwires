@@ -378,6 +378,38 @@ app.post('/db/booksComment/:id', (req, res) => {
     }
     Book.addComments(req.body.user, req.body.content, id).then(result => res.send(result));
 });
+
+app.patch('/db/updateReadingChapter', (req, res) => {
+    // Validate the id
+    const user = req.body.user;
+    const chapter = req.body.chapter_num;
+    const book = req.body.book;
+
+    if (!ObjectID.isValid(user)) {
+        return res.status(404).send();
+    }
+
+    if (!ObjectID.isValid(book)) {
+        return res.status(404).send();
+    }
+    User.updateReadingChapter(user,chapter,book).then(result => res.send(result));
+});
+
+app.post('/db/userReadingChapter', (req, res) => {
+    // Validate the id
+    const user = req.body.user;
+    const book = req.body.book;
+
+    if (!ObjectID.isValid(user)) {
+        return res.status(404).send();
+    }
+
+    if (!ObjectID.isValid(book)) {
+        return res.status(404).send();
+    }
+    User.getReadingChapter(user,book).then(result => res.send(result));
+});
+
 app.post('/db/rateBook', (req, res) => {
     Book.newRate(req.body.rate,req.body.book)
         .then((books) => {
