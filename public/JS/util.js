@@ -94,3 +94,4 @@ function userLoggedIn(username, id, isAdmin) {
     // document.querySelector("#rightSideBar").style.pointerEvents = "all";
     // document.querySelector("#searchLogo").style.pointerEvents = "all";
 // }
+}
