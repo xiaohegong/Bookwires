@@ -335,15 +335,7 @@ app.post('/db/books', (req, res) => {
 
 });
 
-app.delete('/db/a/:id/:pid', (req, res) => {
-    const id = req.params.id;
-    const pid = req.params.pid;
-    User.removeBooksWritten(id,pid).then((result)=>res.send(result))
-        .catch(error => {
-            return res.status(400).send(error);
-        });
 
-});
 
 app.delete('/db/deleteComment', (req, res) => {
     const bid = req.body.book;
@@ -551,7 +543,7 @@ app.delete('/db/users/:id', (req, res) => {
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
-    User.deleteUser(id).then(result => res.send(result));
+    User.deleteUser(id).then(result => Book.deleteByAuthor(result._id));
 });
 // // Set up a POST route to *create* a student
 // app.post('/book', (req, res) => {

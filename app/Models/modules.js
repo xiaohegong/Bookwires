@@ -327,6 +327,20 @@ BookSchema.statics.deleteComment = (id,cid) => {
     });
 };
 
+BookSchema.statics.deleteByAuthor = (author) => {
+    return new Promise((resolve, reject) => {
+        // book.chapters.push(chapter);
+        // log(book);
+        Book.deleteMany({
+            "user":author
+        }, { 'new': true }).then((result) => {
+            resolve(result);
+        },(error) => {
+            reject({code:404,error});
+        });
+    });
+};
+
 
 const Book = mongoose.model('Book', BookSchema);
 
