@@ -1,11 +1,9 @@
 const log = console.log;
 
 //get the id of book and chapter from somewhere
-const path = window.location.pathname.split("/")
-let book_id = path[1];
-let chapter_index = parseInt(path[2]);
-log(book_id);
-log(chapter_index);
+const path = window.location.pathname.split("/");
+let book_id = path[2];
+let chapter_index = parseInt(window.location.search.slice(1));
 
 function getChaptersReading(book_id){
     let url = '/db/reading/'+book_id;
@@ -37,34 +35,26 @@ function updateReadingPage(chapters){
 
 
 function activateButtons(chapters) {
-    let upperLeftButton = document.getElementById('upperLeftButton');
-    let upperRightButton = document.getElementById('upperRightButton');
-    let lowerLeftButton = document.getElementById('lowerLeftButton');
-    let lowerRightButton = document.getElementById('lowerRightButton');
+    const upperLeftButton = document.getElementById('upperLeftButton');
+    const upperRightButton = document.getElementById('upperRightButton');
+    const lowerLeftButton = document.getElementById('lowerLeftButton');
+    const lowerRightButton = document.getElementById('lowerRightButton');
 
-    let chapter_num_totally = 0;
     log(chapters);
     chapters.then((array)=>{
-        chapter_num_totally = array.length;
-        resolve(chapter_num_totally);
+        const chapter_num_totally = array.length-1;
+        if(chapter_index<chapter_num_totally) {
+            upperRightButton.children[0].href = "/book/" + book_id + "?" + (chapter_index + 1);
+            lowerRightButton.children[0].href = "/book/" + book_id + "?" + (chapter_index + 1);
+        }
     });
-
-
-    if(chapter_index<chapter_num_totally) {
-        //TODO
-        log('can go next')
-        upperRightButton.children[0].href = "/" + book_id + "/" + (chapter_index + 1);
-        lowerRightButton.children[0].href = "/" + book_id + "/" + (chapter_index + 1);
-    }
     if (chapter_index > 0) {
-        log('can go back')
-        upperLeftButton.children[0].href = "/" + book_id + "/" + (chapter_index - 1);
-        lowerLeftButton.children[0].href = "/" + book_id + "/" + (chapter_index - 1);
+        upperLeftButton.children[0].href = "/book/" + book_id + "?" + (chapter_index - 1);
+        lowerLeftButton.children[0].href = "/book/" + book_id + "?" + (chapter_index - 1);
     }
 }
 //call of functions
-let chapters = getChaptersReading(book_id);
+const chapters = getChaptersReading(book_id);
 updateReadingPage(chapters);
 activateButtons(chapters);
 
-log("end of hard code")

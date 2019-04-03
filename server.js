@@ -35,6 +35,9 @@ const sessionChecker = (req, res, next) => {
 	if (req.session.userId) {
 		res.redirect('/index')
 	} else {
+        res.clearCookie("name")
+        res.clearCookie("id")
+        res.clearCookie("admin")
 		next();
 	}
 }
@@ -42,11 +45,15 @@ const sessionChecker = (req, res, next) => {
 // use to redirect if a session has not been created
 const sessionCheckLoggedIn = (req, res, next) => {
 	if (!req.session.userId) {
+        res.clearCookie("name")
+        res.clearCookie("id")
+        res.clearCookie("admin")
 		res.redirect('/login')
 	} else {
 		next();
 	}
 }
+
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
@@ -61,7 +68,7 @@ app.route('/login')
 })
 
 app.route('/admin')
-    .get(sessionChecker, (req, res) => {
+    .get(sessionCheckLoggedIn, (req, res) => {
         res.sendFile(__dirname + '/public/HTML/admin.html')
     });
 
@@ -304,7 +311,7 @@ app.get('/search/:query', (req, res) => {
     res.sendFile(dir + 'search.html');
 });
 
-app.get('/books/:bid/:chap', (req, res) => {
+app.get('/book/:bid', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
     res.sendFile(dir + 'readingPage.html');
 });
@@ -338,15 +345,7 @@ app.post('/db/books', (req, res) => {
 
 });
 
-app.delete('/db/a/:id/:pid', (req, res) => {
-    const id = req.params.id;
-    const pid = req.params.pid;
-    User.removeBooksWritten(id,pid).then((result)=>res.send(result))
-        .catch(error => {
-            return res.status(400).send(error);
-        });
 
-});
 
 app.delete('/db/deleteComment', (req, res) => {
     const bid = req.body.book;
@@ -666,7 +665,7 @@ app.delete('/db/users/:id', (req, res) => {
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
-    User.deleteUser(id).then(result => res.send(result));
+    User.deleteUser(id).then(result => Book.deleteByAuthor(result._id));
 });
 // // Set up a POST route to *create* a student
 // app.post('/book', (req, res) => {

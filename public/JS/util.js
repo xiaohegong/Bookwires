@@ -22,55 +22,59 @@ Include <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.
  */
 
 /*****  Set logged in status ******/
-// const menuBar = document.getElementById("menuBar");
+const menuBar = document.getElementById("menuBar");
 
-// // If a user is logged in
-// if (document.cookie) {
-//     const cookie = Cookies.get();
-//     const id = cookie.id.split(":")[1].slice(1, -1);
-//     const isAdmin = cookie.admin;
-//     userLoggedIn(cookie.name, id, isAdmin);
-// }
+// If a user is logged in
+if (document.cookie) {
+    try {
+        const cookie = Cookies.get();
+        const id = cookie.id.split(":")[1].slice(1, -1);
+        const isAdmin = cookie.admin === "true";
+        userLoggedIn(cookie.name, id, isAdmin);
+    } catch {
+    }
 
-// function userLoggedIn(username, id, isAdmin) {
-//     const menu = menuBar;
-//     // Remove old buttons
-//     if (username.trim().split(" ").length > 1) {
-//         username = username.trim().split(" ")[0];
-//     }
-//     if (menu && menu.children.length > 1) {
-//         menu.removeChild(menu.children[0]);
-//         menu.removeChild(menu.children[0]);
-//     }
+}
 
-//     const welcomeText = document.createTextNode("Welcome " + username + "!");
-//     const link = document.createElement("a");
+function userLoggedIn(username, id, isAdmin) {
+    const menu = menuBar;
+    // Remove old buttons
+    if (username.trim().split(" ").length > 1) {
+        username = username.trim().split(" ")[0];
+    }
+    if (menu && menu.children.length > 1) {
+        menu.removeChild(menu.children[0]);
+        menu.removeChild(menu.children[0]);
+    }
 
-//     // Check user type to direct to correct pages
-//     if (isAdmin) {
-//         link.href = "../admin";
-//     } else {
-//         link.href = "./profile/" + id;
-//     }
+    const welcomeText = document.createTextNode("Welcome " + username + "!");
+    const link = document.createElement("a");
 
-//     // Create the welcome message
-//     link.appendChild(welcomeText);
-//     const span = document.createElement("span");
-//     span.appendChild(link);
-//     span.className = "welcomeMsg";
-//     menu.appendChild(span);
+    // Check user type to direct to correct pages
+    if (isAdmin) {
+        link.href = "../admin";
+    } else {
+        link.href = "./profile/" + id;
+    }
 
-//     // Create the quit button
-//     const quitText = document.createTextNode("Quit");
-//     const quit = document.createElement("a");
-//     quit.href = "../users/logout";
-//     quit.appendChild(quitText);
-//     const span2 = document.createElement("span");
-//     span2.appendChild(quit);
-//     span2.className = "welcomeMsg";
-//     span2.id = "quit";
+    // Create the welcome message
+    link.appendChild(welcomeText);
+    const span = document.createElement("span");
+    span.appendChild(link);
+    span.className = "welcomeMsg";
+    menu.appendChild(span);
 
-//     menu.appendChild(span2);
+    // Create the quit button
+    const quitText = document.createTextNode("Quit");
+    const quit = document.createElement("a");
+    quit.href = "../users/logout";
+    quit.appendChild(quitText);
+    const span2 = document.createElement("span");
+    span2.appendChild(quit);
+    span2.className = "welcomeMsg";
+    span2.id = "quit";
+
+    menu.appendChild(span2);
 
     // Adding toast when user logged in
     // if (sampleUser.newMessages.length > 0) {
