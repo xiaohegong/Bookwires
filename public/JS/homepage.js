@@ -137,7 +137,7 @@ fetchAuthors().then((a) => {
             span.appendChild(p);
 
             // Append star ratings to the block
-            const rating = makeStars(parseInt(book.rate));
+            const rating = makeStars(parseInt(book.rating));
             span.appendChild(rating);
 
             divider.appendChild(link);
