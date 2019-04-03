@@ -7,7 +7,7 @@ let chapter_index = parseInt(window.location.search.slice(1));
 
 function getChaptersReading(book_id){
     let url = '/db/reading/'+book_id;
-    log(url);
+    // log(url);
     return fetch(url).then((res) => res.json())
         .then((chapJson) => {
             log(chapJson);
@@ -22,12 +22,12 @@ function getChaptersReading(book_id){
 
 function updateReadingPage(chapters){
     //get the elements we want to update
-    let nameBox = document.getElementById('chapterNameBox');
+    let name = document.getElementsByClassName("chapterName")[0];
     let contentBox = document.getElementById('mainText');
 
-    //log(chapters);
+    // log(name);
     chapters.then((array)=>{
-        nameBox.innerHTML = array[chapter_index].chapterTitle;
+        name.innerHTML = array[chapter_index].chapterTitle;
         contentBox.innerHTML = array[chapter_index].content;
     });
 
@@ -40,7 +40,7 @@ function activateButtons(chapters) {
     const lowerLeftButton = document.getElementById('lowerLeftButton');
     const lowerRightButton = document.getElementById('lowerRightButton');
 
-    log(chapters);
+    // log(chapters);
     chapters.then((array)=>{
         const chapter_num_totally = array.length-1;
         if(chapter_index<chapter_num_totally) {
@@ -58,3 +58,4 @@ const chapters = getChaptersReading(book_id);
 updateReadingPage(chapters);
 activateButtons(chapters);
 
+// log("end of hard code");

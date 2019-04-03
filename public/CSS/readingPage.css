@@ -1,0 +1,95 @@
+#topLineBox {
+    position: relative;
+    width: 100%;
+    min-width: 315px;
+    margin-bottom: 30px;
+}
+
+#bottomLineBox {
+    position: relative;
+    width: 100%;
+    min-width: 315px;
+    margin-top: 20px;
+}
+
+.leftButtonBox {
+    position: absolute;
+    top: 0px;
+    left: 5%;
+    height: 180px;
+    width: 200px;
+}
+
+
+#chapterNameBox {
+    padding: 30px 0;
+    text-align: center;
+    height: 100px;
+    width: 400px;
+    margin: 0px auto;
+}
+
+#contentBottomBox {
+    padding: 40px 0;
+    text-align: center;
+    height: 100px;
+    width: 400px;
+    margin: 0px auto;
+}
+
+#backButton {
+    color: #82a283;
+    text-align: center;
+    padding: 8px;
+    text-decoration: none;
+    border: 2px solid #82a283;
+    margin: 5px;
+    font-weight: bold;
+    height: 50px;
+    width: 120px;
+    font-family: Palatino, Helvetica, sans-serif;
+    font-size: 14px;
+    background-color: #fcfcf4;
+}
+
+#backButton:hover {
+    background-color: #82a283;
+    border: 2px solid #82a283;
+    color: white;
+    cursor: pointer;
+}
+
+.rightButtonBox {
+    position: absolute;
+    top: 0px;
+    right: 5%;
+    height: 180px;
+    width: 200px;
+}
+
+#mainText {
+    padding-top: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 5px;
+    border: 2px solid #cebebd;
+}
+
+.arrow {
+    width: 150px;
+    height: 120px;
+}
+
+.chapterName {
+    font-family: 'Lobster Two', Helvetica, sans-serif;
+    color: #2b2b2b;
+    font-size: 55px;
+}
+
+.chapterArrow {
+    font-family: 'Lobster Two', Helvetica, sans-serif;
+    color: #465e47;
+    font-size: 25px;
+    padding: 20px;
+    margin-top: -10px;
+}
