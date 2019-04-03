@@ -392,7 +392,9 @@ app.patch('/db/updateReadingChapter', (req, res) => {
     if (!ObjectID.isValid(book)) {
         return res.status(404).send();
     }
-    User.updateReadingChapter(user,chapter,book).then(result => res.send(result));
+    User.updateReadingChapter(user,chapter,book).then(result => res.send(result)).catch(error=>{
+        res.status(error.code).send(error.error);
+    });
 });
 
 app.post('/db/userReadingChapter', (req, res) => {
@@ -407,7 +409,9 @@ app.post('/db/userReadingChapter', (req, res) => {
     if (!ObjectID.isValid(book)) {
         return res.status(404).send();
     }
-    User.getReadingChapter(user,book).then(result => res.send(result));
+    User.getReadingChapter(user,book).then(result => res.send(result)).catch(error=>{
+        res.status(error.code).send(error.error);
+    });
 });
 
 app.post('/db/rateBook', (req, res) => {
@@ -431,7 +435,9 @@ app.post('/db/BookToRead', (req, res) => {
     if (!ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
-    User.addNewBookToRead(id,bid).then(result => res.send(result));
+    User.addNewBookToRead(id,bid).then(result => res.send(result)).catch(error=>{
+        res.status(error.code).send(error.error);
+    });
 });
 
 app.delete('/db/books/:id', (req, res) => {
@@ -444,6 +450,8 @@ app.delete('/db/books/:id', (req, res) => {
         User.removeBooksWritten(result.user,result.id)
     }).then(res=>{
         log(res);
+    }).catch(error=>{
+        res.status(error.code).send(error.error);
     });
 });
 
