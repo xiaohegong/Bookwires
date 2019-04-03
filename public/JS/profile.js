@@ -1,9 +1,8 @@
 'use strict';
 const log = console.log;
 const currentLocation = window.location.href;
+const url = "/db"+new URL(currentLocation).pathname;
 async function getUser() {
-    const url = "/db"+new URL(currentLocation).pathname;
-    log(url)
     return fetch(url).then((res) => {
         if(res.status !== 200){
             alert("Error finding User");
@@ -14,6 +13,8 @@ async function getUser() {
             return userJson;
         }).catch(error => log(error));
 }
+
+let profileUser;
 
 // async function getUser() {
 //     return fetch(`/db/users/${userid}`).then((response) => {
@@ -34,7 +35,7 @@ async function getUser() {
 
 // fetch("/db/users/:id")
 
-// **NOTE**: for this page we use sampleUser as the user that this profile represents.
+// **NOTE**: for this page we use profileUser as the user that this profile represents.
 //          Sample user is stored in classes.js and realistically a server call would be
 //          needed to load the user data initially for use by this page.
 
@@ -206,7 +207,17 @@ function setUpCarousel(bookList) {
                 // new book list container and image:
                 const newLi = document.createElement("li");
                 const newImg = document.createElement("img");
-                const bookToAdd = bookList[(i * 15 + j * 5 + b)];
+
+                //SERVER CALL TO GET BOOKTITLE AND IMAGE
+
+                const bookToAdd = fetch('/books/' + bookList[(i * 15 + j * 5 + b)]).then(res => res.json())
+                .then((bookJson) => {
+                    return bookJson;
+                }).catch(error => log(error));
+                log(bookToAdd)
+                continue
+
+                // const bookToAdd = bookList[(i * 15 + j * 5 + b)];
                 newImg.src = bookToAdd.image;
                 newImg.title = bookToAdd.bookTitle;
                 newImg.onclick = function () {
@@ -258,21 +269,62 @@ function setUpCarousel(bookList) {
  */
 function setUpUserPage() {
     // update all user information elements
-    profileHeader.innerHTML = sampleUser.name;
-    followers.innerHTML = sampleUser.followers;
-    following.innerHTML = sampleUser.following.length;
-    writtenCount.innerHTML = sampleUser.writtenBook.length;
-    description.innerHTML = sampleUser.description;
+    profileHeader.innerHTML = profileUser.name;
+    followers.innerHTML = profileUser.followers;
+    following.innerHTML = profileUser.following.length;
+    writtenCount.innerHTML = profileUser.writtenBook.length;
+    description.innerHTML = profileUser.description;
     // update placeholders for settings
-    username.placeholder = sampleUser.name;
-    emailaddress.placeholder = sampleUser.mailAddress;
-    descriptionEditable.placeholder = sampleUser.description;
+    username.placeholder = profileUser.name;
+    emailaddress.placeholder = profileUser.email;
+    descriptionEditable.placeholder = profileUser.description;
     // set up bookshelf as main content
-    setUpCarousel(sampleUser.bookshelf);
+    setUpCarousel(profileUser.bookshelf);
 
 }
 
-setUpUserPage();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(function(){
+    getUser(url).then(res =>{
+        profileUser = res;
+        log(res);
+        // setUpUserPage();
+    })
+
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// setUpUserPage();
 
 /** Called when Bookshelf is selected in that nav menu.
  * Changes nav element styling and sets up bookshelf for main content
@@ -284,7 +336,7 @@ function setUpShelf(e) {
     // clear search bars
     searchBox.value = '';
 
-    setUpCarousel(sampleUser.bookshelf);
+    setUpCarousel(profileUser.bookshelf);
     document.querySelector("#book-shelf").querySelector("h1").innerHTML = "BookShelf";
 }
 
@@ -302,8 +354,8 @@ function removeFollowerTotal(e) {
     const name = elem.querySelector("h3").innerHTML;
 
     elem.parentNode.removeChild(elem);
-    sampleUser.removeFollowing(name);
-    following.innerHTML = sampleUser.following.length;
+    profileUser.removeFollowing(name);
+    following.innerHTML = profileUser.following.length;
 }
 
 /** Called when Following is selected in that nav menu.
@@ -320,13 +372,13 @@ function setUpFollowingList(e) {
     // switch main content to Following content
     changeActive(followingButton, document.querySelector("#following"));
 
-    // create a list element for each follower of sampleUser and add it to the list
-    for (let i = 0; i < sampleUser.following.length; i++) {
+    // create a list element for each follower of profileUser and add it to the list
+    for (let i = 0; i < profileUser.following.length; i++) {
         const newFollowCont = document.createElement("li");
         newFollowCont.className = "following-container";
 
         const followingImg = document.createElement("img");
-        followingImg.src = sampleUser.following[i].image;
+        followingImg.src = profileUser.following[i].image;
         followingImg.onclick = function () {
             location.href = "profile.html";
         };
@@ -335,7 +387,7 @@ function setUpFollowingList(e) {
         followingInfo.className = "following-info";
 
         const followingName = document.createElement("h3");
-        followingName.innerHTML = sampleUser.following[i].name;
+        followingName.innerHTML = profileUser.following[i].name;
         followingName.onclick = function () {
             location.href = "profile.html";
         };
@@ -346,7 +398,7 @@ function setUpFollowingList(e) {
         followingWritten.innerHTML = "Books Written: ";
 
         const followingWrittenCount = document.createElement("span");
-        followingWrittenCount.innerHTML = sampleUser.following[i].writtenBook.length;
+        followingWrittenCount.innerHTML = profileUser.following[i].writtenBook.length;
 
         const unFollowButton = document.createElement("button");
         unFollowButton.className = "btn btn-danger";
@@ -370,7 +422,7 @@ function setUpAuthorShelf(e) {
     changeActive(authoredButton, document.querySelector("#book-shelf"));
 
     searchBox.value = '';
-    setUpCarousel(sampleUser.writtenBook);
+    setUpCarousel(profileUser.writtenBook);
     document.querySelector("#book-shelf").querySelector("h1").innerHTML = "Authored Books";
 }
 
@@ -383,8 +435,8 @@ function setUpNotificationList(e) {
         notiListGroup.removeChild(notiListGroup.firstChild);
     }
     changeActive(notificationButton, document.querySelector("#notifications"));
-    for (let i = 0; i < sampleUser.newMessages.length; i++) {
-        const bookNot = sampleUser.newMessages[i];
+    for (let i = 0; i < profileUser.newMessages.length; i++) {
+        const bookNot = profileUser.newMessages[i];
         const notificationElement = document.createElement("li");
         notificationElement.className = "list-group-item";
         const notText = document.createTextNode("New Chapter for " + bookNot.bookTitle + " by " + bookNot.author.name);
@@ -397,8 +449,8 @@ function setUpNotificationList(e) {
         notiListGroup.appendChild(notificationElement);
     }
 
-    for (let i = 0; i < sampleUser.oldMessages.length; i++) {
-        const bookNot = sampleUser.newMessages[i];
+    for (let i = 0; i < profileUser.oldMessages.length; i++) {
+        const bookNot = profileUser.newMessages[i];
         const notificationElement = document.createElement("li");
         notificationElement.className = "list-group-item";
         const notText = document.createTextNode("New Chapter for " + bookNot.bookTitle + " by " + bookNot.author.name);
@@ -416,9 +468,9 @@ function setUpNotificationList(e) {
 /** Update the shelf after a search is queried. Verifies if shelf is authored shelf or a bookshelf */
 function updateShelf(e) {
     e.preventDefault();
-    let newList = sampleUser.bookshelf;
+    let newList = profileUser.bookshelf;
     if (curNav == authoredButton) {
-        newList = sampleUser.writtenBook;
+        newList = profileUser.writtenBook;
     }
     if (searchBox.value === '') {
         setUpCarousel(newList);
@@ -448,16 +500,16 @@ function changeEditable(e) {
     confirmButton.disabled = false;
     confirmButton.className = "btn btn-success";
 
-    emailaddress.value = sampleUser.mailAddress;
+    emailaddress.value = profileUser.email;
     emailaddress.readOnly = false;
 
-    username.value = sampleUser.name;
+    username.value = profileUser.name;
     username.readOnly = false;
 
-    pass.value = sampleUser.password;
+    pass.value = profileUser.password;
     pass.readOnly = false;
 
-    descriptionEditable.value = sampleUser.description;
+    descriptionEditable.value = profileUser.description;
     descriptionEditable.readOnly = false;
 }
 
@@ -466,10 +518,10 @@ function confirmChanges(e) {
     e.preventDefault();
     // update User values
     // requires server call to update user data
-    sampleUser.mailAddress = emailaddress.value;
-    sampleUser.name = username.value;
-    sampleUser.password = pass.value;
-    sampleUser.description = descriptionEditable.value;
+    profileUser.email = emailaddress.value;
+    profileUser.name = username.value;
+    profileUser.password = pass.value;
+    profileUser.description = descriptionEditable.value;
 
     // reset buttons
     confirmButton.disabled = true;
@@ -477,17 +529,17 @@ function confirmChanges(e) {
     cancelButton.style.display = "none";
 
     //update profile html elements
-    profileHeader.innerHTML = sampleUser.name;
-    username.innerHTML = sampleUser.name;
-    description.innerHTML = sampleUser.description;
+    profileHeader.innerHTML = profileUser.name;
+    username.innerHTML = profileUser.name;
+    description.innerHTML = profileUser.description;
 
     // update editable fields
     username.readOnly = true;
-    username.placeholder = sampleUser.name;
+    username.placeholder = profileUser.name;
     emailaddress.readOnly = true;
-    emailaddress.placeholder = sampleUser.mailAddress;
+    emailaddress.placeholder = profileUser.email;
     descriptionEditable.readOnly = true;
-    descriptionEditable.placeholder = sampleUser.description;
+    descriptionEditable.placeholder = profileUser.description;
     ppass.readOnly = true;
 }
 
@@ -497,13 +549,13 @@ function cancelChanges(e) {
 
     username.readOnly = true;
     username.value = '';
-    username.placeholder = sampleUser.name;
+    username.placeholder = profileUser.name;
     emailaddress.readOnly = true;
-    emailaddress.placeholder = sampleUser.mailAddress;
+    emailaddress.placeholder = profileUser.email;
     emailaddress.value = '';
     descriptionEditable.readOnly = true;
     descriptionEditable.value = '';
-    descriptionEditable.placeholder = sampleUser.description;
+    descriptionEditable.placeholder = profileUser.description;
     pass.readOnly = true;
     pass.value = '';
 
@@ -517,9 +569,9 @@ function removeBookBookshelf(e) {
     e.preventDefault();
     const bookToRemove = e.target.parentNode.bookReference;
     //remove the book from user (reuqires server call)
-    sampleUser.removeBookFromBookshelf(bookToRemove);
+    profileUser.removeBookFromBookshelf(bookToRemove);
     e.target.parentNode.removeChild(e.target);
-    setUpCarousel(sampleUser.bookshelf);
+    setUpCarousel(profileUser.bookshelf);
 }
 
 /** Removes an html book element from the Authored Shelf as well as makes a call to remove it from the user
@@ -528,11 +580,11 @@ function removeBookBookshelf(e) {
 function removeWrittenBook(e) {
     e.preventDefault();
     const bookToRemove = e.target.parentNode.bookReference;
-    sampleUser.removeBookFromWritten(bookToRemove);
+    profileUser.removeBookFromWritten(bookToRemove);
     deleteBookForAllUsers(bookToRemove);
-    writtenCount.innerHTML = sampleUser.writtenBook.length;
+    writtenCount.innerHTML = profileUser.writtenBook.length;
     e.target.parentNode.removeChild(e.target);
-    setUpCarousel(sampleUser.writtenBook);
+    setUpCarousel(profileUser.writtenBook);
 }
 
 /** Changes the view of the page from owner to non-owner.
@@ -561,7 +613,7 @@ function changeAuthentification(e) {
         newBookButton.style.display = "none";
 
         // set up the follow button based on if they are following the user already or not
-        if (viewingUser.isFollowing(sampleUser.name)) {
+        if (viewingUser.isFollowing(profileUser.name)) {
             followButton.classList.add("btn-danger");
             followButton.classList.remove("btn-success");
             followButton.innerHTML = "UnFollow";
@@ -595,16 +647,16 @@ function clearChapterFields(e) {
 function addNewAuthoredBook(e) {
     const d = new Date();
     //requires server call to add new book
-    const newBook = new Book(newBookTitleForm.value, sampleUser, d.getDate(), "img/TimeRaiders.jpg", newBookGenreForm.value);
+    const newBook = new Book(newBookTitleForm.value, profileUser, d.getDate(), "img/TimeRaiders.jpg", newBookGenreForm.value);
     newBook.setDescription(newBookDescriptionForm.value);
-    sampleUser.writtenBook.push(newBook);
+    profileUser.writtenBook.push(newBook);
 
     //update html if main content is authored
     if (curNav === authoredButton) {
-        setUpCarousel(sampleUser.writtenBook);
+        setUpCarousel(profileUser.writtenBook);
     }
     //update html profile stat
-    writtenCount.innerHTML = sampleUser.writtenBook.length;
+    writtenCount.innerHTML = profileUser.writtenBook.length;
     cancelAllBooksFields(e);
 }
 
@@ -723,20 +775,20 @@ function followOrUnfollow(e) {
     e.preventDefault();
     if (followButton.innerHTML === "Follow") {
         // add user to follow list and update followee number
-        viewingUser.following.push(sampleUser);
+        viewingUser.following.push(profileUser);
         followButton.classList.add("btn-danger");
         followButton.classList.remove("btn-success");
         followButton.innerHTML = "UnFollow";
-        sampleUser.followers += 1;
+        profileUser.followers += 1;
     } else {
         // remove user to follow list and update followee number
-        viewingUser.removeFollowing(sampleUser.name);
+        viewingUser.removeFollowing(profileUser.name);
         followButton.classList.add("btn-success");
         followButton.classList.remove("btn-danger");
         followButton.innerHTML = "Follow";
-        sampleUser.followers -= 1;
+        profileUser.followers -= 1;
     }
-    followers.innerHTML = sampleUser.followers;
+    followers.innerHTML = profileUser.followers;
 }
 
 /** Handles the clear button in the notification view.
@@ -748,6 +800,6 @@ function clearNotifications(e) {
     while (notiListGroup.firstChild) {
         notiListGroup.removeChild(notiListGroup.firstChild);
     }
-    sampleUser.newMessages = [];
-    sampleUser.oldMessages = [];
+    profileUser.newMessages = [];
+    profileUser.oldMessages = [];
 }
