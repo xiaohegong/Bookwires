@@ -52,7 +52,7 @@ function userLoggedIn(username, id, isAdmin) {
 
     // Check user type to direct to correct pages
     if (isAdmin) {
-        link.href = "../admin";
+        link.href = "/admin";
     } else {
         link.href = "./profile/" + id;
     }
@@ -67,7 +67,7 @@ function userLoggedIn(username, id, isAdmin) {
     // Create the quit button
     const quitText = document.createTextNode("Quit");
     const quit = document.createElement("a");
-    quit.href = "../users/logout";
+    quit.href = "/users/logout";
     quit.appendChild(quitText);
     const span2 = document.createElement("span");
     span2.appendChild(quit);

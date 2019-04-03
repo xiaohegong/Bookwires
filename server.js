@@ -138,7 +138,7 @@ app.post('/user/signup', (req, res) => {
         isAdmin: false,
         token: 0,
         followers: 0,
-        image: "../img/avatar.jpg",
+        image: "/img/avatar.jpg",
         bookshelf: [],
         bookShelfIds: [],
         writtenBook: [],
@@ -312,7 +312,7 @@ app.get('/search/:query', (req, res) => {
     res.sendFile(dir + 'search.html');
 });
 
-app.get('/book/:bid', (req, res) => {
+app.get('/books/:bid/:chapter', (req, res) => {
     const dir = path.join(__dirname + "/public/HTML/");
     res.sendFile(dir + 'readingPage.html');
 });

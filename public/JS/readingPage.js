@@ -3,11 +3,11 @@ const log = console.log;
 //get the id of book and chapter from somewhere
 const path = window.location.pathname.split("/");
 let book_id = path[2];
-let chapter_index = parseInt(window.location.search.slice(1));
+let chapter_index = parseInt(path[3]);
 
 function getChaptersReading(book_id){
     let url = '/db/reading/'+book_id;
-    log(url);
+    // log(url);
     return fetch(url).then((res) => res.json())
         .then((chapJson) => {
             log(chapJson);
@@ -22,12 +22,12 @@ function getChaptersReading(book_id){
 
 function updateReadingPage(chapters){
     //get the elements we want to update
-    let nameBox = document.getElementById('chapterNameBox');
+    let name = document.getElementsByClassName("chapterName")[0];
     let contentBox = document.getElementById('mainText');
 
-    //log(chapters);
+    // log(name);
     chapters.then((array)=>{
-        nameBox.innerHTML = array[chapter_index].chapterTitle;
+        name.innerHTML = array[chapter_index].chapterTitle;
         contentBox.innerHTML = array[chapter_index].content;
     });
 
@@ -40,17 +40,17 @@ function activateButtons(chapters) {
     const lowerLeftButton = document.getElementById('lowerLeftButton');
     const lowerRightButton = document.getElementById('lowerRightButton');
 
-    log(chapters);
+    // log(chapters);
     chapters.then((array)=>{
         const chapter_num_totally = array.length-1;
         if(chapter_index<chapter_num_totally) {
-            upperRightButton.children[0].href = "/book/" + book_id + "?" + (chapter_index + 1);
-            lowerRightButton.children[0].href = "/book/" + book_id + "?" + (chapter_index + 1);
+            upperRightButton.children[0].href = "/books/" + book_id + "/" + (chapter_index + 1);
+            lowerRightButton.children[0].href = "/books/" + book_id + "/" + (chapter_index + 1);
         }
     });
     if (chapter_index > 0) {
-        upperLeftButton.children[0].href = "/book/" + book_id + "?" + (chapter_index - 1);
-        lowerLeftButton.children[0].href = "/book/" + book_id + "?" + (chapter_index - 1);
+        upperLeftButton.children[0].href = "/books/" + book_id + "/" + (chapter_index - 1);
+        lowerLeftButton.children[0].href = "/books/" + book_id + "/" + (chapter_index - 1);
     }
 }
 //call of functions
@@ -58,3 +58,4 @@ const chapters = getChaptersReading(book_id);
 updateReadingPage(chapters);
 activateButtons(chapters);
 
+// log("end of hard code");

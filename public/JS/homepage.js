@@ -53,9 +53,9 @@ const numPopAuthors = 5; // total number of authors on popular authors
 function searchBook() {
     const val = searchVal.value;
     if (val.length > 45) {
-        location.href = "../";
+        location.href = "/";
     }
-    location.href = "../search?word=" + val;
+    location.href = "/search?word=" + val;
     return true;
 }
 

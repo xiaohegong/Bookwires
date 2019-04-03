@@ -233,7 +233,7 @@ const bookInformation = document.getElementById("bookInformation");
         const author = document.getElementById('authorInfo');
         const authorDetail = document.getElementById('authorDetail');
         const authorImageContainer = document.createElement('a');
-        authorImageContainer.href = "public/HTML/profile.html";
+        authorImageContainer.href = "public/HTML/profile.html"; //TODO
         const authorImage = document.createElement('img');
         authorImage.className = 'authorPic';
         authorImage.src = res.image;
@@ -278,7 +278,7 @@ getInfo(url).then(res=>{
             newPost.className = 'Chapter';
             const newPostTitle = document.createTextNode((i+1)+" : "+res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
-            newPostTitleContainer.href = "/book/"+res._id+"?"+i;
+            newPostTitleContainer.href = "/books/"+res._id+"/"+i;
             newPostTitleContainer.appendChild(newPostTitle);
             newPost.appendChild(newPostTitleContainer);
             nextLine.appendChild(newPost);
