@@ -301,7 +301,7 @@ function setUpUserPage() {
     getUser(url).then(res =>{
         profileUser = res;
         log(res);
-        setUpUserPage();
+        // setUpUserPage();
     })
 
 })();

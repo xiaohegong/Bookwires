@@ -515,6 +515,28 @@ class userNonOwner {
     }
 }
 
+async function findUser(id){
+    User.findById(id).then((user) => {
+        if(!user){
+            throw "error finding user";
+        }
+        return user;
+    }).catch((error) => {
+        throw "error finding user";
+    })
+}
+
+async function findBook(id){
+    Book.findById(id).then((book) => {
+        if(!book){
+            throw "error finding user";
+        }
+        return book;
+    }).catch((error) => {
+        throw "error finding user";
+    })
+}
+
 app.get('/db/profile/:id', (req, res) => {
     const id = req.params.id;
 
@@ -527,19 +549,7 @@ app.get('/db/profile/:id', (req, res) => {
 		if(!user){
 			res.status(404).send()
 		} else{
-            log(req.params.id)
-            log(req.session.userId)
-            if(req.params.id === req.session.userId){
-                const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin, 
-                    user.token, user.followers, user.image, user.bookshelf, user.writtenBook, 
-                    user.following, user.newMessage, user.oldMessage)
-                    res.send(userToSend)
-            }
-            else{
-                const userToSend = new userNonOwner(user.name, user.description, user._id, user.isAdmin, user.followers, 
-                    user.image, user.bookshelf, user.writtenBook, user.following)
-                    res.send(userToSend)
-            }
+            Promise.all().then
 			// res.send(user);
 		}
 	}).catch((error) => {
