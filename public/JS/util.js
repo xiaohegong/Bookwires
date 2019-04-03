@@ -26,10 +26,14 @@ const menuBar = document.getElementById("menuBar");
 
 // If a user is logged in
 if (document.cookie) {
-    const cookie = Cookies.get();
-    const id = cookie.id.split(":")[1].slice(1, -1);
-    const isAdmin = cookie.admin;
-    userLoggedIn(cookie.name, id, isAdmin);
+    try {
+        const cookie = Cookies.get();
+        const id = cookie.id.split(":")[1].slice(1, -1);
+        const isAdmin = cookie.admin;
+        userLoggedIn(cookie.name, id, isAdmin);
+    } catch {
+    }
+
 }
 
 function userLoggedIn(username, id, isAdmin) {
