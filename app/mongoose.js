@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // connect to our database
-mongoose.connect('mongodb+srv://heddy:bookwirepass@cluster0-yzvrb.mongodb.net/test?retryWrites=true', { useNewUrlParser: true});
+mongoose.connect('mongodb+srv://eric:bookwirepass@cluster0-yzvrb.mongodb.net/test?retryWrites=true', { useNewUrlParser: true});
 // mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/books', { useNewUrlParser: true, useCreateIndex: true});
 
 mongoose.set('useFindAndModify', false);
