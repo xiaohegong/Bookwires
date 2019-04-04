@@ -91,6 +91,21 @@ fetchAuthors().then((a) => {
         divider.appendChild(link);
         divider.appendChild(span);
         authors.appendChild(divider);
+
+        const numMessages = parseInt(getCookie("newnotifications"), 10);
+        if (numMessages > 0) {
+            toastBody.innerHTML = "You have " + numMessages.toString() + " new notifications.";
+            toast.setAttribute("data-autohide", "false");
+            toastBody.onclick = function () {
+                location.href = authorHrefURL + getCookie("id");
+            };
+            toast.style.display = "block";
+            $(document).ready(function () {
+                $('.toast').toast('show');
+            });
+
+            sampleUser.moveNewMsgToOld();
+        }
     }
 
     const bookHrefURL = "/books/";

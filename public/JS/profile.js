@@ -497,7 +497,7 @@ function updateShelf(e) {
         setUpCarousel(newList);
         return;
     }
-    setUpCarousel(fuzzyBookSearch(searchBox.value, newList));
+    setUpCarousel(fuzzyBookSearch(searchBox.value.toLowerCase(), newList));
 }
 
 /** Changes the active main content element*/

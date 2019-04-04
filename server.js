@@ -99,6 +99,7 @@ app.post('/user/login', (req, res) => {
             res.cookie("name", user.name)
             res.cookie("id", user._id.toString())
             res.cookie("admin", user.isAdmin)
+            res.cookie("newnotifications", user.newMessage.length.toString())            
 			res.redirect('/index')
 		}
 	},(result) => {
@@ -117,6 +118,7 @@ app.get('/users/logout', sessionCheckLoggedIn, (req, res) => {
             res.clearCookie("name")
             res.clearCookie("id")
             res.clearCookie("admin")
+            res.clearCookie("newnotifications")
 			res.redirect('/index')
 		}
 	})
@@ -1134,6 +1136,7 @@ app.delete('/db/profile/:id/newMessages', (req, res) => {
             newMessage: []
         }
     }).then((result) => {
+        res.cookie("newnotifications", "0") 
         res.send({resolved: true});
     }).catch((error) => {
         log(error)
