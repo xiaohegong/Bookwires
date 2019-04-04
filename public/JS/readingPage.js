@@ -5,9 +5,8 @@ const path = window.location.pathname.split("/");
 let book_id = path[2];
 let chapter_index = parseInt(path[3]);
 if (document.cookie){
-    const cookie = Cookies.get();
     let data = {
-        user: cookie.id.split(":")[1].slice(1,-1),
+        user: getCookie("id"),
         chapter_num: chapter_index,
         book: book_id
     };

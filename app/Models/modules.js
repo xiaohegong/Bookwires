@@ -124,7 +124,7 @@ BookSchema.statics.fuzzySearchWithGenre = (name,genre) => {
 
 BookSchema.statics.findByRate = (rate) => {
     return new Promise((resolve, reject) => {
-        Book.find({rate: {$gte: rate}}).then((book) => {
+        Book.find({rating: {$gte: rate}}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});
@@ -135,7 +135,7 @@ BookSchema.statics.findByRate = (rate) => {
 BookSchema.statics.findByRateWithGenre = (rate,genre) => {
     // Create a new student
     return new Promise((resolve, reject) => {
-        Book.find({rate: {$gte: rate},genre:genre}).then((book) => {
+        Book.find({rating: {$gte: rate},genre:genre}).then((book) => {
             resolve(book);
         }, (error) => {
             reject({code: 404, error});

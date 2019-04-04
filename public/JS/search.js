@@ -209,15 +209,21 @@ function bookSetUp(books) {
         span.className = "bookDisplayText";
         span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.bookTitle)));
         //TEMP
-        getAllBook("/db/users/"+book.user).then(res=>{
-            const info = document.createTextNode(res.name + " | " + book.genre);
-            const p = document.createElement("p");
-            p.className = "displayInfo";
-            p.appendChild(info);
-            span.appendChild(p);
-            const rating = makeStars(book.rating);
-            span.appendChild(rating);
-        });
+        if(typeof book.user !== 'undefined'){
+            getAllBook("/db/users/"+book.user).then(res=>{
+                if(typeof res !== "undefined"){
+                    const info = document.createTextNode(res.name + " | " + book.genre);
+                    const p = document.createElement("p");
+                    p.className = "displayInfo";
+                    p.appendChild(info);
+                    span.appendChild(p);
+                    const rating = makeStars(book.rating);
+                    span.appendChild(rating);
+                }
+
+            });
+        }
+
 
         divider.appendChild(imgContainer);
         divider.appendChild(span);
