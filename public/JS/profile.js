@@ -346,12 +346,12 @@ function removeFollowerTotal(e) {
     elem.parentNode.removeChild(elem);
 
     const patchUrl = url + "/" + fid.toString();
-    
+
     fetch(patchUrl, {
         headers: {
           'Content-Type': 'application/json'
         },
-        method: 'PATCH'                                       
+        method: 'PATCH'
       }).then((res) => {
         if(res.status !== 200){
             alert("Error removing follow");
@@ -370,7 +370,7 @@ function removeFollowerTotal(e) {
                 }
                 following.innerHTML = profileUser.following.length;
             }
-            
+
         }).catch(error => log(error));
 
     // profileUser.removeFollowing(name);
@@ -405,7 +405,7 @@ function setUpFollowingList(e) {
 
         const followingInfo = document.createElement("div");
         followingInfo.className = "following-info";
-        
+
 
         const followingName = document.createElement("h3");
         followingName.innerHTML = profileUser.following[i].name;
@@ -542,7 +542,7 @@ function confirmChanges(e) {
     // requires server call to update user data
 
     const patchUrl = url;
-    
+
     fetch(patchUrl, {
         headers: {
           'Content-Type': 'application/json'
@@ -569,11 +569,11 @@ function confirmChanges(e) {
                 profileUser.password = pass.value;
                 profileUser.description = descriptionEditable.value;
             }
-            
+
         }).catch(error => log(error));
 
-    
-    
+
+
 
     // reset buttons
     confirmButton.disabled = true;
@@ -624,12 +624,12 @@ function removeBookBookshelf(e) {
     const bookid = bookToRemove.id;
 
     const patchUrl = url + "/bookshelf/" + bookid.toString();
-    
+
     fetch(patchUrl, {
         headers: {
           'Content-Type': 'application/json'
         },
-        method: 'PATCH'                                       
+        method: 'PATCH'
       }).then((res) => {
         if(res.status !== 200){
             alert("Error removing follow");
@@ -649,12 +649,12 @@ function removeBookBookshelf(e) {
                 e.target.parentNode.removeChild(e.target);
                 setUpCarousel(profileUser.bookshelf);
             }
-            
+
         }).catch(error => log(error));
 
 
     // profileUser.removeBookFromBookshelf(bookToRemove);
-    
+
 }
 
 /** Removes an html book element from the Authored Shelf as well as makes a call to remove it from the user
@@ -673,7 +673,7 @@ function removeWrittenBook(e) {
         headers: {
           'Content-Type': 'application/json'
         },
-        method: 'DELETE'                                       
+        method: 'DELETE'
       }).then((res) => {
         if(res.status !== 200){
             alert("Error removing follow");
@@ -694,9 +694,23 @@ function removeWrittenBook(e) {
                 writtenCount.innerHTML = profileUser.writtenBook.length;
                 e.target.parentNode.removeChild(e.target);
                 setUpCarousel(profileUser.writtenBook);
+
+                swal({
+                    title: "Successfully removed book",
+                    text: "You have successfully removed a book! ",
+                    icon: "success",
+                    timer: 5000
+                });
             }
-            
-        }).catch(error => log(error));
+
+        }).catch(error => {
+        log(error)
+        swal({
+            title: "Failed to remove book",
+            text: "Sorry, there was an error. Please refresh the page and try again!",
+            icon: "error"
+        });
+    });
 
     // profileUser.removeBookFromWritten(bookToRemove);
     // deleteBookForAllUsers(bookToRemove);
@@ -776,7 +790,7 @@ function addNewAuthoredBook(e) {
             bookTitle: bookTitle,
             genre: genre,
             description: description
-        })                                   
+        })
       }).then((res) => {
         if(res.status !== 200){
             alert("Error adding book");
@@ -794,17 +808,32 @@ function addNewAuthoredBook(e) {
                 }
                 //update html profile stat
                 writtenCount.innerHTML = profileUser.writtenBook.length;
+
+                swal({
+                    title: "Successfully added new book",
+                    text: "Thank you for publishing a new book! ",
+                    icon: "success",
+                    timer: 5000
+                });
             }
-            
-        }).catch(error => log(error));
-    
+
+        }).catch(error => {
+            log(error);
+        swal({
+            title: "Failed to add new book",
+            text: "Sorry, there was an error. Please refresh the page and try again!",
+            icon: "error"
+        });
+        }
+    );
+
 
 
     // const newBook = new Book(newBookTitleForm.value, profileUser, d.getDate(), "img/TimeRaiders.jpg", newBookGenreForm.value);
     // newBook.setDescription(newBookDescriptionForm.value);
     // profileUser.writtenBook.push(newBook);
 
-    
+
     cancelAllBooksFields(e);
 }
 
@@ -906,7 +935,7 @@ function submitNewChapter(e) {
         // chapterModal.chapReference.num = parseInt(chapterNumField.value, 10);
 
         const chapterId = chapterModal.chapReference._id;
-        
+
         const patchUrl = url + "/chapter/" + bookId.toString() + "/" + chapterId.toString();
 
         fetch(patchUrl, {
@@ -938,8 +967,13 @@ function submitNewChapter(e) {
                     }
                     clearChapterFields(e);
                     updateChapList();
+                    swal({
+                        title: "Successfully updated chapter",
+                        text: "Thank you for updating the chapters! ",
+                        icon: "success",
+                        timer: 5000
+                    });
                 }
-                
             }).catch((error) => {
                 log(error)
             });
@@ -983,14 +1017,14 @@ function submitNewChapter(e) {
                     clearChapterFields(e);
                     updateChapList();
                 }
-                
+
             }).catch(error => log(error));
 
         // bookModal.bookReference.addChapter(newChap);
     }
     // update html
     edit = false;
-    
+
 }
 
 /** Called when wanting to submit book edits*/
@@ -1002,7 +1036,7 @@ function updateBook(e) {
     const description = newBookDescriptionForm.value;
     const bookTitle = newBookTitleForm.value;
     const genre = newBookGenreForm.value;
-        
+
     const patchUrl = url + "/book/" + bookId.toString();
 
     fetch(patchUrl, {
@@ -1031,6 +1065,11 @@ function updateBook(e) {
             }
         }).catch((error) => {
             log(error)
+        swal({
+            title: "Failed to update book",
+            text: "There was an error. Please refresh the page and try again.\n Thank you for your understanding!",
+            icon: "error"
+        });
         });
 
 
@@ -1038,6 +1077,11 @@ function updateBook(e) {
     submitBookButton.removeEventListener('click', updateBook);
     submitBookButton.addEventListener('click', addNewAuthoredBook);
     cancelAllBooksFields(e);
+    swal({
+        title: "Successfully updated book",
+        text: "Your book has been updated! ",
+        icon: "success"
+    });
 }
 
 /** Remove a book chapter from html and book's chapter list
@@ -1074,6 +1118,12 @@ function deleteBookChapter(e) {
                 }
                 e.target.parentNode.parentNode.removeChild(e.target.parentNode);
             }
+        swal({
+            title: "Successfully removed chapter",
+            text: "You have successfully removed a chapter!",
+            icon: "success",
+            timer: 5000
+        });
         }).catch((error) => {
             log(error)
         });
@@ -1115,7 +1165,11 @@ function followOrUnfollow(e) {
             })
           }).then((res) => {
             if(res.status !== 200){
-                alert("Error updating user info");
+                swal({
+                    title: "Failed to follow",
+                    text: "Sorry, there was an error. Please refresh the page and try again!",
+                    icon: "error"
+                });
                 return
             }
             return res.json()
@@ -1130,13 +1184,18 @@ function followOrUnfollow(e) {
                     profileUser.followers += 1;
                     followers.innerHTML = profileUser.followers;
                 }
+            swal({
+                title: "Successfully followed author",
+                text: "Thank you for following me!",
+                icon: "success"
+            });
             }).catch((error) => {
                 log(error)
             });
 
 
 
-        
+
     } else {
         // remove user to follow list and update followee number
 
@@ -1167,13 +1226,13 @@ function followOrUnfollow(e) {
                     followButton.innerHTML = "Follow";
                     profileUser.followers -= 1;
                     followers.innerHTML = profileUser.followers;
-                    
+
                 }
             }).catch((error) => {
                 log(error)
             });
     }
-    
+
 }
 
 /** Handles the clear button in the notification view.
@@ -1202,7 +1261,7 @@ function clearNotifications(e) {
 
     }).catch(error => log(error));
 
-    
+
     // profileUser.oldMessages = [];
 }
 
@@ -1214,7 +1273,7 @@ function setUpPic() {
     // First set up the image box to be the user's profile photo in db
     const profileImg = document.getElementById("profileImage");
     profileImg.src = profileUser.image;
-    if (profileOwner){
+    if (profileOwner) {
         // Enable change of profile image if user is the owner
         profileImg.onclick = async function () {
             const newAvatar = (await getAvatar()).avatar;
@@ -1232,19 +1291,35 @@ function setUpPic() {
                 })
             })
                 .then((res) => {
-                if (res.status !== 200) {
-                    alert("Error updating user info");
-                    return;
-                }
-                profileUser.img = newAvatar;
-                return res.json();
-
-            })
-                .catch(error => log(error));
-        };
-    } else {
-        profileImg.classList.remove("hover");
+                    if (res.status !== 200) {
+                        alert("Error updating user info");
+                        return;
+                    }
+                    profileUser.img = newAvatar;
+                    swal({
+                        title: "Avatar successfully changed",
+                        text: "If you don't like this randomly generated avatar, click your avatar again! "
+                            + "Life is full of surprises :)",
+                        icon: "success",
+                        timer: 8000
+                    });
+                    return res.json();
+                })
+                .catch((error) => {
+                    log(error);
+                    swal({
+                        title: "Failed to change avatar",
+                        text: "Please refresh the page and try to click your avatar icon again!",
+                        icon: "error",
+                        timer: 8000
+                    });
+                })
+        }
     }
+    else
+        {
+            profileImg.classList.remove("hover");
+        }
 
 }
 
