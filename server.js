@@ -566,7 +566,7 @@ class userOwner {
 }
 
 class userNonOwner {
-    constructor(name, description, id, isAdmin, followers, image, bookshelf, writtenBook, following) {
+    constructor(name, description, id, isAdmin, followers, image, bookshelf, writtenBook, following, isBeingFollowed) {
         this.name = name;
         this.description = description;
         this.id = id;
@@ -576,6 +576,7 @@ class userNonOwner {
         this.bookshelf = bookshelf;
         this.writtenBook = writtenBook;
         this.following = following;
+        this.isBeingFollowed = isBeingFollowed;
     }
 }
 
@@ -650,17 +651,31 @@ app.get('/db/profile/:id', (req, res) => {
                     }
                     followingInfo.push(followUserObj);
                 }
-                // TODO **** if(id === req.session.id){
-                if(1===1){
+                // TODO **** if(id === req.session.userId){
+
+                if(id === req.session.userId.toString()){
                     const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin,
                         user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo,
                         followingInfo, user.newMessage, user.oldMessage)
-                        res.send(userToSend)
+                    res.send(userToSend)
                 }
                 else{
-                    const userToSend = new userNonOwner(user.name, user.description, user._id, user.isAdmin, user.followers, 
-                        user.image, bookShelfInfo, writtenBookInfo, followingInfo)
+                    let isBeingFollowed;
+
+                    User.findById(req.session.userId).then((followingUser)=> {
+                        if(includesCheck(id, followingUser.following)){
+                            isBeingFollowed = true
+                        }
+                        else{
+                            isBeingFollowed = false;
+                        }
+                        const userToSend = new userNonOwner(user.name, user.description, user._id, user.isAdmin, user.followers, 
+                            user.image, bookShelfInfo, writtenBookInfo, followingInfo, isBeingFollowed)
                         res.send(userToSend)
+                    }).catch((error) => {
+                        log(error)
+                        res.status(500).send()
+                    })
                 }
 
                 // getBooksForProfile(user.bookshelf).then((result) => {
