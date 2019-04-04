@@ -782,26 +782,41 @@ function addNewAuthoredBook(e) {
     const genre = newBookGenreForm.value;
     const description = newBookDescriptionForm.value;
 
-    fetch(posturl, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({
-            bookTitle: bookTitle,
-            genre: genre,
-            description: description
-        })
-      }).then((res) => {
-        if(res.status !== 200){
-            alert("Error adding book");
-            return
-        }
-        return res.json()
-    }).then((bookJson) => {
+    // Check for invalid input
+    if (bookTitle.length < 3) {
+        swal({
+            title: "Invalid book title",
+            text: "Please have a longer book title (more than 3 characters), thank you!",
+            icon: "error"
+        });
+    } else if (description.length > 300){
+        swal({
+            title: "Book description is too long",
+            text: "Please have a shorter book description (less than 300 characters), thank you!",
+            icon: "error"
+        });
+    } else {
+
+        fetch(posturl, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                bookTitle: bookTitle,
+                genre: genre,
+                description: description
+            })
+        }).then((res) => {
+            if (res.status !== 200) {
+                alert("Error adding book");
+                return
+            }
+            return res.json()
+        }).then((bookJson) => {
             return bookJson;
         }).then(res => {
-            if(res){
+            if (res) {
                 profileUser.writtenBook.push(res);
                 //update html if main content is authored
                 if (curNav === authoredButton) {
@@ -819,21 +834,20 @@ function addNewAuthoredBook(e) {
             }
 
         }).catch(error => {
-            log(error);
-        swal({
-            title: "Failed to add new book",
-            text: "Sorry, there was an error. Please refresh the page and try again!",
-            icon: "error"
-        });
-        }
-    );
+                log(error);
+                swal({
+                    title: "Failed to add new book",
+                    text: "Sorry, there was an error. Please refresh the page and try again!",
+                    icon: "error"
+                });
+            }
+        );
 
 
-
+    }
     // const newBook = new Book(newBookTitleForm.value, profileUser, d.getDate(), "img/TimeRaiders.jpg", newBookGenreForm.value);
     // newBook.setDescription(newBookDescriptionForm.value);
     // profileUser.writtenBook.push(newBook);
-
 
     cancelAllBooksFields(e);
 }
