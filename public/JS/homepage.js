@@ -104,7 +104,7 @@ fetchAuthors().then((a) => {
                 $('.toast').toast('show');
             });
 
-            sampleUser.moveNewMsgToOld();
+            // sampleUser.moveNewMsgToOld();
         }
     }
 

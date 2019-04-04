@@ -286,7 +286,8 @@ function setUpUserPage() {
 (function(){
     getUser(url).then(res =>{
         profileUser = res;
-        profileOwner = getCookie("id") === profileUser.id;
+        log(getCookie("admin"))
+        profileOwner = getCookie("id") === profileUser.id || getCookie("admin") === "true";
 
         setUpUserPage();
         changeAuthentification();
