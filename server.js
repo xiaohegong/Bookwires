@@ -13,6 +13,7 @@ const {ObjectID} = require('mongodb');
 const randomProfile = require('random-profile-generator');
 
 const {mongoose} = require('./app/mongoose.js');
+
 const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
 app.use(express.static("public"));
 app.use(bodyParser.json());
@@ -38,8 +39,22 @@ const sessionChecker = (req, res, next) => {
         res.clearCookie("name")
         res.clearCookie("id")
         res.clearCookie("admin")
+        res.clearCookie("newnotifications");
 		next();
 	}
+}
+
+// use to clear the cookie whenever the user is not actually logged in
+const cookieClearer = (req, res, next) => {
+    if (req.session.userId) {
+        next();
+    } else {
+        res.clearCookie("name");
+        res.clearCookie("id");
+        res.clearCookie("admin");
+        res.clearCookie("newnotifications");
+        next();
+    }
 }
 
 // use to redirect if a session has not been created
@@ -48,7 +63,20 @@ const sessionCheckLoggedIn = (req, res, next) => {
         res.clearCookie("name")
         res.clearCookie("id")
         res.clearCookie("admin")
+        res.clearCookie("newnotifications");
 		res.redirect('/login')
+	} else {
+		next();
+	}
+}
+
+const sessionHandleRequest = (req, res, next) => {
+	if (!req.session.userId) {
+        res.clearCookie("name")
+        res.clearCookie("id")
+        res.clearCookie("admin")
+        res.clearCookie("newnotifications");
+		res.status(404).send()
 	} else {
 		next();
 	}
@@ -72,7 +100,7 @@ app.route('/admin')
         res.sendFile(__dirname + '/public/HTML/admin.html')
     });
 
-app.get('/index', (req, res) => {
+app.get('/index', cookieClearer, (req, res) => {
     // check if we have active session cookie
     res.sendFile(__dirname + '/public/HTML/index.html');
 	// if (req.session.userId) {
@@ -99,6 +127,7 @@ app.post('/user/login', (req, res) => {
             res.cookie("name", user.name)
             res.cookie("id", user._id.toString())
             res.cookie("admin", user.isAdmin)
+            res.cookie("newnotifications", user.newMessage.length.toString())            
 			res.redirect('/index')
 		}
 	},(result) => {
@@ -117,6 +146,7 @@ app.get('/users/logout', sessionCheckLoggedIn, (req, res) => {
             res.clearCookie("name")
             res.clearCookie("id")
             res.clearCookie("admin")
+            res.clearCookie("newnotifications")
 			res.redirect('/index')
 		}
 	})
@@ -146,21 +176,23 @@ app.post('/user/signup', (req, res) => {
         following: [],
         newMessage: [],
         oldMessage: []
-    })
+    });
 
     req.session.userId = user._id;
-	req.session.email = user.email
+	req.session.email = user.email;
 
 	// save user to database
 	user.save().then((result) => {
         //TODO possible validation
-        res.send(user)
-        // res.redirect("/index");        
+        res.cookie("name", user.name);
+        res.cookie("id", user._id.toString());
+        res.cookie("admin", user.isAdmin);
+        res.redirect('/index')
 	}, (error) => {
-		res.status(400).send(error) // 400 for bad request
+		res.status(400).send() // 400 for bad request
 	})
 
-})
+});
 
 
 
@@ -206,7 +238,7 @@ app.get('/db/books/:id', (req, res) => {
 
 
 
-app.get('/books/:id', (req, res) => {
+app.get('/books/:id', cookieClearer, (req, res) => {
     const id = req.params.id;
     Book.findBookByID(id)
         .then((book) => {
@@ -523,7 +555,7 @@ app.patch('/db/books/:id/:chapter_id', (req, res) => {
 
 /* Routes for users */
 // TODO - to be edited after User Schema is posted
-app.get('/profile/:id', (req, res) => {
+app.get('/profile/:id', sessionCheckLoggedIn, (req, res) => {
     const id = req.params.id;
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
@@ -561,7 +593,7 @@ class userOwner {
 }
 
 class userNonOwner {
-    constructor(name, description, id, isAdmin, followers, image, bookshelf, writtenBook, following) {
+    constructor(name, description, id, isAdmin, followers, image, bookshelf, writtenBook, following, isBeingFollowed) {
         this.name = name;
         this.description = description;
         this.id = id;
@@ -571,6 +603,7 @@ class userNonOwner {
         this.bookshelf = bookshelf;
         this.writtenBook = writtenBook;
         this.following = following;
+        this.isBeingFollowed = isBeingFollowed;
     }
 }
 
@@ -596,7 +629,7 @@ function getBooksForProfile(bookIdArray){
     })
 }
 
-app.get('/db/profile/:id', (req, res) => {
+app.get('/db/profile/:id', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     
 
@@ -645,17 +678,31 @@ app.get('/db/profile/:id', (req, res) => {
                     }
                     followingInfo.push(followUserObj);
                 }
-                // if(id === req.session.id){
-                if(1===1){
+                // TODO **** if(id === req.session.userId){
+
+                if(id === req.session.userId.toString()){
                     const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin,
                         user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo,
                         followingInfo, user.newMessage, user.oldMessage)
-                        res.send(userToSend)
+                    res.send(userToSend)
                 }
                 else{
-                    const userToSend = new userNonOwner(user.name, user.description, user._id, user.isAdmin, user.followers, 
-                        user.image, bookShelfInfo, writtenBookInfo, followingInfo)
+                    let isBeingFollowed;
+
+                    User.findById(req.session.userId).then((followingUser)=> {
+                        if(includesCheck(id, followingUser.following)){
+                            isBeingFollowed = true
+                        }
+                        else{
+                            isBeingFollowed = false;
+                        }
+                        const userToSend = new userNonOwner(user.name, user.description, user._id, user.isAdmin, user.followers, 
+                            user.image, bookShelfInfo, writtenBookInfo, followingInfo, isBeingFollowed)
                         res.send(userToSend)
+                    }).catch((error) => {
+                        log(error)
+                        res.status(500).send()
+                    })
                 }
 
                 // getBooksForProfile(user.bookshelf).then((result) => {
@@ -706,7 +753,7 @@ app.get('/db/users/:id', (req, res) => {
 
 });
 
-app.delete('/db/users/:id', (req, res) => {
+app.delete('/db/users/:id', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
@@ -714,7 +761,7 @@ app.delete('/db/users/:id', (req, res) => {
     User.deleteUser(id).then(result => Book.deleteByAuthor(result._id));
 });
 
-app.patch('/db/profile/:uid/:fid', (req, res) => {
+app.patch('/db/profile/:uid/:fid', sessionHandleRequest, (req, res) => {
     const id = req.params.uid;
     const fid = req.params.fid;
 
@@ -731,7 +778,7 @@ app.patch('/db/profile/:uid/:fid', (req, res) => {
     });
 })
 
-app.patch('/db/profile/:id/', (req, res) => {
+app.patch('/db/profile/:id/', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
 
     const email = req.body.email;
@@ -754,7 +801,7 @@ app.patch('/db/profile/:id/', (req, res) => {
 
 });
 
-app.patch('/db/profile/:id/update/img', (req, res) => {
+app.patch('/db/profile/:id/update/img', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     const img = req.body.image;
 
@@ -773,7 +820,7 @@ app.patch('/db/profile/:id/update/img', (req, res) => {
 
 });
 //http://localhost:3000/db/books/5ca2dd8596b8bae92f347036/update/img
-app.patch('/db/books/:id/update/img', (req, res) => {
+app.patch('/db/books/:id/update/img', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     const img = req.body.image;
 
@@ -793,7 +840,7 @@ app.patch('/db/books/:id/update/img', (req, res) => {
 
 });
 
-app.patch('/db/profile/:id/bookshelf/:bookid', (req, res) => {
+app.patch('/db/profile/:id/bookshelf/:bookid', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     const bookid = req.params.bookid;
 
@@ -812,7 +859,7 @@ app.patch('/db/profile/:id/bookshelf/:bookid', (req, res) => {
 
 })
 
-app.post('/db/profile/:id/createbook', (req, res) => {
+app.post('/db/profile/:id/createbook', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
 
     if (!ObjectID.isValid(id)) {
@@ -830,9 +877,6 @@ app.post('/db/profile/:id/createbook', (req, res) => {
         "description": description,
         "user": user
     });
-
-    
-    //TODO HANDLE IMAGE
 
     newBook.save().then((book) => {
         const bid = book._id;
@@ -858,20 +902,9 @@ app.post('/db/profile/:id/createbook', (req, res) => {
     });
 })
 
-app.post('/db/profile/:id/booksChapter/:bid', (req, res) => {
-    // Validate the id
-    log("ASDSADSAd")
-    const bid = req.params.bid;
-    if (!ObjectID.isValid(bid)) {
-        return res.status(404).send();
-    }
-    Book.addChapter(req.body.chapterTitle, req.body.content, bid)
-    .then(result=>res.send(result));
 
 
-});
-
-app.patch('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
+app.patch('/db/profile/:id/chapter/:bid/:cid', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
     const bid = req.params.bid;
     const cid = req.params.cid;
@@ -896,7 +929,7 @@ app.patch('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
 
 });
 
-app.patch('/db/profile/:id/book/:bid', (req, res) => {
+app.patch('/db/profile/:id/book/:bid', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
     const bid = req.params.bid;
     if (!ObjectID.isValid(bid)) {
@@ -921,7 +954,7 @@ app.patch('/db/profile/:id/book/:bid', (req, res) => {
 
 });
 
-app.delete('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
+app.delete('/db/profile/:id/chapter/:bid/:cid', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
 
     const bid = req.params.bid;
@@ -957,7 +990,7 @@ app.delete('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
         });
 });
 
-app.post('/db/follow', (req, res) => {
+app.post('/db/follow', sessionHandleRequest, (req, res) => {
     const following = req.body.following;
     const beingFollowed  = req.body.beingFollowed;
  
@@ -978,19 +1011,118 @@ app.post('/db/follow', (req, res) => {
     })
 });
 
-// app.post("/testing", (req, res) => {
-//     const beingFollowed  = req.body.beingFollowed;
+function includesCheck(id, list){
+    for(let i=0; i < list.length; i++){
+        if(id===list[i].toString()){
+            return true;
+        }
+    }
+    return false;
+}
 
-//     User.findByIdAndUpdate(beingFollowed, {
-//         $inc: {followers: 1}
-//         }).then((result) => {
-//             log(result)
-//             res.send({resolved: true});
-//         })
-// });
+// || includesCheck(autherId, users[i].following)
+
+async function addToNotificationList(userId, messageString, type, reference){
+    return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate(userId,{
+            $push:{
+                newMessage: {
+                    "messageString":messageString,
+                    "type": type,
+                    "reference": reference
+                }
+            }
+        }).then((user) => {
+            log("resolve(user)")
+            resolve(user)
+        }).catch(error=>{
+            log("reject({code: 404, error});")
+            reject({code: 404, error});
+        });
+    })
+}
+
+async function promiseLoop(users, bookId, bookTitle){
+    const promises = []
+    for(let i=0; i < users.length; i++){
+        if(users[i].bookshelfIds){
+            if(includesCheck(bookId, users[i].bookshelfIds)){
+                const messageString = "New Chapter for " + bookTitle;
+                const type = "book";
+                const reference = "/books/" + bookId.toString();
+                const promise = await addToNotificationList(users[i]._id, messageString, type, reference);
+                promises.push(promise);
+            }
+        }
+        
+    }
+    return new Promise((resolve, reject) => {
+        if(promises.length > 0){
+            resolve(promises);
+        }
+        else{
+            reject();
+        }
+    })
+}
+
+app.post('/db/profile/:id/booksChapter/:bid', sessionHandleRequest, (req, res) => {
+    // Validate the id
+    const bid = req.params.bid;
+    if (!ObjectID.isValid(bid)) {
+        return res.status(404).send();
+    }
+    Book.addChapter(req.body.chapterTitle, req.body.content, bid)
+    .then((result) => {
+        // const bookId = req.body.bookId;
+        // const bookTitle = req.body.bookTitle;
+
+        User.find({}).then((users) => {
+            promiseLoop(users, bid, req.body.bookTitle).then((promises) => {
+                Promise.all(promises).then((results) => {
+                    log("updated notifications")
+                    res.send(result);
+                }, (rej) => {
+                    log("no notification updates")
+                    res.send(result)
+                })
+            }, (rejerr) => {
+                res.send(result)
+            })
+        }).catch((error) => {
+            log(error)
+            res.send(result)
+        })
+
+    }).catch((error) => {
+        log(error)
+        res.status(500).send()
+    });
 
 
-app.post('/db/unfollow', (req, res) => {
+});
+
+app.get("/testing", (req, res) => {
+    const bookId = req.body.bookId;
+    const bookTitle = req.body.bookTitle;
+    const authName = req.body.authName;
+    const autherId = req.body.bookId;
+
+
+    User.find({}).then((users) => {
+
+        promiseLoop(users, bookId, bookTitle, authName).then((promises) => {
+            Promise.all(promises).then((results) => {
+                res.send("added some");
+            }, (rej) => {
+                res.send("added none")
+            })
+        })
+    })
+});
+
+
+app.post('/db/unfollow', sessionHandleRequest, (req, res) => {
     const following = req.body.following;
     const beingFollowed  = req.body.beingFollowed;
 
@@ -1009,7 +1141,7 @@ app.post('/db/unfollow', (req, res) => {
     })
 });
 
-app.delete('/db/profile/:uid/written/:bid/', (req, res) => {
+app.delete('/db/profile/:uid/written/:bid/', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
     const uid = req.params.uid;
     const bid = req.params.bid;
@@ -1017,12 +1149,34 @@ app.delete('/db/profile/:uid/written/:bid/', (req, res) => {
     if (!ObjectID.isValid(uid) || !ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
-
     User.findByIdAndUpdate(uid,{
         $pull: {
             writtenBook: bid
         }
     }).then((result) => {
+        Book.findByIdAndRemove(bid).then((result) => {
+            res.send({resolved: true});
+        })
+    }).catch((error) => {
+        log(error)
+        return res.status(500).send(error);
+    });
+});
+
+app.delete('/db/profile/:id/newMessages', sessionHandleRequest, (req, res) => {
+    // Validate the id and reservation id
+    const id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    User.findByIdAndUpdate(id,{
+        $set: {
+            newMessage: []
+        }
+    }).then((result) => {
+        res.cookie("newnotifications", "0") 
         res.send({resolved: true});
     }).catch((error) => {
         log(error)
@@ -1087,7 +1241,7 @@ app.delete('/db/profile/:uid/written/:bid/', (req, res) => {
 // });
 
 //get all the chapter from the book
-app.get('/db/reading/:bid/',(req,res) =>{
+app.get('/db/reading/:bid/', sessionHandleRequest, (req,res) =>{
     const bid = req.params.bid;
     if (!ObjectID.isValid(bid)) {
         return res.status(404).send();

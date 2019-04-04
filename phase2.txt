@@ -1,0 +1,87 @@
+To Ta:
+
+	The app can be started from the home page(https://bookwires.herokuapp.com).
+
+	About Home Page:(https://bookwires.herokuapp.com)
+		1.You can log in using the login button:
+		    Username: "user"  Password: "user"
+		  	Username: 'admin' Password: 'admin'
+		2. You can sign up using the sign up button to create a new account and use that account to sign in.
+		sign in function only creates user account. we do not authorize client to create admins.
+
+		- if the user has any new notifications a toast will appear telling the user.
+		3. You can click all the images of books to go to the "Book Page" of the selected books.
+		4. You can use the search bar at the very top of the page. Using the search bar will take the user to the "Search Page"
+			- The search page will query a list books that match the search
+			- The Genres section on the left is brings the user to the search page
+		5. You can click on the authors on the bottom-right take you to the profile page.
+		6. After login in, there is a welcome button in the top right that it will take you to profile page if you are a user and take you to
+		admin page if you are a admin.
+
+	About Book Page:(https://bookwires.herokuapp.com/books/:bookID)
+		1. Read button links to the "Reading page" (the chapter the user were reading previously if the user saved this book, otherwise the first page of book).
+		2. Save button will save this book to the current logged in user's bookshelf (if you not are login in, it redirect to login page). and the button displays saved and unclickable if the book is already saved.
+		3. There is a list of chapters for this book. each one direct page to the corresponding chapters.
+		4. View comments by clicking the comments button
+			- You can add comments to the book if you are login in, otherwise it redirect to login page. comment button sends the comment and cancel button empty the comment box.
+		5. You can click the author image and go to their profile page.
+		6. You can rate a book on the top right corner if you are login in, otherwise it redirect to login page.
+		7. admin have authority to delete comments. (login in as admin)
+
+	About Search Page:(https://bookwires.herokuapp.com/search)
+	    1. Categories bar is the same as Home Page.
+	    2. The search will work on this page
+	    3. Can filter book according to rate.
+	    4. can search books by categories and rate, categories and name.
+    	5. Clicking on a book takes you to the book page.
+
+	About Admin Page:(https://bookwires.herokuapp.com/admin)
+			1. The admin can switch between viewing books and users
+				- the book section shows all the books on the website
+				- the user section show all the users
+				- All books and users can be deleted.
+			2. clicking a book takes you to Admin Book page, where the admin has the ability to delete comments.
+			3. clicking the user takes you to profile page and admin sees the same page as the profile owner sees.
+				(which includes the ability to edit all personal data and books)
+			4. if admin can accesses this page, other user would be redirect to home page
+
+	About Admin Book Page:
+			1. Admins view of the book page.
+			2. It is the same as the Book Page however the admin can also delete the book and delete comments.
+
+	About Profile Page:(https://bookwires.herokuapp.com/profile/:userID)
+		There are two main views for the profile page:
+			1. The Profile Owner/Admin's view
+			2. Another user's view (who's profile it is not)
+
+		The Profile Owner/Admin's view:
+			Create Book: the create book button on the left brings up a modal that has inputs to allow the user to create a new book (with title, genre, description).
+				- see below for adding chapters to the book
+
+			There is a navigation bar on the left that changes the page's content:
+			1. Bookshelf displays all the books the user has saved. They can remove them with the "x" button.
+				 - in both the Bookshelf and Authored section, the user can search for books within
+			2. Authored displays all the books the user has written. They can remove them with the "x" button or edit them with the edit button.
+				- Editing: brings up a modal similar to the create book modal, however, now the user can create, edit and delete chapters with the appropriate buttons
+				- they can also edit the original book data
+			3. Following displays all user that you are currently following. The user can view their profile or unfollow them by clicking the unfollow button
+			4. Notifications displays all the notifications the user has gotten from authors or books.
+				-the user can click the notification to view the book that represents that notification
+				 the user can clear all notifications
+			5. Settings displays personal information, and clicking the edit button allow the user to change that info (email, username, password and description)
+
+		The Other User's View:
+			- other users can view the user's bookshelf and authored book's but can not edit or delete them.
+			- there is also a follow/unfollow button for the viewer to follow/unfollow the user.
+
+	About Reading Page:(https://bookwires.herokuapp.com/books/:bookID/:chapter_number)
+		This page displays the book text and has 4 buttons go to next/previous chapter, and a button can go back to the content of the book.
+
+Additional Notes:
+	- the logo at the top left can be used to return to the home page from any page.
+
+group member name and their corresponding github name
+Steven Cuneo : s-cuneo
+Xiaohe Gong : gongxi10
+Chenghao Wang : Eric
+Yujie Miao : beijilang, Jerry

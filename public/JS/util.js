@@ -7,19 +7,6 @@ function getCookie(name) {
         return parts.pop().split(";").shift();
 }
 
-/*
-FROM HEDDY:
-
-getCookie didn't work for me :(
-
-Found another way on https://github.com/js-cookie/js-cookie :
-
-Include <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-
-  Example: Cookies.get(); // => { name: '{"foo":"bar"}' }
-
-
- */
 
 /*****  Set logged in status ******/
 const menuBar = document.getElementById("menuBar");
@@ -28,7 +15,7 @@ const menuBar = document.getElementById("menuBar");
 if (document.cookie) {
     try {
         const cookie = Cookies.get();
-        const id = cookie.id.split(":")[1].slice(1, -1);
+        const id = getCookie("id");
         const isAdmin = cookie.admin === "true";
         userLoggedIn(cookie.name, id, isAdmin);
     } catch {
@@ -36,6 +23,7 @@ if (document.cookie) {
 
 }
 
+// If a user is logged in, set the page's html element to display his information
 function userLoggedIn(username, id, isAdmin) {
     const menu = menuBar;
     // Remove old buttons
@@ -94,4 +82,16 @@ function userLoggedIn(username, id, isAdmin) {
     // document.querySelector("#rightSideBar").style.pointerEvents = "all";
     // document.querySelector("#searchLogo").style.pointerEvents = "all";
 // }
+}
+
+// A search function shared by pages
+function fuzzyBookSearch(input, inputList) {
+    const outputList = [];
+    //name search, similarity limit is .75
+    for (let index = 0; index < inputList.length; index++) {
+        if(inputList[index].bookTitle.toLowerCase().includes(input)){
+            outputList.push(inputList[index]);
+        }
+    }
+    return outputList;
 }
