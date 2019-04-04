@@ -13,6 +13,7 @@ const {ObjectID} = require('mongodb');
 const randomProfile = require('random-profile-generator');
 
 const {mongoose} = require('./app/mongoose.js');
+
 const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
 app.use(express.static("public"));
 app.use(bodyParser.json());
@@ -38,8 +39,22 @@ const sessionChecker = (req, res, next) => {
         res.clearCookie("name")
         res.clearCookie("id")
         res.clearCookie("admin")
+        res.clearCookie("newnotifications");
 		next();
 	}
+}
+
+// use to clear the cookie whenever the user is not actually logged in
+const cookieClearer = (req, res, next) => {
+    if (req.session.userId) {
+        next();
+    } else {
+        res.clearCookie("name");
+        res.clearCookie("id");
+        res.clearCookie("admin");
+        res.clearCookie("newnotifications");
+        next();
+    }
 }
 
 // use to redirect if a session has not been created
@@ -48,6 +63,7 @@ const sessionCheckLoggedIn = (req, res, next) => {
         res.clearCookie("name")
         res.clearCookie("id")
         res.clearCookie("admin")
+        res.clearCookie("newnotifications");
 		res.redirect('/login')
 	} else {
 		next();
@@ -72,7 +88,7 @@ app.route('/admin')
         res.sendFile(__dirname + '/public/HTML/admin.html')
     });
 
-app.get('/index', (req, res) => {
+app.get('/index', cookieClearer, (req, res) => {
     // check if we have active session cookie
     res.sendFile(__dirname + '/public/HTML/index.html');
 	// if (req.session.userId) {
@@ -148,24 +164,23 @@ app.post('/user/signup', (req, res) => {
         following: [],
         newMessage: [],
         oldMessage: []
-    })
+    });
 
     req.session.userId = user._id;
-	req.session.email = user.email
+	req.session.email = user.email;
 
 	// save user to database
 	user.save().then((result) => {
         //TODO possible validation
-        res.cookie("name", user.name)
-        res.cookie("id", user._id.toString())
-        res.cookie("admin", user.isAdmin)
+        res.cookie("name", user.name);
+        res.cookie("id", user._id.toString());
+        res.cookie("admin", user.isAdmin);
         res.redirect('/index')
-        // res.redirect("/index");        
 	}, (error) => {
-		res.status(400).send(error) // 400 for bad request
+		res.status(400).send() // 400 for bad request
 	})
 
-})
+});
 
 
 
@@ -211,7 +226,7 @@ app.get('/db/books/:id', (req, res) => {
 
 
 
-app.get('/books/:id', (req, res) => {
+app.get('/books/:id', cookieClearer, (req, res) => {
     const id = req.params.id;
     Book.findBookByID(id)
         .then((book) => {
@@ -850,9 +865,6 @@ app.post('/db/profile/:id/createbook', (req, res) => {
         "description": description,
         "user": user
     });
-
-    
-    //TODO HANDLE IMAGE
 
     newBook.save().then((book) => {
         const bid = book._id;

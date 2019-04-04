@@ -40,6 +40,14 @@ signUpSubmit.onclick = function tryToSignUp(e) {
         });
         return;
     }
+    if (passWord.length < 6) {
+        swal({
+            title: "Failed to sign up",
+            text: "Your password is too short(at least 6 characters), please input again!",
+            icon: "error"
+        });
+        return;
+    }
 
     // for (let i = 1; i <= numberOfUsers; i++) {
     //     if (fakeUser[i - 1].name === userName) {
@@ -54,32 +62,44 @@ signUpSubmit.onclick = function tryToSignUp(e) {
         username: userName,
         email: userMail,
         password: passWord
-    }
+    };
 
-    fetch("user/signup", {method: 'post', headers: {
-        'Content-Type': 'application/json'
-      }, body: JSON.stringify(newUserBody)}).then((response) => {
-        if(response.status !== 200){
-            swal({
-                title: "Failed to sign up",
-                text: "Please check your internet connection and try again!",
-                icon: "error"
-            });
-            return;
-        }else{
+    fetch("user/signup", {
+        method: 'post', headers: {
+            'Content-Type': 'application/json'
+        }, body: JSON.stringify(newUserBody)
+    }).then((response) => {
+
+        if (response.status === 200) {
             swal({
                 title: "Signed up successfully",
                 text: "Welcome to Bookwires!",
                 icon: "success",
                 timer: 5000
+            }).then(() => {
+                window.location.href = "/index";
             });
-            window.location.href = "/index";
+        } else if (response.status === 400) {
+            swal({
+                title: "Failed to sign up",
+                text: "Please enter valid username and email.\n" +
+                    "Please try again!",
+                icon: "error"
+            });
+        } else if (error.status !== 200) {
+            swal({
+                title: "Failed to sign up",
+                text: "Please check your internet connection and try again!",
+                icon: "error"
+            });
         }
-    }).catch((error) => {
-        console.log("fetch error")
     })
-    
-    // signUpForm.style.display = "none";
+        .catch((error) => {
+            log(error);
+
+            return;
+        });
+
 };
 
 // Set DOM elements correctly when sign up is complete
