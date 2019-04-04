@@ -648,7 +648,7 @@ app.get('/db/profile/:id', (req, res) => {
                     }
                     followingInfo.push(followUserObj);
                 }
-                // if(id === req.session.id){
+                // TODO **** if(id === req.session.id){
                 if(1===1){
                     const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin,
                         user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo,
@@ -861,22 +861,7 @@ app.post('/db/profile/:id/createbook', (req, res) => {
     });
 })
 
-app.post('/db/profile/:id/booksChapter/:bid', (req, res) => {
-    // Validate the id
-    const bid = req.params.bid;
-    if (!ObjectID.isValid(bid)) {
-        return res.status(404).send();
-    }
-    Book.addChapter(req.body.chapterTitle, req.body.content, bid)
-    .then(
 
-        
-
-        result=>res.send(result)
-    );
-
-
-});
 
 app.patch('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
     // Validate the id and reservation id
@@ -987,40 +972,113 @@ app.post('/db/follow', (req, res) => {
 
 function includesCheck(id, list){
     for(let i=0; i < list.length; i++){
-        if(id===list[i]){
+        if(id===list[i].toString()){
             return true;
         }
     }
     return false;
 }
 
-// app.get("/testing", (req, res) => {
-//     const bookId = "5ca2b2b1e6cd0f18e4a8cb39";
-//     const autherId = "0";
-//     // const beingFollowed  = req.body.beingFollowed;
+// || includesCheck(autherId, users[i].following)
 
-//     // User.findByIdAndUpdate(beingFollowed, {
-//     //     $inc: {followers: 1}
-//     //     }).then((result) => {
-//     //         log(result)
-//     //         res.send({resolved: true});
-//     //     })
+async function addToNotificationList(userId, messageString, type, reference){
+    return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate(userId,{
+            $push:{
+                newMessage: {
+                    "messageString":messageString,
+                    "type": type,
+                    "reference": reference
+                }
+            }
+        }).then((user) => {
+            log("resolve(user)")
+            resolve(user)
+        }).catch(error=>{
+            log("reject({code: 404, error});")
+            reject({code: 404, error});
+        });
+    })
+}
 
-//     User.where(bookId).in(bookshelfIds)
+async function promiseLoop(users, bookId, bookTitle){
+    const promises = []
+    for(let i=0; i < users.length; i++){
+        if(users[i].bookshelfIds){
+            if(includesCheck(bookId, users[i].bookshelfIds)){
+                const messageString = "New Chapter for " + bookTitle;
+                const type = "book";
+                const reference = "/books/" + bookId.toString();
+                const promise = await addToNotificationList(users[i]._id, messageString, type, reference);
+                promises.push(promise);
+            }
+        }
+        
+    }
+    return new Promise((resolve, reject) => {
+        if(promises.length > 0){
+            resolve(promises);
+        }
+        else{
+            reject();
+        }
+    })
+}
 
-//     db.collection.users.find().forEach(<function></function>)
+app.post('/db/profile/:id/booksChapter/:bid', (req, res) => {
+    // Validate the id
+    const bid = req.params.bid;
+    if (!ObjectID.isValid(bid)) {
+        return res.status(404).send();
+    }
+    Book.addChapter(req.body.chapterTitle, req.body.content, bid)
+    .then((result) => {
+        // const bookId = req.body.bookId;
+        // const bookTitle = req.body.bookTitle;
 
-//     User.find({}).then((users) => {
-//         for(let i=0; i < users.length; i++){
-//             if(includesCheck(bookId, users[i].bookshelfIds) || includesCheck(autherId, users[i].following)){
-//                 log(users[i].bookshelfIds)
-//                 log(users[i]._id)
-//             }
-//         }
-//         // log(users)
-//         res.send()
-//     })
-// });
+        User.find({}).then((users) => {
+            promiseLoop(users, bid, req.body.bookTitle).then((promises) => {
+                Promise.all(promises).then((results) => {
+                    log("updated notifications")
+                    res.send(result);
+                }, (rej) => {
+                    log("no notification updates")
+                    res.send(result)
+                })
+            }, (rejerr) => {
+                res.send(result)
+            })
+        }).catch((error) => {
+            log(error)
+            res.send(result)
+        })
+
+    }).catch((error) => {
+        log(error)
+        res.status(500).send()
+    });
+
+
+});
+
+app.get("/testing", (req, res) => {
+    const bookId = req.body.bookId;
+    const bookTitle = req.body.bookTitle;
+    const authName = req.body.authName;
+    const autherId = req.body.bookId;
+
+
+    User.find({}).then((users) => {
+
+        promiseLoop(users, bookId, bookTitle, authName).then((promises) => {
+            Promise.all(promises).then((results) => {
+                res.send("added some");
+            }, (rej) => {
+                res.send("added none")
+            })
+        })
+    })
+});
 
 
 app.post('/db/unfollow', (req, res) => {
@@ -1054,6 +1112,26 @@ app.delete('/db/profile/:uid/written/:bid/', (req, res) => {
     User.findByIdAndUpdate(uid,{
         $pull: {
             writtenBook: bid
+        }
+    }).then((result) => {
+        res.send({resolved: true});
+    }).catch((error) => {
+        log(error)
+        return res.status(500).send(error);
+    });
+});
+
+app.delete('/db/profile/:id/newMessages', (req, res) => {
+    // Validate the id and reservation id
+    const id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    User.findByIdAndUpdate(id,{
+        $set: {
+            newMessage: []
         }
     }).then((result) => {
         res.send({resolved: true});

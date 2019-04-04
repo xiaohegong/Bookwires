@@ -456,33 +456,33 @@ function setUpNotificationList(e) {
         notiListGroup.removeChild(notiListGroup.firstChild);
     }
     changeActive(notificationButton, document.querySelector("#notifications"));
-    for (let i = 0; i < profileUser.newMessages.length; i++) {
-        const bookNot = profileUser.newMessages[i];
+    for (let i = 0; i < profileUser.newMessage.length; i++) {
+        // const bookNot = profileUser.newMessages[i];
         const notificationElement = document.createElement("li");
         notificationElement.className = "list-group-item";
-        const notText = document.createTextNode("New Chapter for " + bookNot.bookTitle + " by " + bookNot.author.name);
+        const notText = document.createTextNode(profileUser.newMessage[i].messageString);
         notificationElement.appendChild(notText);
-        notificationElement.bookReference = bookNot;
+        // notificationElement.bookReference = bookNot;
         notificationElement.onclick = function () {
-            location.href = "book.html";
+            location.href = profileUser.newMessage[i].reference;
         };
 
         notiListGroup.appendChild(notificationElement);
     }
 
-    for (let i = 0; i < profileUser.oldMessages.length; i++) {
-        const bookNot = profileUser.newMessages[i];
-        const notificationElement = document.createElement("li");
-        notificationElement.className = "list-group-item";
-        const notText = document.createTextNode("New Chapter for " + bookNot.bookTitle + " by " + bookNot.author.name);
-        notificationElement.appendChild(notText);
-        notificationElement.bookReference = bookNot;
-        notificationElement.onclick = function () {
-            location.href = "book.html";
-        };
+    // for (let i = 0; i < profileUser.oldMessages.length; i++) {
+    //     const bookNot = profileUser.newMessages[i];
+    //     const notificationElement = document.createElement("li");
+    //     notificationElement.className = "list-group-item";
+    //     const notText = document.createTextNode("New Chapter for " + bookNot.bookTitle + " by " + bookNot.author.name);
+    //     notificationElement.appendChild(notText);
+    //     notificationElement.bookReference = bookNot;
+    //     notificationElement.onclick = function () {
+    //         location.href = "book.html";
+    //     };
 
-        notiListGroup.appendChild(notificationElement);
-    }
+    //     notiListGroup.appendChild(notificationElement);
+    // }
 
 }
 
@@ -898,6 +898,7 @@ function submitNewChapter(e) {
     // if in editing mode change the current chapter
     log(bookModal.bookReference)
     const bookId = bookModal.bookReference.id;
+    const bookTitle = bookModal.bookReference.bookTitle;
 
     const chapterTitle = chapterNameField.value;
     const content = chapterContentField.value;
@@ -964,7 +965,8 @@ function submitNewChapter(e) {
             method: 'POST',
             body: JSON.stringify({
                 chapterTitle: chapterTitle,
-                content: content
+                content: content,
+                bookTitle: bookTitle
             })
           }).then((res) => {
             if(res.status !== 200){
@@ -1183,8 +1185,25 @@ function clearNotifications(e) {
     while (notiListGroup.firstChild) {
         notiListGroup.removeChild(notiListGroup.firstChild);
     }
-    profileUser.newMessages = [];
-    profileUser.oldMessages = [];
+    const deleteUrl = url + "/newMessages"
+
+    fetch(deleteUrl, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'DELETE'
+    })
+        .then((res) => {
+        if (res.status !== 200) {
+            alert("Error updating user info");
+            return;
+        }
+        profileUser.newMessages = [];
+
+    }).catch(error => log(error));
+
+    
+    // profileUser.oldMessages = [];
 }
 
 /** Set up the profile picture box. If the user is the profile owner, profile picture changing will be enabled.
@@ -1203,7 +1222,6 @@ function setUpPic() {
             profileImg.src = newAvatar;
 
             const patchUrl = url + "/update/img";
-            log(patchUrl);
             fetch(patchUrl, {
                 headers: {
                     'Content-Type': 'application/json'

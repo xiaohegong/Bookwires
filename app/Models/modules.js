@@ -344,6 +344,21 @@ const readingHistory = mongoose.Schema({
     }
 });
 
+const message = mongoose.Schema({
+    messageString:{
+        type:String,
+        required:true
+    },
+    type:{
+        type:String,
+        required:true
+    },
+    reference:{
+        type:String,
+        required:true
+    }
+});
+
 
 
 const UserSchema = mongoose.Schema({
@@ -403,8 +418,8 @@ const UserSchema = mongoose.Schema({
     writtenBook: [{type:Schema.Types.ObjectId,ref:'Book'}],
     topThreeBooks: [ObjectId],
     following: [ObjectId],
-    newMessage: [ObjectId],
-    oldMessage: [ObjectId]
+    newMessage: [message],
+    oldMessage: [message]
 });
 
 
