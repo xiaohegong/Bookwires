@@ -11,12 +11,42 @@ async function getInfo(url) {
             return bookJson;
         }).catch(error => log(error));
 }
-getInfo(url).then(book=>{
-    read.href = "/book/"+book._id+"?"+0;
-
-});
-
 const save = document.getElementById("save");
+
+if (document.cookie) {
+    const cookie = Cookies.get();
+
+    let data = {
+        user: cookie.id.split(":")[1].slice(1,-1),
+        book: bookId
+
+    }
+    const request = new Request('/db/userReadingChapter/', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        }
+    });
+    getInfo(request).then(res=>{
+        read.href = "/books/"+bookId+"/"+res.chapter_num;
+        save.innerText = "SAVED";
+        save.onclick = function (e) {
+            e.preventDefault();
+            log("ALREADY SAVED");
+        }
+    });
+
+}else{
+    read.href = "/books/"+bookId+"/"+0;
+
+}
+// getInfo(url).then(book=>{
+//     read.href = "/books/"+bookId+"/"+0;
+//
+// });
+
 const commentBox = document.getElementById('commentBox');
 const enterBtn = document.getElementById("enterBtn");
 const cancelBtn = document.getElementById("cancelBtn");
@@ -199,8 +229,6 @@ const bookInformation = document.getElementById("bookInformation");
 (function () {
     getInfo(url).then(res=>{
         const authorTitle = document.createTextNode(res.bookTitle);
-        //TEMP
-
         const bookdesription = document.createTextNode(res.description);
         const bookNameContainer = document.createElement('h1');
         const zoom = document.getElementsByClassName("zoom")[0];
@@ -233,7 +261,7 @@ const bookInformation = document.getElementById("bookInformation");
         const author = document.getElementById('authorInfo');
         const authorDetail = document.getElementById('authorDetail');
         const authorImageContainer = document.createElement('a');
-        authorImageContainer.href = "public/HTML/profile.html"; //TODO
+        authorImageContainer.href = "/profile/"+res._id;
         const authorImage = document.createElement('img');
         authorImage.className = 'authorPic';
         authorImage.src = res.image;
