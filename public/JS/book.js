@@ -30,12 +30,18 @@ if (document.cookie) {
         }
     });
     getInfo(request).then(res=>{
-        read.href = "/books/"+bookId+"/"+res.chapter_num;
-        save.innerText = "SAVED";
-        save.onclick = function (e) {
-            e.preventDefault();
-            log("ALREADY SAVED");
+        if(res.length === 0){
+            read.href = "/books/"+bookId+"/"+0;
+        }else{
+            read.href = "/books/"+bookId+"/"+res.chapter_num;
+            save.innerText = "SAVED";
+            save.onclick = function (e) {
+                e.preventDefault();
+            }
         }
+
+    }).catch(error=>{
+        log(error)
     });
 
 }else{
@@ -79,6 +85,8 @@ ratingBtn.onclick = function rateBook(){
                     return getInfo(request);
                 }).then(res => {
                     ratingBtn.disabled = true;
+                }).catch(error=>{
+                    log(error)
                 });
 
                 break;
@@ -115,7 +123,11 @@ enterBtn.onclick = function enterComment() {
             });
             return getInfo(request);
         }).then(res=>{
-            addCommentToTable(data)});
+            addCommentToTable(data)}).catch(error=>{
+                log(error)
+        }).catch(error=>{
+            log(error)
+        });
             commentBox.value = "";
     }else{
         location.href = "/login";
@@ -147,7 +159,12 @@ save.onclick = function saveToShelf(e) {
             });
             return getInfo(request);
         }).then(res=>{
-           log(res)});
+            save.innerText = "SAVED";
+            save.onclick = function (e) {
+                e.preventDefault();
+            }}).catch(error=>{
+                log(error)
+        });
     }else{
         location.href = "/login";
     }
@@ -201,7 +218,7 @@ function addCommentToTable(comment) {
             newComments.appendChild(deleteButton);
             newComments.appendChild(UserCommentContainer);
         }
-    });
+    }).catch(error=>{log(error)});
 
 }
 
@@ -287,6 +304,8 @@ const bookInformation = document.getElementById("bookInformation");
             });
         }
 
+    }).catch(error=>{
+        log(error)
     });
 
 })();
@@ -316,6 +335,8 @@ getInfo(url).then(res=>{
 
     }
 
+}).catch(error=>{
+    log(error)
 });
 
 
@@ -334,6 +355,8 @@ getInfo(url).then(res=>{
         // const comment = res.comments[i].content;
         addCommentToTable(res.comments[i]);
     }
+}).catch(error=>{
+    log(error)
 });
 
 

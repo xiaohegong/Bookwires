@@ -392,7 +392,9 @@ app.patch('/db/updateReadingChapter', (req, res) => {
     if (!ObjectID.isValid(book)) {
         return res.status(404).send();
     }
-    User.updateReadingChapter(user,chapter,book).then(result => res.send(result));
+    User.updateReadingChapter(user,chapter,book).then(result => res.send(result)).catch(error=>{
+        res.status(error.code).send(error.error);
+    });
 });
 
 app.post('/db/userReadingChapter', (req, res) => {
@@ -407,7 +409,11 @@ app.post('/db/userReadingChapter', (req, res) => {
     if (!ObjectID.isValid(book)) {
         return res.status(404).send();
     }
-    User.getReadingChapter(user,book).then(result => res.send(result));
+    User.getReadingChapter(user,book).then(result => {
+        res.send(result)
+    }).catch(error=>{
+        res.send([])
+    });
 });
 
 app.post('/db/rateBook', (req, res) => {
@@ -431,7 +437,9 @@ app.post('/db/BookToRead', (req, res) => {
     if (!ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
-    User.addNewBookToRead(id,bid).then(result => res.send(result));
+    User.addNewBookToRead(id,bid).then(result => res.send(result)).catch(error=>{
+        res.status(error.code).send(error.error);
+    });
 });
 
 app.delete('/db/books/:id', (req, res) => {
@@ -444,6 +452,8 @@ app.delete('/db/books/:id', (req, res) => {
         User.removeBooksWritten(result.user,result.id)
     }).then(res=>{
         log(res);
+    }).catch(error=>{
+        res.status(error.code).send(error.error);
     });
 });
 
@@ -672,6 +682,30 @@ app.get('/db/users', (req, res) => {
         .then((users) => {
             res.send(users);
         })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.post('/db/follow', (req, res) => {
+    const following = req.body.following;
+    const beingFollowed  = req.body.beingFollowed;
+    Promise.all(User.follow(following,beingFollowed),User.followed(beingFollowed)).then((users) => {
+            res.send(users);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.post('/db/unfollow', (req, res) => {
+    const following = req.body.following;
+    const beingFollowed  = req.body.beingFollowed;
+    Promise.all(User.unfollow(following,beingFollowed),User.unfollowed(beingFollowed)).then((users) => {
+        res.send(users);
+    })
         .catch(error => {
                 return res.status(500).send(error);
             }

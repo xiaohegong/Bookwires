@@ -396,6 +396,10 @@ const UserSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    followingNum:{
+        type: Number,
+        default:0
+    },
     image: {
         type: String,
         default: "/img/avatar.jpg"
@@ -546,13 +550,14 @@ UserSchema.statics.getReadingChapter = (user,book) => {
 
 };
 
-UserSchema.statics.addFollowing = (id, idToFollow) => {
+UserSchema.statics.follow = (id, idToFollow) => {
     //after this the user id will follow user idToFollow
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $push: {
                 following: idToFollow
-            }
+            },
+            $inc:{followingNum:1}
         }).then((result) => {
             resolve(result);
         }, (error) => {
@@ -562,28 +567,30 @@ UserSchema.statics.addFollowing = (id, idToFollow) => {
 };
 
 //This function we be called iff addFollowing is called ↕
-UserSchema.statics.beFollowed = (id) => {
+UserSchema.statics.followed = (id) => {
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $inc: {followers: 1}
 
-        });
+
     }).then((result) => {
         resolve(result);
     }, (error) => {
         reject({code: 404, error});
     });
+    })
 };
 
 
-UserSchema.statics.removeFollowing = (id, idToNotFollow, ) => {
+UserSchema.statics.unfollow = (id, idToNotFollow) => {
     //after this the user id will not follow user idToNotFollow anymore
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $pull: {
                 following: idToNotFollow
 
-            }
+            },
+            $inc:{followingNum:-1}
         }).then((result) => {
             resolve(result);
         }, (error) => {
@@ -592,7 +599,7 @@ UserSchema.statics.removeFollowing = (id, idToNotFollow, ) => {
     });
 };
 // This two functions must be used together ↕
-UserSchema.statics.beNotFollowed = (id) => {
+UserSchema.statics.unfollowed = (id) => {
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $inc: {
