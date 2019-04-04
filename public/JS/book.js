@@ -226,18 +226,21 @@ function addCommentToTable(comment) {
 
 function addOtherBook(book, i) {
     const slider = document.getElementsByClassName("carousel-inner");
-    const bookImage = document.createElement('img');
-    bookImage.src = book.image;
-    bookImage.className = 'otherBookImg';
-    slider[0].children[i].appendChild(bookImage);
-    const bookname = document.createTextNode(book.bookTitle);
-    const li = document.createElement('a');
-    li.href = "/books/" + String(book._id);
-    const otherbooknameContainer = document.createElement('h3');
-    otherbooknameContainer.className = 'center';
-    otherbooknameContainer.appendChild(bookname);
-    li.appendChild(otherbooknameContainer);
-    slider[0].children[i].appendChild(li);
+    if(typeof slider[0].children[i] !== 'undefined'){
+        const bookImage = document.createElement('img');
+        bookImage.src = book.image;
+        bookImage.className = 'otherBookImg';
+        slider[0].children[i].appendChild(bookImage);
+        const bookname = document.createTextNode(book.bookTitle);
+        const li = document.createElement('a');
+        li.href = "/books/" + String(book._id);
+        const otherbooknameContainer = document.createElement('h3');
+        otherbooknameContainer.className = 'center';
+        otherbooknameContainer.appendChild(bookname);
+        li.appendChild(otherbooknameContainer);
+        slider[0].children[i].appendChild(li);
+    }
+
 }
 
 const chapters = document.getElementById("chapters");
