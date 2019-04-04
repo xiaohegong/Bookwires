@@ -323,6 +323,7 @@
 .rating > label {
     color: #ddd;
     float: right;
+    font-size: 35px;
 }
 
 /***** CSS Magic to Highlight Stars on Hover *****/
