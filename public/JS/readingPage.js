@@ -4,6 +4,8 @@ const log = console.log;
 const path = window.location.pathname.split("/");
 let book_id = path[2];
 let chapter_index = parseInt(path[3]);
+
+//use the cookie to determinate which book/chapter am i reading now, and who I am.(user)
 if (document.cookie){
     const cookie = Cookies.get();
     let data = {
@@ -26,7 +28,7 @@ if (document.cookie){
     })
 }
 
-
+//Get the chapter to show from the mongoDb, we always load the whole chapters of a book to the local server
 function getChaptersReading(book_id){
     let url = '/db/reading/'+book_id;
     // log(url);
@@ -41,7 +43,8 @@ function getChaptersReading(book_id){
 
 
 
-
+//when we enter the reading page, you will get the default page at the beginning, means the title and content are empty
+//until this function is called all the content and title will show up.
 function updateReadingPage(chapters){
     //get the elements we want to update
     let name = document.getElementsByClassName("chapterName")[0];
@@ -55,7 +58,8 @@ function updateReadingPage(chapters){
 
 }
 
-
+//assign the onclick functions to 4 buttons on 4 corner
+//TODO update reading history
 function activateButtons(chapters) {
     const upperLeftButton = document.getElementById('upperLeftButton');
     const upperRightButton = document.getElementById('upperRightButton');
@@ -75,6 +79,8 @@ function activateButtons(chapters) {
         lowerLeftButton.children[0].href = "/books/" + book_id + "/" + (chapter_index - 1);
     }
 }
+
+
 //call of functions
 const chapters = getChaptersReading(book_id);
 updateReadingPage(chapters);
