@@ -1,26 +1,28 @@
 'use strict';
 const log = console.log;
 const currentLocation = window.location.href;
-const url = "/db"+new URL(currentLocation).pathname;
+const url = "/db" + new URL(currentLocation).pathname;
 const bookId = url.split("/")[3];
 
 const read = document.getElementById("read");
+
 async function getInfo(url) {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
             return bookJson;
         }).catch(error => log(error));
 }
+
 const save = document.getElementById("save");
 
 if (document.cookie) {
     const cookie = Cookies.get();
 
     let data = {
-        user: cookie.id.split(":")[1].slice(1,-1),
+        user: getCookie("id"),
         book: bookId
 
-    }
+    };
     const request = new Request('/db/userReadingChapter/', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -29,23 +31,23 @@ if (document.cookie) {
             'Content-Type': 'application/json'
         }
     });
-    getInfo(request).then(res=>{
-        if(res.length === 0){
-            read.href = "/books/"+bookId+"/"+0;
-        }else{
-            read.href = "/books/"+bookId+"/"+res.chapter_num;
+    getInfo(request).then(res => {
+        if (res.length === 0) {
+            read.href = "/books/" + bookId + "/" + 0;
+        } else {
+            read.href = "/books/" + bookId + "/" + res.chapter_num;
             save.innerText = "SAVED";
             save.onclick = function (e) {
                 e.preventDefault();
-            }
+            };
         }
 
-    }).catch(error=>{
-        log(error)
+    }).catch(error => {
+        log(error);
     });
 
-}else{
-    read.href = "/books/"+bookId+"/"+0;
+} else {
+    read.href = "/books/" + bookId + "/" + 0;
 
 }
 // getInfo(url).then(book=>{
@@ -59,8 +61,7 @@ const cancelBtn = document.getElementById("cancelBtn");
 const ratingBtn = document.getElementsByClassName("rating")[0];
 
 
-
-ratingBtn.onclick = function rateBook(){
+ratingBtn.onclick = function rateBook() {
     const input = document.getElementsByName("rating");
     if (document.cookie) {
 
@@ -85,14 +86,14 @@ ratingBtn.onclick = function rateBook(){
                     return getInfo(request);
                 }).then(res => {
                     ratingBtn.disabled = true;
-                }).catch(error=>{
-                    log(error)
+                }).catch(error => {
+                    log(error);
                 });
 
                 break;
             }
         }
-    }else{
+    } else {
         location.href = "/login";
     }
 };
@@ -106,14 +107,13 @@ cancelBtn.onclick = function cancelComment() {
 // Call back function for enter button
 enterBtn.onclick = function enterComment() {
     if (document.cookie) {
-        const cookie = Cookies.get();
         let data = {
-            user: cookie.id.split(":")[1].slice(1,-1),
+            user: getCookie("id"),
             content: commentBox.value
         };
-        getInfo(url).then(book=>{
+        getInfo(url).then(book => {
 
-            const request = new Request('/db/booksComment/'+book._id, {
+            const request = new Request('/db/booksComment/' + book._id, {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
@@ -122,14 +122,15 @@ enterBtn.onclick = function enterComment() {
                 },
             });
             return getInfo(request);
-        }).then(res=>{
-            addCommentToTable(data)}).catch(error=>{
-                log(error)
-        }).catch(error=>{
-            log(error)
+        }).then(res => {
+            addCommentToTable(data);
+        }).catch(error => {
+            log(error);
+        }).catch(error => {
+            log(error);
         });
-            commentBox.value = "";
-    }else{
+        commentBox.value = "";
+    } else {
         location.href = "/login";
     }
 
@@ -142,11 +143,10 @@ enterBtn.onclick = function enterComment() {
 save.onclick = function saveToShelf(e) {
     e.preventDefault();
     if (document.cookie) {
-        const cookie = Cookies.get();
 
-        getInfo(url).then(book=>{
+        getInfo(url).then(book => {
             let data = {
-                user: cookie.id.split(":")[1].slice(1,-1),
+                user: getCookie("id"),
                 book: book._id
             };
             const request = new Request('/db/BookToRead/', {
@@ -158,23 +158,23 @@ save.onclick = function saveToShelf(e) {
                 },
             });
             return getInfo(request);
-        }).then(res=>{
+        }).then(res => {
             save.innerText = "SAVED";
             save.onclick = function (e) {
                 e.preventDefault();
-            }}).catch(error=>{
-                log(error)
+            };
+        }).catch(error => {
+            log(error);
         });
-    }else{
+    } else {
         location.href = "/login";
     }
 
 };
 
 
-
 function addCommentToTable(comment) {
-    getInfo("/db/users/"+comment.user).then(res=>{
+    getInfo("/db/users/" + comment.user).then(res => {
         const newComments = document.createElement('div');
         commentsArea.appendChild(newComments);
         newComments.className = 'comment';
@@ -210,19 +210,21 @@ function addCommentToTable(comment) {
                         'Content-Type': 'application/json'
                     },
                 });
-                getInfo(request).then(res=>{
+                getInfo(request).then(res => {
                     deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
-                })
+                });
 
             };
             newComments.appendChild(deleteButton);
             newComments.appendChild(UserCommentContainer);
         }
-    }).catch(error=>{log(error)});
+    }).catch(error => {
+        log(error);
+    });
 
 }
 
-function addOtherBook(book,i){
+function addOtherBook(book, i) {
     const slider = document.getElementsByClassName("carousel-inner");
     const bookImage = document.createElement('img');
     bookImage.src = book.image;
@@ -244,7 +246,7 @@ const bookInformation = document.getElementById("bookInformation");
 
 
 (function () {
-    getInfo(url).then(res=>{
+    getInfo(url).then(res => {
         const authorTitle = document.createTextNode(res.bookTitle);
         const bookdesription = document.createTextNode(res.description);
         const bookNameContainer = document.createElement('h1');
@@ -262,9 +264,9 @@ const bookInformation = document.getElementById("bookInformation");
         bookInformation.insertBefore(bookNameContainer, bookInformation.lastElementChild);
 
         bookInformation.insertBefore(desriptionContainer, bookInformation.lastElementChild);
-        return getInfo("/db/users/"+res.user);
-    }).then(res=>{
-        (function(){
+        return getInfo("/db/users/" + res.user);
+    }).then(res => {
+        (function () {
             const authorName = document.createTextNode(res.name);
             const AuthorNameContainer = document.createElement('h3');
             AuthorNameContainer.user = res;
@@ -278,7 +280,7 @@ const bookInformation = document.getElementById("bookInformation");
         const author = document.getElementById('authorInfo');
         const authorDetail = document.getElementById('authorDetail');
         const authorImageContainer = document.createElement('a');
-        authorImageContainer.href = "/profile/"+res._id;
+        authorImageContainer.href = "/profile/" + res._id;
         const authorImage = document.createElement('img');
         authorImage.className = 'authorPic';
         authorImage.src = res.image;
@@ -294,18 +296,18 @@ const bookInformation = document.getElementById("bookInformation");
         //other books
 
         for (let i = 0; i < res.writtenBook.length; i++) {
-            getInfo("/db/books/"+res.writtenBook[i]).then(book=>{
-                if (book!=null){
-                    addOtherBook(book,i)
-                }else{
-                    log("NO BOOK")
+            getInfo("/db/books/" + res.writtenBook[i]).then(book => {
+                if (book != null) {
+                    addOtherBook(book, i);
+                } else {
+                    log("NO BOOK");
                 }
 
             });
         }
 
-    }).catch(error=>{
-        log(error)
+    }).catch(error => {
+        log(error);
     });
 
 })();
@@ -313,7 +315,7 @@ const bookInformation = document.getElementById("bookInformation");
 
 //create chapters
 let i = 0;
-getInfo(url).then(res=>{
+getInfo(url).then(res => {
     while (i < res.chapters.length) {
         const nextLine = document.createElement('tr');
 
@@ -323,9 +325,9 @@ getInfo(url).then(res=>{
             }
             const newPost = document.createElement('td');
             newPost.className = 'Chapter';
-            const newPostTitle = document.createTextNode((i+1)+" : "+res.chapters[i].chapterTitle);
+            const newPostTitle = document.createTextNode((i + 1) + " : " + res.chapters[i].chapterTitle);
             const newPostTitleContainer = document.createElement('a');
-            newPostTitleContainer.href = "/books/"+res._id+"/"+i;
+            newPostTitleContainer.href = "/books/" + res._id + "/" + i;
             newPostTitleContainer.appendChild(newPostTitle);
             newPost.appendChild(newPostTitleContainer);
             nextLine.appendChild(newPost);
@@ -335,30 +337,26 @@ getInfo(url).then(res=>{
 
     }
 
-}).catch(error=>{
-    log(error)
+}).catch(error => {
+    log(error);
 });
 
 
 //create author information
 
 
-
-
-
 //other book written by this author
 
 //create comments
 const commentsArea = document.getElementById('commentsArea');
-getInfo(url).then(res=>{
+getInfo(url).then(res => {
     for (let i = 0; i < res.comments.length; i++) {
         // const comment = res.comments[i].content;
         addCommentToTable(res.comments[i]);
     }
-}).catch(error=>{
-    log(error)
+}).catch(error => {
+    log(error);
 });
-
 
 
 // Code for animated menu bar
