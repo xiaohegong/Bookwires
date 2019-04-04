@@ -1284,7 +1284,6 @@ function clearNotifications(e) {
  *  If not, the user will not be able to do anything.
  *  The change of profile pictures will be randomly generated from the adorable avatars api. */
 function setUpPic() {
-    // TODO - Alert boxes if success
     // First set up the image box to be the user's profile photo in db
     const profileImg = document.getElementById("profileImage");
     profileImg.src = profileUser.image;

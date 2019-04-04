@@ -33,7 +33,11 @@ signUpSubmit.onclick = function tryToSignUp(e) {
     const userMail = userMailInput.value;
 
     if (passWCon !== passWord) {
-        alert("Two inputs of password not match, please input again");
+        swal({
+            title: "Failed to sign up",
+            text: "Two inputs of password do not match, please input again!",
+            icon: "error"
+        });
         return;
     }
 
@@ -56,9 +60,19 @@ signUpSubmit.onclick = function tryToSignUp(e) {
         'Content-Type': 'application/json'
       }, body: JSON.stringify(newUserBody)}).then((response) => {
         if(response.status !== 200){
-            alert("Error signing up");
+            swal({
+                title: "Failed to sign up",
+                text: "Please check your internet connection and try again!",
+                icon: "error"
+            });
             return;
         }else{
+            swal({
+                title: "Signed up successfully",
+                text: "Welcome to Bookwires!",
+                icon: "success",
+                timer: 5000
+            });
             window.location.href = "/index";
         }
     }).catch((error) => {
