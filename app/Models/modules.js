@@ -3,6 +3,7 @@ const log = console.log;
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const validator = require('validator');
+const uniqueValidator = require('mongoose-unique-validator');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const TypeId = mongoose.Types.ObjectId;
 const Schema = mongoose.Schema;
@@ -61,8 +62,8 @@ const BookSchema = mongoose.Schema({
         required: false
     },
     genre: {
-        type: String,
-        default: 'None'
+        type: { String, enum: ['Science Fiction', 'Mysteries', 'Fantasy', 'Horror', 'Romance', 'Historical', 'Suspense'] },
+        default: "Fantasy"
     },
     //Chapter module
     chapters: [ChapterSchema],
@@ -368,7 +369,8 @@ const UserSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minlength: 3
+        minlength: 3,
+        unique: true
     },
     description: {
         type: String,
@@ -378,7 +380,7 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        //minlength: 7
+        minlength: 6
     },
     email: {
         type: String,
@@ -399,10 +401,6 @@ const UserSchema = mongoose.Schema({
     },
 
     //Other 3 non-list parameters
-    token: {
-        type: Number,
-        default: 0
-    },
     followers: {
         type: Number,
         default: 0
@@ -422,6 +420,8 @@ const UserSchema = mongoose.Schema({
     oldMessage: [message]
 });
 
+// Enforce unique user names
+UserSchema.plugin(uniqueValidator);
 
 //When a new user is created, 4 parameters must be provided: name, password, mail, isAdmin.
 //All the other parameter can be accomplished later

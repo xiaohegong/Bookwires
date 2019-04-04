@@ -33,7 +33,19 @@ signUpSubmit.onclick = function tryToSignUp(e) {
     const userMail = userMailInput.value;
 
     if (passWCon !== passWord) {
-        alert("Two inputs of password not match, please input again");
+        swal({
+            title: "Failed to sign up",
+            text: "Two inputs of password do not match, please input again!",
+            icon: "error"
+        });
+        return;
+    }
+    if (passWord.length < 6) {
+        swal({
+            title: "Failed to sign up",
+            text: "Your password is too short(at least 6 characters), please input again!",
+            icon: "error"
+        });
         return;
     }
 
@@ -50,22 +62,44 @@ signUpSubmit.onclick = function tryToSignUp(e) {
         username: userName,
         email: userMail,
         password: passWord
-    }
+    };
 
-    fetch("user/signup", {method: 'post', headers: {
-        'Content-Type': 'application/json'
-      }, body: JSON.stringify(newUserBody)}).then((response) => {
-        if(response.status !== 200){
-            alert("Error signing up");
-            return;
-        }else{
-            window.location.href = "/index";
+    fetch("user/signup", {
+        method: 'post', headers: {
+            'Content-Type': 'application/json'
+        }, body: JSON.stringify(newUserBody)
+    }).then((response) => {
+
+        if (response.status === 200) {
+            swal({
+                title: "Signed up successfully",
+                text: "Welcome to Bookwires!",
+                icon: "success",
+                timer: 5000
+            }).then(() => {
+                window.location.href = "/index";
+            });
+        } else if (response.status === 400) {
+            swal({
+                title: "Failed to sign up",
+                text: "Please enter valid username and email.\n" +
+                    "Please try again!",
+                icon: "error"
+            });
+        } else if (error.status !== 200) {
+            swal({
+                title: "Failed to sign up",
+                text: "Please check your internet connection and try again!",
+                icon: "error"
+            });
         }
-    }).catch((error) => {
-        console.log("fetch error")
     })
-    
-    // signUpForm.style.display = "none";
+        .catch((error) => {
+            log(error);
+
+            return;
+        });
+
 };
 
 // Set DOM elements correctly when sign up is complete

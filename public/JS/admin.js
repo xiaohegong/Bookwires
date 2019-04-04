@@ -180,7 +180,7 @@ function switchToUser(res) {
             divider.className = "bookDisplay";
             const imgContainer = document.createElement('a');
             imgContainer.id = user._id;
-            imgContainer.setAttribute('href', 'public/HTML/profile.html');
+            imgContainer.setAttribute('href', "/profile/" + user._id);
             const img = document.createElement("img");
             if (user.image == null) {
                 img.src = "img/dog.jpeg";
