@@ -54,7 +54,7 @@ function userLoggedIn(username, id, isAdmin) {
     if (isAdmin) {
         link.href = "/admin";
     } else {
-        link.href = "./profile/" + id;
+        link.href = "/profile/" + id;
     }
 
     // Create the welcome message

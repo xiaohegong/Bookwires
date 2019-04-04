@@ -5,19 +5,19 @@ const log = console.log;
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 const bodyParser = require('body-parser'); // middleware for parsing HTTP body
 const {ObjectID} = require('mongodb');
+const randomProfile = require('random-profile-generator');
 
 const {mongoose} = require('./app/mongoose.js');
 const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }))
-
-
-
+app.use(fileUpload());
 
 
 app.use(session({
@@ -147,7 +147,7 @@ app.post('/user/signup', (req, res) => {
         newMessage: [],
         oldMessage: []
     })
-    
+
     req.session.userId = user._id;
 	req.session.email = user.email
 
@@ -647,8 +647,8 @@ app.get('/db/profile/:id', (req, res) => {
                 }
                 // if(id === req.session.id){
                 if(1===1){
-                    const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin, 
-                        user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo, 
+                    const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin,
+                        user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo,
                         followingInfo, user.newMessage, user.oldMessage)
                         res.send(userToSend)
                 }
@@ -776,7 +776,26 @@ app.patch('/db/profile/:id/', (req, res) => {
         return res.status(500).send(error);
     });
 
-})
+});
+
+app.patch('/db/profile/:id/update/img', (req, res) => {
+    const id = req.params.id;
+    const img = req.body.image;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    User.updateProfileImg(id, img).then((result) => {
+        if(result){
+            res.send({resolved: true});
+        }
+    }).catch((error) => {
+        log(error);
+        return res.status(500).send(error);
+    });
+
+});
 
 app.patch('/db/profile/:id/bookshelf/:bookid', (req, res) => {
     const id = req.params.id;
@@ -1014,6 +1033,28 @@ app.get('/db/reading/:bid/',(req,res) =>{
     )
 });
 
+app.post('/upload/:id', function(req, res) {
+    const id = req.params.id;
+    const image = req.files.img;
+    // Use the mv() method to place the file on the server
+    image.mv( 'public/img/'+ id + ".jpg" , function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("uploaded");
+        }
+    })
+});
+
+app.get('/db/randomavatar/',(req,res) =>{
+    const avatar = randomProfile.avatar();
+
+    if (!avatar){
+        res.status(404).send();
+    } else{
+        res.send({avatar: String(avatar)});
+    }
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

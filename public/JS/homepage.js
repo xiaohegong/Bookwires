@@ -59,7 +59,7 @@ function searchBook() {
     return true;
 }
 
-const authorHrefURL = "./user/";
+const authorHrefURL = "/profile/";
 fetchAuthors().then((a) => {
     const authorsSortedByPop = sortAuthorsByPopularity(allAuthors, numPopAuthors);
     for (let i = 0; i < numPopAuthors; i++) {
@@ -93,7 +93,7 @@ fetchAuthors().then((a) => {
         authors.appendChild(divider);
     }
 
-    const bookHrefURL = "./books/";
+    const bookHrefURL = "/books/";
 // Async function that sets the books array by fetch
     fetchBooks().then((b) => {
         /*********** Code for making <Editor's Pick> section ***********/

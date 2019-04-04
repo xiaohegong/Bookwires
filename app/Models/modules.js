@@ -770,6 +770,22 @@ UserSchema.statics.updateProfileInfo = (id, name, email, password, description) 
 	});
 };
 
+UserSchema.statics.updateProfileImg = (id, img) => {
+
+    return new Promise((resolve,reject) => {
+
+        User.findByIdAndUpdate(id,{
+
+                image: img
+
+        }).then((result) => {
+            resolve(result);
+        },(error) => {
+            reject({code:404,error});
+        });
+    });
+};
+
 
 // if (user.isModified('password')) {
 //     bcrypt.genSalt(10, (error, salt) => {

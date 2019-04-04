@@ -21,7 +21,7 @@
 
 <body>
 <div id="header">
-    <a href="index.html"><img id='bookLogo' src="/img/book.png"/>
+    <a href="/index"><img id='bookLogo' src="/img/book.png"/>
         <span id="title">Bookwires</span></a>
     <div id="menuBar">
         <span class="welcomeMsg"><a href="profile.html">Welcome user!</a></span><span class="welcomeMsg" id="quit"><a
@@ -33,7 +33,8 @@
     <div class="row containment">
         <div class="col-md-4">
             <div class="profileimgcontent">
-                <img id="profileimg" src="/img/dog.jpeg">
+                <img id="profileImage" class="profileimg hover" src="/img/avatar.jpg" />
+
                 <div class="profiletextcontainer">
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, consequuntur atque blanditiis,
                         omnis ipsum autem distinctio fugiat cumque minima odio ducimus maxime enim, facere voluptas
@@ -158,8 +159,12 @@
                 <textarea maxlength="220" class="form-control" id="book-description" rows="3"></textarea>
             </div>
             <div class="custom-file">
-                <input type="file" class="custom-file-input" id="book-image-upload">
-                <label class="custom-file-label" for="book-image-upload">Choose Cover Image</label>
+                <!--<input type="file" class="custom-file-input" id="book-image-upload">-->
+                <!--<label class="custom-file-label" for="book-image-upload">Choose Cover Image</label>-->
+                <form ref='uploadForm' encType="multipart/form-data" class="" action="" method="post" id="uploadCover">
+                    <input type="file" name="img" value="Choose Cover Image">
+                    <input type="submit" name="" value="Upload">
+                </form>
             </div>
             <div id="chapter-list">
                 <label>Chapter List</label>

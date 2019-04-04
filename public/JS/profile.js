@@ -88,6 +88,7 @@ const bookModal = document.querySelector(".book-modal");
 const chapterModal = document.querySelector("#chapter-modal");
 
 const newBookButton = document.querySelector("#new-book-button");
+const coverUpload = document.querySelector("#uploadCover");
 
 // book creation buttons:
 const bookCancelButton = document.querySelector("#book-cancelbutton");
@@ -295,6 +296,8 @@ function setUpUserPage() {
         // profileOwner = getCookie("id") === res.id;
         log(res);
         setUpUserPage();
+        setUpPic();
+        setUpCoverForm();
     })
 
 })();
@@ -1067,4 +1070,63 @@ function clearNotifications(e) {
     }
     profileUser.newMessages = [];
     profileUser.oldMessages = [];
+}
+
+/** Set up the profile picture box. If the user is the profile owner, profile picture changing will be enabled.
+ *  If not, the user will not be able to do anything.
+ *  The change of profile pictures will be randomly generated from the adorable avatars api. */
+function setUpPic() {
+    // TODO - Alert boxes if success
+    // First set up the image box to be the user's profile photo in db
+    const profileImg = document.getElementById("profileImage");
+    profileImg.src = profileUser.image;
+    if (profileOwner){
+        // Enable change of profile image if user is the owner
+        profileImg.onclick = async function () {
+            const newAvatar = (await getAvatar()).avatar;
+
+            profileImg.src = newAvatar;
+
+            const patchUrl = url + "/update/img";
+            log(patchUrl);
+            fetch(patchUrl, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'PATCH',
+                body: JSON.stringify({
+                    image: newAvatar
+                })
+            })
+                .then((res) => {
+                if (res.status !== 200) {
+                    alert("Error updating user info");
+                    return;
+                }
+                profileUser.img = newAvatar;
+                return res.json();
+
+            })
+                .catch(error => log(error));
+        };
+    } else {
+        profileImg.classList.remove("hover");
+    }
+
+}
+
+/** A async function to get a avatar from the server. */
+async function getAvatar() {
+    return await fetch("/db/randomavatar/")
+        .then((res) => {
+            return res.json();
+        })
+        .catch(error => log(error));
+
+}
+
+function setUpCoverForm(){
+    const url = "/upload/" + profileUser.id;
+    coverUpload.action = url;
+
 }
