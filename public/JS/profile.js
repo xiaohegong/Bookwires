@@ -17,24 +17,6 @@ async function getUser() {
 
 let profileUser;
 
-// async function getUser() {
-//     return fetch(`/db/users/${userid}`).then((response) => {
-//         if(response.status !== 200){
-//             alert("Error finding User");
-//             return
-//         }
-//         response.json().then((userJson) => {
-//             console.log("ASDSADSADAS")
-//             console.log(userJson);
-//             return userJson;
-//         })
-//         }).catch(error => log(error));
-// }
-// const profileUser = getUser().then().then(res => {return res});
-// console.log(profileUser)
-// getBook().then(res=>log(res.image));
-
-// fetch("/db/users/:id")
 
 // **NOTE**: for this page we use profileUser as the user that this profile represents.
 //          Sample user is stored in classes.js and realistically a server call would be
@@ -671,11 +653,42 @@ function removeBookBookshelf(e) {
 function removeWrittenBook(e) {
     e.preventDefault();
     const bookToRemove = e.target.parentNode.bookReference;
-    profileUser.removeBookFromWritten(bookToRemove);
-    deleteBookForAllUsers(bookToRemove);
-    writtenCount.innerHTML = profileUser.writtenBook.length;
-    e.target.parentNode.removeChild(e.target);
-    setUpCarousel(profileUser.writtenBook);
+    //remove the book from user (reuqires server call)
+    const bookid = bookToRemove.id;
+
+    const deleteUrl = url + "/written/" + bookid.toString();
+
+    fetch(deleteUrl, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'DELETE'                                       
+      }).then((res) => {
+        if(res.status !== 200){
+            alert("Error removing follow");
+            return
+        }
+        return res.json()
+    }).then((userJson) => {
+            return userJson;
+        }).then(res => {
+            if(res.resolved){
+                for (let j = 0; j < profileUser.writtenBook.length; j++) {
+                    if (profileUser.writtenBook[j].id === bookid) {
+                        profileUser.bookshelf.splice(j, 1);
+                        break;
+                    }
+                }
+
+                writtenCount.innerHTML = profileUser.writtenBook.length;
+                e.target.parentNode.removeChild(e.target);
+                setUpCarousel(profileUser.writtenBook);
+            }
+            
+        }).catch(error => log(error));
+
+    // profileUser.removeBookFromWritten(bookToRemove);
+    // deleteBookForAllUsers(bookToRemove);
 }
 
 /** Changes the view of the page from owner to non-owner.
@@ -722,7 +735,6 @@ function cancelAllBooksFields(e) {
     newBookDescriptionForm.value = '';
     newBookTitleForm.value = '';
     newBookGenreForm.value = '';
-    newBookImgForm.value = '';
 
     chapterListDiv.style.display = "none";
 }
@@ -996,8 +1008,6 @@ function deleteBookChapter(e) {
 
     const deleteUrl = url + "/chapter/" + bookId.toString() + "/" + chapterId.toString();
 
-    log(deleteUrl)
-
     fetch(deleteUrl, {
         headers: {
           'Content-Type': 'application/json'
@@ -1043,20 +1053,84 @@ function followOrUnfollow(e) {
     e.preventDefault();
     if (followButton.innerHTML === "Follow") {
         // add user to follow list and update followee number
-        viewingUser.following.push(profileUser);
-        followButton.classList.add("btn-danger");
-        followButton.classList.remove("btn-success");
-        followButton.innerHTML = "UnFollow";
-        profileUser.followers += 1;
+
+        const followUrl = "/db/follow";
+
+        log(profileUser.id)
+        log(profileUser.id=== getCookie("id"))
+        log(getCookie("id"))
+        log(decodeURIComponent(getCookie("name")))
+
+        fetch(followUrl, {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                following: getCookie("id"),
+                beingFollowed: profileUser.id
+            })
+          }).then((res) => {
+            if(res.status !== 200){
+                alert("Error updating user info");
+                return
+            }
+            return res.json()
+        }).then((userJson) => {
+                return userJson;
+            }).then(res => {
+                if(res.resolved){
+                    // viewingUser.following.push(profileUser);
+                    followButton.classList.add("btn-danger");
+                    followButton.classList.remove("btn-success");
+                    followButton.innerHTML = "UnFollow";
+                    profileUser.followers += 1;
+                    followers.innerHTML = profileUser.followers;
+                }
+            }).catch((error) => {
+                log(error)
+            });
+
+
+
+        
     } else {
         // remove user to follow list and update followee number
-        viewingUser.removeFollowing(profileUser.name);
-        followButton.classList.add("btn-success");
-        followButton.classList.remove("btn-danger");
-        followButton.innerHTML = "Follow";
-        profileUser.followers -= 1;
+
+        const followUrl = "/db/unfollow";
+
+        fetch(followUrl, {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                following: getCookie("id"),
+                beingFollowed: profileUser.id
+            })
+          }).then((res) => {
+            if(res.status !== 200){
+                alert("Error updating user info");
+                return
+            }
+            return res.json()
+        }).then((userJson) => {
+                return userJson;
+            }).then(res => {
+                if(res.resolved){
+                    // viewingUser.removeFollowing(profileUser.name);
+                    followButton.classList.add("btn-success");
+                    followButton.classList.remove("btn-danger");
+                    followButton.innerHTML = "Follow";
+                    profileUser.followers -= 1;
+                    followers.innerHTML = profileUser.followers;
+                    
+                }
+            }).catch((error) => {
+                log(error)
+            });
     }
-    followers.innerHTML = profileUser.followers;
+    
 }
 
 /** Handles the clear button in the notification view.

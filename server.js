@@ -97,7 +97,7 @@ app.post('/user/login', (req, res) => {
 			req.session.userId = user._id;
             req.session.name = user.name
             res.cookie("name", user.name)
-            res.cookie("id", user._id)
+            res.cookie("id", user._id.toString())
             res.cookie("admin", user.isAdmin)
 			res.redirect('/index')
 		}
@@ -689,30 +689,6 @@ app.get('/db/users', (req, res) => {
         );
 });
 
-app.post('/db/follow', (req, res) => {
-    const following = req.body.following;
-    const beingFollowed  = req.body.beingFollowed;
-    Promise.all(User.follow(following,beingFollowed),User.followed(beingFollowed)).then((users) => {
-            res.send(users);
-        })
-        .catch(error => {
-                return res.status(500).send(error);
-            }
-        );
-});
-
-app.post('/db/unfollow', (req, res) => {
-    const following = req.body.following;
-    const beingFollowed  = req.body.beingFollowed;
-    Promise.all(User.unfollow(following,beingFollowed),User.unfollowed(beingFollowed)).then((users) => {
-        res.send(users);
-    })
-        .catch(error => {
-                return res.status(500).send(error);
-            }
-        );
-});
-
 app.get('/db/users/:id', (req, res) => {
     const id = req.params.id;
     if(!ObjectID.isValid(id)){
@@ -959,6 +935,79 @@ app.delete('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
             log(error)
             res.status(500).send(error);
         });
+});
+
+app.post('/db/follow', (req, res) => {
+    const following = req.body.following;
+    const beingFollowed  = req.body.beingFollowed;
+ 
+    User.findByIdAndUpdate(following, {
+        $push: {
+            following: beingFollowed
+        }
+    }).then((result) => {
+        User.findByIdAndUpdate(beingFollowed, {
+            $inc: {followers: 1}
+        }).then((result) => {
+            log(result)
+            res.send({resolved: true});
+        })
+    }).catch(error => {
+        log(error)
+        res.status(500).send(error);
+    })
+});
+
+// app.post("/testing", (req, res) => {
+//     const beingFollowed  = req.body.beingFollowed;
+
+//     User.findByIdAndUpdate(beingFollowed, {
+//         $inc: {followers: 1}
+//         }).then((result) => {
+//             log(result)
+//             res.send({resolved: true});
+//         })
+// });
+
+
+app.post('/db/unfollow', (req, res) => {
+    const following = req.body.following;
+    const beingFollowed  = req.body.beingFollowed;
+
+    User.findByIdAndUpdate(following, {
+        $pull: {
+            following: beingFollowed
+        }
+    }).then((result) => {
+        User.findByIdAndUpdate(beingFollowed, {
+            $inc: {followers: -1}
+        }).then((result) => {
+            res.send({resolved: true});
+        })
+    }).catch(error => {
+        res.status(500).send(error);
+    })
+});
+
+app.delete('/db/profile/:id/writen/:bid/', (req, res) => {
+    // Validate the id and reservation id
+    const id = req.param.id;
+    const bid = req.params.bid;
+
+    if (!ObjectID.isValid(id) || !ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    User.findByIdAndUpdate(id,{
+        $pull: {
+            writtenBook:bid
+        }
+    }).then((result) => {
+        res.send({resolved: true});
+    }).catch((error) => {
+        log(error)
+        return res.status(500).send(error);
+    });
 });
 
 
