@@ -7,19 +7,6 @@ function getCookie(name) {
         return parts.pop().split(";").shift();
 }
 
-/*
-FROM HEDDY:
-
-getCookie didn't work for me :(
-
-Found another way on https://github.com/js-cookie/js-cookie :
-
-Include <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-
-  Example: Cookies.get(); // => { name: '{"foo":"bar"}' }
-
-
- */
 
 /*****  Set logged in status ******/
 const menuBar = document.getElementById("menuBar");
@@ -36,6 +23,7 @@ if (document.cookie) {
 
 }
 
+// If a user is logged in, set the page's html element to display his information
 function userLoggedIn(username, id, isAdmin) {
     const menu = menuBar;
     // Remove old buttons
@@ -96,7 +84,7 @@ function userLoggedIn(username, id, isAdmin) {
 // }
 }
 
-
+// A search function shared by pages
 function fuzzyBookSearch(input, inputList) {
     const outputList = [];
     //name search, similarity limit is .75
