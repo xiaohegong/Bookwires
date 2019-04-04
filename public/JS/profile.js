@@ -286,7 +286,8 @@ function setUpUserPage() {
 (function(){
     getUser(url).then(res =>{
         profileUser = res;
-        profileOwner = getCookie("id") === profileUser.id;
+        log(getCookie("admin"))
+        profileOwner = getCookie("id") === profileUser.id || getCookie("admin") === "true";
 
         setUpUserPage();
         changeAuthentification();
@@ -774,7 +775,6 @@ function clearChapterFields(e) {
 
 /** Create a new Book based off the form elements. Add the book the the user's authored list */
 function addNewAuthoredBook(e) {
-    const d = new Date();
     //requires server call to add new book
     const posturl = url + "/createbook";
 
