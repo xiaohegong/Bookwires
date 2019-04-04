@@ -176,7 +176,7 @@ function makeStars(num) {
 
 function sortBooksByRate(books, num) {
     books.sort(function (a, b) {
-        return parseFloat(b.rate) - parseFloat(a.rate);
+        return parseFloat(b.rating) - parseFloat(a.rating);
     });
     return books.slice(0, num + 1);
 }
