@@ -154,7 +154,10 @@ app.post('/user/signup', (req, res) => {
 	// save user to database
 	user.save().then((result) => {
         //TODO possible validation
-        res.send(user)
+        res.cookie("name", user.name)
+        res.cookie("id", user._id.toString())
+        res.cookie("admin", user.isAdmin)
+        res.redirect('/index')
         // res.redirect("/index");        
 	}, (error) => {
 		res.status(400).send(error) // 400 for bad request
