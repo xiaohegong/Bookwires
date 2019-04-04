@@ -736,7 +736,6 @@ function addNewAuthoredBook(e) {
     const d = new Date();
     //requires server call to add new book
     const posturl = url + "/createbook";
-    log(url)
 
     const bookTitle = newBookTitleForm.value;
     const genre = newBookGenreForm.value;
@@ -795,7 +794,7 @@ function updateChapList() {
         const currentChapter = bookModal.bookReference.chapters[i];
         const chapterElement = document.createElement("li");
         chapterElement.className = "list-group-item";
-        const chapText = document.createTextNode("Chapter " + i+1 + ": " + currentChapter.chapterTitle);
+        const chapText = document.createTextNode("Chapter " + (i+1).toString() + ": " + currentChapter.chapterTitle);
         chapterElement.appendChild(chapText);
         chapterElement.chapReference = currentChapter;
 
@@ -841,14 +840,17 @@ function editBook(e) {
 /** Create a new chapter for the book that is being edited currently */
 function submitNewChapter(e) {
     // if in editing mode change the current chapter
-
+    log(bookModal.bookReference)
     const bookId = bookModal.bookReference.id;
+
+    const chapterTitle = chapterNameField.value;
+    const content = chapterContentField.value;
     if (edit === true) {
         // chapterModal.chapReference.num = parseInt(chapterNumField.value, 10);
 
         const chapterId = chapterModal.chapReference._id;
         
-        const patchUrl = url + "/chapter/" + toString(bookId) + "/" + toString(chapterId);
+        const patchUrl = url + "/chapter/" + bookId.toString() + "/" + chapterId.toString();
 
         fetch(patchUrl, {
             headers: {
@@ -856,23 +858,34 @@ function submitNewChapter(e) {
             },
             method: 'PATCH',
             body: JSON.stringify({
-                chapterTitle: chapterNameField.value,
-                content: chapterContentField.value
+                chapterTitle: chapterTitle,
+                content: content
             })
           }).then((res) => {
             if(res.status !== 200){
-                alert("Error updating user info");
+                alert("Error updating chapter info");
                 return
             }
             return res.json()
         }).then((userJson) => {
                 return userJson;
             }).then(res => {
-                if(res){
+                if(res.resolved){
                     // update chapter list by replacing chapter with new chapter
+                    for (let j = 0; j < bookModal.bookReference.chapters.length; j++) {
+                        if (bookModal.bookReference.chapters[j]._id === chapterId) {
+                            bookModal.bookReference.chapters[j].chapterTitle = chapterTitle;
+                            bookModal.bookReference.chapters[j].content = content;
+                            break;
+                        }
+                    }
+                    clearChapterFields(e);
+                    updateChapList();
                 }
                 
-            }).catch(error => log(error));
+            }).catch((error) => {
+                log(error)
+            });
 
 
         // chapterModal.chapReference.chapterTitle = chapterNameField.value;
@@ -881,23 +894,25 @@ function submitNewChapter(e) {
     //if not in editing mode create and add a new chapter to the book
     // requires a server call
     else {
-        const newChap = new Chapter(parseInt(chapterNumField.value, 10), chapterNameField.value);
-        newChap.setContent(chapterContentField.value);
+        // const newChap = new Chapter(parseInt(chapterNumField.value, 10), chapterNameField.value);
+        // newChap.setContent(chapterContentField.value);
 
-        const postUrl = url + "/chapter/" + toString(bookId);
+        const postUrl = url + "/booksChapter/" + bookId.toString();
+
+        log(postUrl)
 
         fetch(postUrl, {
             headers: {
               'Content-Type': 'application/json'
             },
-            method: 'PATCH',
+            method: 'POST',
             body: JSON.stringify({
-                chapterTitle: chapterNameField.value,
-                content: chapterContentField.value
+                chapterTitle: chapterTitle,
+                content: content
             })
           }).then((res) => {
             if(res.status !== 200){
-                alert("Error updating user info");
+                alert("Error creating chapter");
                 return
             }
             return res.json()
@@ -905,25 +920,61 @@ function submitNewChapter(e) {
                 return userJson;
             }).then(res => {
                 if(res){
-                    // update chapter list by replacing chapter with new chapter
+                    console.log(res)
+                    bookModal.bookReference.chapters.push(res);
+                    clearChapterFields(e);
+                    updateChapList();
                 }
                 
             }).catch(error => log(error));
 
-        bookModal.bookReference.addChapter(newChap);
+        // bookModal.bookReference.addChapter(newChap);
     }
     // update html
     edit = false;
-    clearChapterFields(e);
-    updateChapList();
+    
 }
 
 /** Called when wanting to submit book edits*/
 function updateBook(e) {
     //update book data (requires server call)
-    bookModal.bookReference.description = newBookDescriptionForm.value;
-    bookModal.bookReference.bookTitle = newBookTitleForm.value;
-    bookModal.bookReference.genre = newBookGenreForm.value;
+
+    const bookId = bookModal.bookReference.id;
+
+    const description = newBookDescriptionForm.value;
+    const bookTitle = newBookTitleForm.value;
+    const genre = newBookGenreForm.value;
+        
+    const patchUrl = url + "/book/" + bookId.toString();
+
+    fetch(patchUrl, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PATCH',
+        body: JSON.stringify({
+            bookTitle: bookTitle,
+            genre: genre,
+            description: description
+        })
+      }).then((res) => {
+        if(res.status !== 200){
+            alert("Error updating user info");
+            return
+        }
+        return res.json()
+    }).then((userJson) => {
+            return userJson;
+        }).then(res => {
+            if(res.resolved){
+                bookModal.bookReference.description = description;
+                bookModal.bookReference.bookTitle = bookTitle;
+                bookModal.bookReference.genre = genre;
+            }
+        }).catch((error) => {
+            log(error)
+        });
+
 
     // restore submit button functionality to "create new book"
     submitBookButton.removeEventListener('click', updateBook);
@@ -936,9 +987,42 @@ function updateBook(e) {
  */
 function deleteBookChapter(e) {
     e.preventDefault();
-    const chapToDelete = e.target.parentNode.chapReference;
-    bookModal.bookReference.deleteChapter(chapToDelete.num);
-    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+    const chapToDelete = e.target.parentNode.chapReference
+    const bookId = bookModal.bookReference.id;
+    const chapterId = chapToDelete._id;
+
+    const deleteUrl = url + "/chapter/" + bookId.toString() + "/" + chapterId.toString();
+
+    log(deleteUrl)
+
+    fetch(deleteUrl, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'DELETE'
+      }).then((res) => {
+        if(res.status !== 200){
+            alert("Error updating user info");
+            return
+        }
+        return res.json()
+    }).then((userJson) => {
+            return userJson;
+        }).then(res => {
+            if(res.resolved){
+                for (let j = 0; j < bookModal.bookReference.chapters.length; j++) {
+                    if (bookModal.bookReference.chapters[j]._id === chapterId) {
+                        bookModal.bookReference.chapters.splice(j, 1);
+                        break;
+                    }
+                }
+                e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+            }
+        }).catch((error) => {
+            log(error)
+        });
+    // const chapToDelete = e.target.parentNode.chapReference;
+    // bookModal.bookReference.deleteChapter(chapToDelete.num);
 }
 
 /** Called when opening book editor. Sets the book to be edited and

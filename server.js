@@ -362,6 +362,7 @@ app.delete('/db/deleteComment', (req, res) => {
 
 app.post('/db/booksChapter/:id', (req, res) => {
     // Validate the id
+    log("ASDSADSAd")
     const id = req.params.id;
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
@@ -809,17 +810,21 @@ app.post('/db/profile/:id/createbook', (req, res) => {
     const user = req.session.userId;
 
     const newBook = new Book({
-        bookTitle: bookTitle,
-        genre: genre,
-        description: description,
-        user: user
+        "bookTitle": bookTitle,
+        "genre": genre,
+        "description": description,
+        "user": user
     });
+
+    
     //TODO HANDLE IMAGE
 
     newBook.save().then((book) => {
+        const bid = book._id;
+        log(bid)
         User.findByIdAndUpdate(id,{
 			$push: {
-				writtenBook:book._id
+				writtenBook: bid
 			}
 		}).then((result) => {
             const writtenBookObj = {
@@ -838,46 +843,104 @@ app.post('/db/profile/:id/createbook', (req, res) => {
     });
 })
 
+app.post('/db/profile/:id/booksChapter/:bid', (req, res) => {
+    // Validate the id
+    log("ASDSADSAd")
+    const bid = req.params.bid;
+    if (!ObjectID.isValid(bid)) {
+        return res.status(404).send();
+    }
+    Book.addChapter(req.body.chapterTitle, req.body.content, bid)
+    .then(result=>res.send(result));
 
-// app.post('/db/profile/:id/chapter/:bid', (req, res) => {
-//     const id = req.params.id;
-//     const bid = req.params.bid;
 
-//     if (!ObjectID.isValid(id) || !ObjectID.isValid(bid)) {
-//         return res.status(404).send();
-//     }
+});
 
-//     const chapterTitle = req.body.chapterTitle;
-//     const content= req.body.content;
+app.patch('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
+    // Validate the id and reservation id
+    const bid = req.params.bid;
+    const cid = req.params.cid;
+    if (!ObjectID.isValid(bid) || !ObjectID.isValid(cid)) {
+        return res.status(404).send();
+    }
 
-//     const newChapter = new Chapter({
-//         chapterTitle: chapterTitle,
-//         content: content
-//     });
+    // If valid, find the book
+    Book.updateOne({_id: bid, "chapters._id": cid}, {
+        $set: {
+            "chapters.$.chapterTitle": req.body.chapterTitle,
+            "chapters.$.content": req.body.content
+        }
 
-//     newChapter.save().then((chapter) => {
-//         // User.findByIdAndUpdate(id,{
-// 		// 	$push: {
-// 		// 		writtenBook:book._id
-// 		// 	}
-// 		// }).then((result) => {
-//         //     const writtenBookObj = {
-//         //         id: book._id,
-//         //         image: book.image,
-//         //         genre: book.genre,
-//         //         description: book.description,
-//         //         bookTitle: book.bookTitle,
-//         //         chapters: book.chapters
-//         //     }
-// 		// 	res.send(writtenBookObj);
-//         // })
-//         log(chapter)
-//         res.send()
-//     }).catch((error) => {
-//         log(error)
-//         res.status(404).send()
-//     });
-// })
+    }, {
+        returnOriginal: false 
+    }).then((result) => {
+        res.send({resolved: true});
+    }).catch((error) => {
+        return res.status(500).send(error);
+    });
+
+});
+
+app.patch('/db/profile/:id/book/:bid', (req, res) => {
+    // Validate the id and reservation id
+    const bid = req.params.bid;
+    if (!ObjectID.isValid(bid)) {
+        return res.status(404).send();
+    }
+
+    // If valid, find the book
+    Book.updateOne({_id: bid}, {
+        $set: {
+            "bookTitle": req.body.bookTitle,
+            "genre": req.body.genre,
+            "description": req.body.description
+        }
+
+    }, {
+        returnOriginal: false 
+    }).then((result) => {
+        res.send({resolved: true});
+    }).catch((error) => {
+        return res.status(500).send(error);
+    });
+
+});
+
+app.delete('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
+    // Validate the id and reservation id
+
+    const bid = req.params.bid;
+    const cid = req.params.cid;
+    if (!ObjectID.isValid(bid) || !ObjectID.isValid(cid)) {
+        return res.status(404).send();
+    }
+
+    // If valid, find the book
+    Book.findBookByID(bid)
+        .then((book) => {
+            if (!book) {
+                res.status(404).send();
+            } else {
+                // Find the queried chapter
+                const chap = book.chapters.id(cid);
+
+                Book.findByIdAndUpdate(bid, {
+                    $pull: {
+                        chapters: {
+                            _id: cid
+                        }
+                    }
+                }).then((result) => {
+                    log(result);
+                    res.send({resolved: true})
+                });
+            }
+        })
+        .catch((error) => {
+            log(error)
+            res.status(500).send(error);
+        });
+});
 
 
 // const BookSchema = mongoose.Schema({
@@ -959,21 +1022,3 @@ app.listen(port, () => {
 // we've bound that port to localhost to go to our express server
 // Must restart web server whenyou make changes to route handlers
 
-
-// const idddd = "5ca2e2259e04deeca4a75ff9";
-// User.findById(idddd).then((user) =>{
-//     if(!user){
-//         res.status(404).send()
-//     } else{
-//         Book.find({
-//             '_id': { $in: user.writtenBook}
-//         }).then((ids => {
-//             log(ids);
-//         }))
-//         // res.send(user);
-//     }
-// }).catch((error) => {
-//     res.status(500).send()
-// })
-
-// User.addFollowing("5ca43565877585494830691b", "5ca3c2dddbdcc462627e76b8").then(res => log(res)).catch(error => log(error))
