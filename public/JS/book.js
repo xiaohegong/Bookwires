@@ -86,7 +86,17 @@ ratingBtn.onclick = function rateBook() {
                     return getInfo(request);
                 }).then(res => {
                     ratingBtn.disabled = true;
+                    swal({
+                        title: "Successfully rated",
+                        text: "Thank you for rating " + res.bookTitle + "!",
+                        icon: "success",
+                    });
                 }).catch(error => {
+                    swal({
+                        title: "Rating error",
+                        text: "Failed to rate this book, please refresh the page and try again!",
+                        icon: "error",
+                    });
                     log(error);
                 });
 
@@ -124,8 +134,18 @@ enterBtn.onclick = function enterComment() {
             return getInfo(request);
         }).then(res => {
             addCommentToTable(data);
+            swal({
+                title: "Successfully commented",
+                text: "Thank you for your comment!",
+                icon: "success",
+            });
         }).catch(error => {
             log(error);
+            swal({
+                title: "Failed to comment",
+                text: "Failed to comment, please refresh the page and try again!",
+                icon: "error",
+            });
         }).catch(error => {
             log(error);
         });
@@ -162,8 +182,23 @@ save.onclick = function saveToShelf(e) {
             save.innerText = "SAVED";
             save.onclick = function (e) {
                 e.preventDefault();
+                swal({
+                    title: "Cannot save again",
+                    text: "You've already saved this book" + "!",
+                    icon: "warning",
+                });
             };
+            swal({
+                title: "Successfully saved",
+                text: "Enjoy your reading!",
+                icon: "success",
+            });
         }).catch(error => {
+            swal({
+                title: "Saving error",
+                text: "Failed to save this book, please refresh the page and try again!",
+                icon: "error",
+            });
             log(error);
         });
     } else {
@@ -212,6 +247,11 @@ function addCommentToTable(comment) {
                 });
                 getInfo(request).then(res => {
                     deleteButton.parentElement.parentElement.removeChild(deleteButton.parentElement);
+                    swal({
+                        title: "Successfully commented",
+                        text: "Thank you for your comment!",
+                        icon: "success",
+                    });
                 });
 
             };
@@ -226,7 +266,7 @@ function addCommentToTable(comment) {
 
 function addOtherBook(book, i) {
     const slider = document.getElementsByClassName("carousel-inner");
-    if(typeof slider[0].children[i] !== 'undefined'){
+    if (typeof slider[0].children[i] !== 'undefined') {
         const bookImage = document.createElement('img');
         bookImage.src = book.image;
         bookImage.className = 'otherBookImg';
