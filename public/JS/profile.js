@@ -760,7 +760,6 @@ function clearChapterFields(e) {
 
 /** Create a new Book based off the form elements. Add the book the the user's authored list */
 function addNewAuthoredBook(e) {
-    const d = new Date();
     //requires server call to add new book
     const posturl = url + "/createbook";
 
