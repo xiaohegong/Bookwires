@@ -860,13 +860,17 @@ app.post('/db/profile/:id/createbook', (req, res) => {
 
 app.post('/db/profile/:id/booksChapter/:bid', (req, res) => {
     // Validate the id
-    log("ASDSADSAd")
     const bid = req.params.bid;
     if (!ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
     Book.addChapter(req.body.chapterTitle, req.body.content, bid)
-    .then(result=>res.send(result));
+    .then(
+
+        
+
+        result=>res.send(result)
+    );
 
 
 });
@@ -978,15 +982,41 @@ app.post('/db/follow', (req, res) => {
     })
 });
 
-// app.post("/testing", (req, res) => {
-//     const beingFollowed  = req.body.beingFollowed;
+function includesCheck(id, list){
+    for(let i=0; i < list.length; i++){
+        if(id===list[i]){
+            return true;
+        }
+    }
+    return false;
+}
 
-//     User.findByIdAndUpdate(beingFollowed, {
-//         $inc: {followers: 1}
-//         }).then((result) => {
-//             log(result)
-//             res.send({resolved: true});
-//         })
+// app.get("/testing", (req, res) => {
+//     const bookId = "5ca2b2b1e6cd0f18e4a8cb39";
+//     const autherId = "0";
+//     // const beingFollowed  = req.body.beingFollowed;
+
+//     // User.findByIdAndUpdate(beingFollowed, {
+//     //     $inc: {followers: 1}
+//     //     }).then((result) => {
+//     //         log(result)
+//     //         res.send({resolved: true});
+//     //     })
+
+//     User.where(bookId).in(bookshelfIds)
+
+//     db.collection.users.find().forEach(<function></function>)
+
+//     User.find({}).then((users) => {
+//         for(let i=0; i < users.length; i++){
+//             if(includesCheck(bookId, users[i].bookshelfIds) || includesCheck(autherId, users[i].following)){
+//                 log(users[i].bookshelfIds)
+//                 log(users[i]._id)
+//             }
+//         }
+//         // log(users)
+//         res.send()
+//     })
 // });
 
 
