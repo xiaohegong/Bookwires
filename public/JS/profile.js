@@ -27,6 +27,7 @@ let profileUser;
 // profileOwner will be true all the time for admins
 let profileOwner = true;
 // create a user that is to be used for example purposes as if they are not the owner of the profile
+// const viewingUser = userCreator("sampleViewer", "sv@domain.com", "123", false);
 
 // button that changes the viewers authentification for testing purposes
 // const changeAuthButton = document.querySelector("#change-auth");
