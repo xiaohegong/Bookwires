@@ -25,7 +25,7 @@ if (document.cookie) {
     });
 }
 
-
+//Return all the chapters of that book
 function getChaptersReading(book_id) {
     let url = '/db/reading/' + book_id;
     // log(url);
@@ -37,7 +37,7 @@ function getChaptersReading(book_id) {
         }).catch(error => log(error));
 }
 
-
+//This should be called immediately after the page is entered
 function updateReadingPage(chapters) {
     //get the elements we want to update
     let name = document.getElementsByClassName("chapterName")[0];
@@ -51,7 +51,7 @@ function updateReadingPage(chapters) {
 
 }
 
-
+//Assign the functions to the buttons
 function activateButtons(chapters) {
     const upperLeftButton = document.getElementById('upperLeftButton');
     const upperRightButton = document.getElementById('upperRightButton');
@@ -72,7 +72,7 @@ function activateButtons(chapters) {
     }
 }
 
-//call of functions
+//call of all the functions
 const chapters = getChaptersReading(book_id);
 (chapters.then((array) => {
     if (array.length !== 0) {
