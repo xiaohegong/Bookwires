@@ -32,6 +32,7 @@ if (document.cookie) {
         }
     });
     getInfo(request).then(res => {
+
         if (res.length === 0) {
             read.href = "/books/" + bookId + "/" + 0;
         } else {
