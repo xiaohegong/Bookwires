@@ -989,18 +989,18 @@ app.post('/db/unfollow', (req, res) => {
     })
 });
 
-app.delete('/db/profile/:id/writen/:bid/', (req, res) => {
+app.delete('/db/profile/:uid/written/:bid/', (req, res) => {
     // Validate the id and reservation id
-    const id = req.param.id;
+    const uid = req.params.uid;
     const bid = req.params.bid;
 
-    if (!ObjectID.isValid(id) || !ObjectID.isValid(id)) {
+    if (!ObjectID.isValid(uid) || !ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
 
-    User.findByIdAndUpdate(id,{
+    User.findByIdAndUpdate(uid,{
         $pull: {
-            writtenBook:bid
+            writtenBook: bid
         }
     }).then((result) => {
         res.send({resolved: true});

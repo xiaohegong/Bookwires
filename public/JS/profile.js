@@ -657,6 +657,7 @@ function removeWrittenBook(e) {
     const bookid = bookToRemove.id;
 
     const deleteUrl = url + "/written/" + bookid.toString();
+    log(deleteUrl)
 
     fetch(deleteUrl, {
         headers: {
@@ -675,7 +676,7 @@ function removeWrittenBook(e) {
             if(res.resolved){
                 for (let j = 0; j < profileUser.writtenBook.length; j++) {
                     if (profileUser.writtenBook[j].id === bookid) {
-                        profileUser.bookshelf.splice(j, 1);
+                        profileUser.writtenBook.splice(j, 1);
                         break;
                     }
                 }
@@ -842,7 +843,6 @@ function editBook(e) {
     newBookDescriptionForm.value = bookModal.bookReference.description;
     newBookTitleForm.value = bookModal.bookReference.bookTitle;
     newBookGenreForm.value = bookModal.bookReference.genre;
-    newBookImgForm.value = '';
 
     // update html elements
     updateChapList();
