@@ -95,3 +95,15 @@ function userLoggedIn(username, id, isAdmin) {
     // document.querySelector("#searchLogo").style.pointerEvents = "all";
 // }
 }
+
+
+function fuzzyBookSearch(input, inputList) {
+    const outputList = [];
+    //name search, similarity limit is .75
+    for (let index = 0; index < inputList.length; index++) {
+        if(inputList[index].bookTitle.toLowerCase().includes(input)){
+            outputList.push(inputList[index]);
+        }
+    }
+    return outputList;
+}
