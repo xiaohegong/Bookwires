@@ -70,6 +70,18 @@ const sessionCheckLoggedIn = (req, res, next) => {
 	}
 }
 
+const sessionHandleRequest = (req, res, next) => {
+	if (!req.session.userId) {
+        res.clearCookie("name")
+        res.clearCookie("id")
+        res.clearCookie("admin")
+        res.clearCookie("newnotifications");
+		res.status(404).send()
+	} else {
+		next();
+	}
+}
+
 
 /* ------------ Begin Routes Helpers ------------ */
 app.get('/', (req, res) => {
@@ -543,7 +555,7 @@ app.patch('/db/books/:id/:chapter_id', (req, res) => {
 
 /* Routes for users */
 // TODO - to be edited after User Schema is posted
-app.get('/profile/:id', (req, res) => {
+app.get('/profile/:id', sessionCheckLoggedIn, (req, res) => {
     const id = req.params.id;
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
@@ -617,7 +629,7 @@ function getBooksForProfile(bookIdArray){
     })
 }
 
-app.get('/db/profile/:id', (req, res) => {
+app.get('/db/profile/:id', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     
 
@@ -741,7 +753,7 @@ app.get('/db/users/:id', (req, res) => {
 
 });
 
-app.delete('/db/users/:id', (req, res) => {
+app.delete('/db/users/:id', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
@@ -749,7 +761,7 @@ app.delete('/db/users/:id', (req, res) => {
     User.deleteUser(id).then(result => Book.deleteByAuthor(result._id));
 });
 
-app.patch('/db/profile/:uid/:fid', (req, res) => {
+app.patch('/db/profile/:uid/:fid', sessionHandleRequest, (req, res) => {
     const id = req.params.uid;
     const fid = req.params.fid;
 
@@ -766,7 +778,7 @@ app.patch('/db/profile/:uid/:fid', (req, res) => {
     });
 })
 
-app.patch('/db/profile/:id/', (req, res) => {
+app.patch('/db/profile/:id/', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
 
     const email = req.body.email;
@@ -789,7 +801,7 @@ app.patch('/db/profile/:id/', (req, res) => {
 
 });
 
-app.patch('/db/profile/:id/update/img', (req, res) => {
+app.patch('/db/profile/:id/update/img', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     const img = req.body.image;
 
@@ -808,7 +820,7 @@ app.patch('/db/profile/:id/update/img', (req, res) => {
 
 });
 //http://localhost:3000/db/books/5ca2dd8596b8bae92f347036/update/img
-app.patch('/db/books/:id/update/img', (req, res) => {
+app.patch('/db/books/:id/update/img', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     const img = req.body.image;
 
@@ -828,7 +840,7 @@ app.patch('/db/books/:id/update/img', (req, res) => {
 
 });
 
-app.patch('/db/profile/:id/bookshelf/:bookid', (req, res) => {
+app.patch('/db/profile/:id/bookshelf/:bookid', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     const bookid = req.params.bookid;
 
@@ -847,7 +859,7 @@ app.patch('/db/profile/:id/bookshelf/:bookid', (req, res) => {
 
 })
 
-app.post('/db/profile/:id/createbook', (req, res) => {
+app.post('/db/profile/:id/createbook', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
 
     if (!ObjectID.isValid(id)) {
@@ -892,7 +904,7 @@ app.post('/db/profile/:id/createbook', (req, res) => {
 
 
 
-app.patch('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
+app.patch('/db/profile/:id/chapter/:bid/:cid', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
     const bid = req.params.bid;
     const cid = req.params.cid;
@@ -917,7 +929,7 @@ app.patch('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
 
 });
 
-app.patch('/db/profile/:id/book/:bid', (req, res) => {
+app.patch('/db/profile/:id/book/:bid', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
     const bid = req.params.bid;
     if (!ObjectID.isValid(bid)) {
@@ -942,7 +954,7 @@ app.patch('/db/profile/:id/book/:bid', (req, res) => {
 
 });
 
-app.delete('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
+app.delete('/db/profile/:id/chapter/:bid/:cid', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
 
     const bid = req.params.bid;
@@ -978,7 +990,7 @@ app.delete('/db/profile/:id/chapter/:bid/:cid', (req, res) => {
         });
 });
 
-app.post('/db/follow', (req, res) => {
+app.post('/db/follow', sessionHandleRequest, (req, res) => {
     const following = req.body.following;
     const beingFollowed  = req.body.beingFollowed;
  
@@ -1054,7 +1066,7 @@ async function promiseLoop(users, bookId, bookTitle){
     })
 }
 
-app.post('/db/profile/:id/booksChapter/:bid', (req, res) => {
+app.post('/db/profile/:id/booksChapter/:bid', sessionHandleRequest, (req, res) => {
     // Validate the id
     const bid = req.params.bid;
     if (!ObjectID.isValid(bid)) {
@@ -1110,7 +1122,7 @@ app.get("/testing", (req, res) => {
 });
 
 
-app.post('/db/unfollow', (req, res) => {
+app.post('/db/unfollow', sessionHandleRequest, (req, res) => {
     const following = req.body.following;
     const beingFollowed  = req.body.beingFollowed;
 
@@ -1129,7 +1141,7 @@ app.post('/db/unfollow', (req, res) => {
     })
 });
 
-app.delete('/db/profile/:uid/written/:bid/', (req, res) => {
+app.delete('/db/profile/:uid/written/:bid/', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
     const uid = req.params.uid;
     const bid = req.params.bid;
@@ -1151,7 +1163,7 @@ app.delete('/db/profile/:uid/written/:bid/', (req, res) => {
     });
 });
 
-app.delete('/db/profile/:id/newMessages', (req, res) => {
+app.delete('/db/profile/:id/newMessages', sessionHandleRequest, (req, res) => {
     // Validate the id and reservation id
     const id = req.params.id;
 
@@ -1229,7 +1241,7 @@ app.delete('/db/profile/:id/newMessages', (req, res) => {
 // });
 
 //get all the chapter from the book
-app.get('/db/reading/:bid/',(req,res) =>{
+app.get('/db/reading/:bid/', sessionHandleRequest, (req,res) =>{
     const bid = req.params.bid;
     if (!ObjectID.isValid(bid)) {
         return res.status(404).send();
