@@ -761,19 +761,33 @@ UserSchema.statics.updateProfileInfo = (id, name, email, password, description) 
 
         var salt = bcrypt.genSaltSync(10);
         const hashpass = bcrypt.hashSync(password, salt);
-
-		User.findByIdAndUpdate(id,{
-			$set: {
-                name: name,
-                email: email,
-                password: hashpass,
-                description: description
-			}
-		}).then((result) => {
-			resolve(result);
-		},(error) => {
-			reject({code:404,error});
-		});
+        if(password === ''){
+            User.findByIdAndUpdate(id,{
+                $set: {
+                    name: name,
+                    email: email,
+                    description: description
+                }
+            }).then((result) => {
+                resolve(result);
+            },(error) => {
+                reject({code:404,error});
+            });
+        }
+        else{
+            User.findByIdAndUpdate(id,{
+                $set: {
+                    name: name,
+                    email: email,
+                    password: hashpass,
+                    description: description
+                }
+            }).then((result) => {
+                resolve(result);
+            },(error) => {
+                reject({code:404,error});
+            });
+        }		
 	});
 };
 

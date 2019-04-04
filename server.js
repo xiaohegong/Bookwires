@@ -1125,13 +1125,14 @@ app.delete('/db/profile/:uid/written/:bid/', (req, res) => {
     if (!ObjectID.isValid(uid) || !ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
-
     User.findByIdAndUpdate(uid,{
         $pull: {
             writtenBook: bid
         }
     }).then((result) => {
-        res.send({resolved: true});
+        Book.findByIdAndRemove(bid).then((result) => {
+            res.send({resolved: true});
+        })
     }).catch((error) => {
         log(error)
         return res.status(500).send(error);

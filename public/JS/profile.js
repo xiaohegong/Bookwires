@@ -2,6 +2,7 @@
 const log = console.log;
 const currentLocation = window.location.href;
 const url = "/db"+new URL(currentLocation).pathname;
+log(url)
 async function getUser() {
     return fetch(url).then((res) => {
         if(res.status !== 200){
@@ -285,8 +286,8 @@ function setUpUserPage() {
 
 (function(){
     getUser(url).then(res =>{
+        log(res)
         profileUser = res;
-        log(getCookie("admin"))
         profileOwner = getCookie("id") === profileUser.id || getCookie("admin") === "true";
 
         setUpUserPage();
