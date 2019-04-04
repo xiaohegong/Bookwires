@@ -88,6 +88,7 @@ const bookModal = document.querySelector(".book-modal");
 const chapterModal = document.querySelector("#chapter-modal");
 
 const newBookButton = document.querySelector("#new-book-button");
+const coverUpload = document.querySelector("#uploadCover");
 
 // book creation buttons:
 const bookCancelButton = document.querySelector("#book-cancelbutton");
@@ -296,6 +297,7 @@ function setUpUserPage() {
         log(res);
         setUpUserPage();
         setUpPic();
+        setUpCoverForm();
     })
 
 })();
@@ -1036,5 +1038,11 @@ async function getAvatar() {
             return res.json();
         })
         .catch(error => log(error));
+
+}
+
+function setUpCoverForm(){
+    const url = "/upload/" + profileUser.id;
+    coverUpload.action = url;
 
 }

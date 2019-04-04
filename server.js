@@ -971,10 +971,10 @@ app.get('/db/reading/:bid/',(req,res) =>{
 });
 
 app.post('/upload/:id', function(req, res) {
-    // const id = req.param.id;
+    const id = req.params.id;
     const image = req.files.img;
-    // Use the mv() method to place the file somewhere on the server
-    image.mv( 'public/img/'  + "1.jpg" , function(err) {
+    // Use the mv() method to place the file on the server
+    image.mv( 'public/img/'+ id + ".jpg" , function(err) {
         if (err) {
             console.log(err);
         } else {
