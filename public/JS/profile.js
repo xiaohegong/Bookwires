@@ -98,7 +98,7 @@ submitBookButton.addEventListener('click', addNewAuthoredBook);
 
 // CHAPTER CREATION:
 // chapter creation fields
-const chapterNumField = document.querySelector("#chapter-num");
+// const chapterNumField = document.querySelector("#chapter-num");
 const chapterNameField = document.querySelector("#chapter-name");
 const chapterContentField = document.querySelector("#chapter-content");
 const chapterListGroup = document.querySelector("#chap-list-group");
@@ -627,9 +627,40 @@ function removeBookBookshelf(e) {
     e.preventDefault();
     const bookToRemove = e.target.parentNode.bookReference;
     //remove the book from user (reuqires server call)
-    profileUser.removeBookFromBookshelf(bookToRemove);
-    e.target.parentNode.removeChild(e.target);
-    setUpCarousel(profileUser.bookshelf);
+    const bookid = bookToRemove.id;
+
+    const patchUrl = url + "/bookshelf/" + bookid.toString();
+    
+    fetch(patchUrl, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PATCH'                                       
+      }).then((res) => {
+        if(res.status !== 200){
+            alert("Error removing follow");
+            return
+        }
+        return res.json()
+    }).then((userJson) => {
+            return userJson;
+        }).then(res => {
+            if(res.resolved){
+                for (let j = 0; j < profileUser.bookshelf.length; j++) {
+                    if (profileUser.bookshelf[j].id === bookid) {
+                        profileUser.bookshelf.splice(j, 1);
+                        break;
+                    }
+                }
+                e.target.parentNode.removeChild(e.target);
+                setUpCarousel(profileUser.bookshelf);
+            }
+            
+        }).catch(error => log(error));
+
+
+    // profileUser.removeBookFromBookshelf(bookToRemove);
+    
 }
 
 /** Removes an html book element from the Authored Shelf as well as makes a call to remove it from the user
@@ -696,7 +727,7 @@ function cancelAllBooksFields(e) {
 
 /** Clear fields of chapter creation/edit form */
 function clearChapterFields(e) {
-    chapterNumField.value = '';
+    // chapterNumField.value = '';
     chapterNameField.value = '';
     chapterContentField.value = '';
 }
@@ -705,16 +736,51 @@ function clearChapterFields(e) {
 function addNewAuthoredBook(e) {
     const d = new Date();
     //requires server call to add new book
-    const newBook = new Book(newBookTitleForm.value, profileUser, d.getDate(), "img/TimeRaiders.jpg", newBookGenreForm.value);
-    newBook.setDescription(newBookDescriptionForm.value);
-    profileUser.writtenBook.push(newBook);
+    const posturl = url + "/createbook";
+    log(url)
 
-    //update html if main content is authored
-    if (curNav === authoredButton) {
-        setUpCarousel(profileUser.writtenBook);
-    }
-    //update html profile stat
-    writtenCount.innerHTML = profileUser.writtenBook.length;
+    const bookTitle = newBookTitleForm.value;
+    const genre = newBookGenreForm.value;
+    const description = newBookDescriptionForm.value;
+
+    fetch(posturl, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+            bookTitle: bookTitle,
+            genre: genre,
+            description: description
+        })                                   
+      }).then((res) => {
+        if(res.status !== 200){
+            alert("Error adding book");
+            return
+        }
+        return res.json()
+    }).then((bookJson) => {
+            return bookJson;
+        }).then(res => {
+            if(res){
+                profileUser.writtenBook.push(res);
+                //update html if main content is authored
+                if (curNav === authoredButton) {
+                    setUpCarousel(profileUser.writtenBook);
+                }
+                //update html profile stat
+                writtenCount.innerHTML = profileUser.writtenBook.length;
+            }
+            
+        }).catch(error => log(error));
+    
+
+
+    // const newBook = new Book(newBookTitleForm.value, profileUser, d.getDate(), "img/TimeRaiders.jpg", newBookGenreForm.value);
+    // newBook.setDescription(newBookDescriptionForm.value);
+    // profileUser.writtenBook.push(newBook);
+
+    
     cancelAllBooksFields(e);
 }
 
@@ -730,7 +796,7 @@ function updateChapList() {
         const currentChapter = bookModal.bookReference.chapters[i];
         const chapterElement = document.createElement("li");
         chapterElement.className = "list-group-item";
-        const chapText = document.createTextNode("Chapter " + currentChapter.num + ": " + currentChapter.chapterName);
+        const chapText = document.createTextNode("Chapter " + i+1 + ": " + currentChapter.chapterTitle);
         chapterElement.appendChild(chapText);
         chapterElement.chapReference = currentChapter;
 
@@ -776,16 +842,74 @@ function editBook(e) {
 /** Create a new chapter for the book that is being edited currently */
 function submitNewChapter(e) {
     // if in editing mode change the current chapter
+
+    const bookId = bookModal.bookReference.id;
     if (edit === true) {
-        chapterModal.chapReference.num = parseInt(chapterNumField.value, 10);
-        chapterModal.chapReference.chapterName = chapterNameField.value;
-        chapterModal.chapReference.setContent(chapterContentField.value);
+        // chapterModal.chapReference.num = parseInt(chapterNumField.value, 10);
+
+        const chapterId = chapterModal.chapReference._id;
+        
+        const patchUrl = url + "/chapter/" + toString(bookId) + "/" + toString(chapterId);
+
+        fetch(patchUrl, {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify({
+                chapterTitle: chapterNameField.value,
+                content: chapterContentField.value
+            })
+          }).then((res) => {
+            if(res.status !== 200){
+                alert("Error updating user info");
+                return
+            }
+            return res.json()
+        }).then((userJson) => {
+                return userJson;
+            }).then(res => {
+                if(res){
+                    // update chapter list by replacing chapter with new chapter
+                }
+                
+            }).catch(error => log(error));
+
+
+        // chapterModal.chapReference.chapterTitle = chapterNameField.value;
+        // chapterModal.chapReference.setContent(chapterContentField.value);
     }
     //if not in editing mode create and add a new chapter to the book
     // requires a server call
     else {
         const newChap = new Chapter(parseInt(chapterNumField.value, 10), chapterNameField.value);
         newChap.setContent(chapterContentField.value);
+
+        const postUrl = url + "/chapter/" + toString(bookId);
+
+        fetch(postUrl, {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify({
+                chapterTitle: chapterNameField.value,
+                content: chapterContentField.value
+            })
+          }).then((res) => {
+            if(res.status !== 200){
+                alert("Error updating user info");
+                return
+            }
+            return res.json()
+        }).then((userJson) => {
+                return userJson;
+            }).then(res => {
+                if(res){
+                    // update chapter list by replacing chapter with new chapter
+                }
+                
+            }).catch(error => log(error));
 
         bookModal.bookReference.addChapter(newChap);
     }

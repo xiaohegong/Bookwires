@@ -4,6 +4,28 @@ const log = console.log;
 const path = window.location.pathname.split("/");
 let book_id = path[2];
 let chapter_index = parseInt(path[3]);
+if (document.cookie){
+    const cookie = Cookies.get();
+    let data = {
+        user: cookie.id.split(":")[1].slice(1,-1),
+        chapter_num: chapter_index,
+        book: book_id
+    };
+    const request = new Request('/db/updateReadingChapter', {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+    });
+    fetch(request).then(res=>{
+        log(res)
+    }).catch(error=>{
+        log(error)
+    })
+}
+
 
 function getChaptersReading(book_id){
     let url = '/db/reading/'+book_id;

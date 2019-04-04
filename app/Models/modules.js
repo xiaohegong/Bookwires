@@ -396,6 +396,10 @@ const UserSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    followingNum:{
+        type: Number,
+        default:0
+    },
     image: {
         type: String,
         default: "/img/avatar.jpg"
@@ -516,13 +520,44 @@ UserSchema.statics.findUserByID = (id) => {
 
 };
 
-UserSchema.statics.addFollowing = (id, idToFollow) => {
+UserSchema.statics.updateReadingChapter = (user,chapter,book) => {
+    return new Promise((resolve, reject) => {
+        User.findByIdAndUpdate(user,{
+            $set:{
+                "bookshelf.$[elem].chapter_num":chapter
+            }
+        },{
+            arrayFilters: [ { "elem.book_id": book } ]
+        }).then((user) => {
+            resolve(user)
+        }).catch(error=>{
+            reject({code: 404, error});
+        });
+    });
+
+};
+
+UserSchema.statics.getReadingChapter = (user,book) => {
+    return new Promise((resolve, reject) => {
+        User.findOne({_id:user,"bookshelf.book_id":book}, {
+            'bookshelf.$': 1
+        }).then((user) => {
+            resolve(user.bookshelf[0])
+        }).catch(error=>{
+            reject({code: 404, error});
+        });
+    });
+
+};
+
+UserSchema.statics.follow = (id, idToFollow) => {
     //after this the user id will follow user idToFollow
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $push: {
                 following: idToFollow
-            }
+            },
+            $inc:{followingNum:1}
         }).then((result) => {
             resolve(result);
         }, (error) => {
@@ -532,28 +567,30 @@ UserSchema.statics.addFollowing = (id, idToFollow) => {
 };
 
 //This function we be called iff addFollowing is called ↕
-UserSchema.statics.beFollowed = (id) => {
+UserSchema.statics.followed = (id) => {
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $inc: {followers: 1}
 
-        });
+
     }).then((result) => {
         resolve(result);
     }, (error) => {
         reject({code: 404, error});
     });
+    })
 };
 
 
-UserSchema.statics.removeFollowing = (id, idToNotFollow, ) => {
+UserSchema.statics.unfollow = (id, idToNotFollow) => {
     //after this the user id will not follow user idToNotFollow anymore
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $pull: {
                 following: idToNotFollow
 
-            }
+            },
+            $inc:{followingNum:-1}
         }).then((result) => {
             resolve(result);
         }, (error) => {
@@ -562,7 +599,7 @@ UserSchema.statics.removeFollowing = (id, idToNotFollow, ) => {
     });
 };
 // This two functions must be used together ↕
-UserSchema.statics.beNotFollowed = (id) => {
+UserSchema.statics.unfollowed = (id) => {
     return new Promise((resolve, reject) => {
         User.findByIdAndUpdate(id, {
             $inc: {
@@ -590,6 +627,7 @@ UserSchema.statics.addNewBookToRead = (uid,bid) => {
 		}).then((result) => {
 			resolve(result);
 		},(error) => {
+            log("asdsda")
 			reject({code:404,error});
 		});
 	});
@@ -600,12 +638,17 @@ UserSchema.statics.removeBookToRead = (uid,bid) => {
 	return new Promise((resolve,reject) => {
 		User.findByIdAndUpdate(uid,{
 			$pull: {
-                bookshelf: bid,
                 bookshelfIds: bid
 			}
 		}).then((result) => {
-			resolve(result);
-		},(error) => {
+            User.findByIdAndUpdate(uid,{
+                $pull: {
+                    "bookshelf" : { book_id: bid }
+                }
+            }).then((result) => {
+                resolve(result);
+            })
+		}).catch((error) => {
 			reject({code:404,error});
 		});
 	});

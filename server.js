@@ -378,6 +378,44 @@ app.post('/db/booksComment/:id', (req, res) => {
     }
     Book.addComments(req.body.user, req.body.content, id).then(result => res.send(result));
 });
+
+app.patch('/db/updateReadingChapter', (req, res) => {
+    // Validate the id
+    const user = req.body.user;
+    const chapter = req.body.chapter_num;
+    const book = req.body.book;
+
+    if (!ObjectID.isValid(user)) {
+        return res.status(404).send();
+    }
+
+    if (!ObjectID.isValid(book)) {
+        return res.status(404).send();
+    }
+    User.updateReadingChapter(user,chapter,book).then(result => res.send(result)).catch(error=>{
+        res.status(error.code).send(error.error);
+    });
+});
+
+app.post('/db/userReadingChapter', (req, res) => {
+    // Validate the id
+    const user = req.body.user;
+    const book = req.body.book;
+
+    if (!ObjectID.isValid(user)) {
+        return res.status(404).send();
+    }
+
+    if (!ObjectID.isValid(book)) {
+        return res.status(404).send();
+    }
+    User.getReadingChapter(user,book).then(result => {
+        res.send(result)
+    }).catch(error=>{
+        res.send([])
+    });
+});
+
 app.post('/db/rateBook', (req, res) => {
     Book.newRate(req.body.rate,req.body.book)
         .then((books) => {
@@ -399,7 +437,9 @@ app.post('/db/BookToRead', (req, res) => {
     if (!ObjectID.isValid(bid)) {
         return res.status(404).send();
     }
-    User.addNewBookToRead(id,bid).then(result => res.send(result));
+    User.addNewBookToRead(id,bid).then(result => res.send(result)).catch(error=>{
+        res.status(error.code).send(error.error);
+    });
 });
 
 app.delete('/db/books/:id', (req, res) => {
@@ -412,6 +452,8 @@ app.delete('/db/books/:id', (req, res) => {
         User.removeBooksWritten(result.user,result.id)
     }).then(res=>{
         log(res);
+    }).catch(error=>{
+        res.status(error.code).send(error.error);
     });
 });
 
@@ -584,7 +626,10 @@ app.get('/db/profile/:id', (req, res) => {
                     const writtenBookObj = {
                         id: valueArray[1][i]._id,
                         image: valueArray[1][i].image,
-                        bookTitle: valueArray[1][i].bookTitle
+                        genre: valueArray[1][i].genre,
+                        description: valueArray[1][i].description,
+                        bookTitle: valueArray[1][i].bookTitle,
+                        chapters: valueArray[1][i].chapters
                     }
                     writtenBookInfo.push(writtenBookObj);
                 }
@@ -637,6 +682,30 @@ app.get('/db/users', (req, res) => {
         .then((users) => {
             res.send(users);
         })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.post('/db/follow', (req, res) => {
+    const following = req.body.following;
+    const beingFollowed  = req.body.beingFollowed;
+    Promise.all(User.follow(following,beingFollowed),User.followed(beingFollowed)).then((users) => {
+            res.send(users);
+        })
+        .catch(error => {
+                return res.status(500).send(error);
+            }
+        );
+});
+
+app.post('/db/unfollow', (req, res) => {
+    const following = req.body.following;
+    const beingFollowed  = req.body.beingFollowed;
+    Promise.all(User.unfollow(following,beingFollowed),User.unfollowed(beingFollowed)).then((users) => {
+        res.send(users);
+    })
         .catch(error => {
                 return res.status(500).send(error);
             }
@@ -726,6 +795,122 @@ app.patch('/db/profile/:id/update/img', (req, res) => {
     });
 
 });
+
+app.patch('/db/profile/:id/bookshelf/:bookid', (req, res) => {
+    const id = req.params.id;
+    const bookid = req.params.bookid;
+
+    if (!ObjectID.isValid(id) || !ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    User.removeBookToRead(id, bookid).then((result) => {
+        if(result){
+            res.send({resolved: true});
+        }
+    }).catch((error) => {
+        log(error)
+        return res.status(500).send(error);
+    });
+
+})
+
+app.post('/db/profile/:id/createbook', (req, res) => {
+    const id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    const bookTitle = req.body.bookTitle;
+    const genre= req.body.genre;
+    const description = req.body.description;
+    const user = req.session.userId;
+
+    const newBook = new Book({
+        bookTitle: bookTitle,
+        genre: genre,
+        description: description,
+        user: user
+    });
+    //TODO HANDLE IMAGE
+
+    newBook.save().then((book) => {
+        User.findByIdAndUpdate(id,{
+			$push: {
+				writtenBook:book._id
+			}
+		}).then((result) => {
+            const writtenBookObj = {
+                id: book._id,
+                image: book.image,
+                genre: book.genre,
+                description: book.description,
+                bookTitle: book.bookTitle,
+                chapters: book.chapters
+            }
+			res.send(writtenBookObj);
+		})
+    }).catch((error) => {
+        log(error)
+        res.status(404).send()
+    });
+})
+
+
+// app.post('/db/profile/:id/chapter/:bid', (req, res) => {
+//     const id = req.params.id;
+//     const bid = req.params.bid;
+
+//     if (!ObjectID.isValid(id) || !ObjectID.isValid(bid)) {
+//         return res.status(404).send();
+//     }
+
+//     const chapterTitle = req.body.chapterTitle;
+//     const content= req.body.content;
+
+//     const newChapter = new Chapter({
+//         chapterTitle: chapterTitle,
+//         content: content
+//     });
+
+//     newChapter.save().then((chapter) => {
+//         // User.findByIdAndUpdate(id,{
+// 		// 	$push: {
+// 		// 		writtenBook:book._id
+// 		// 	}
+// 		// }).then((result) => {
+//         //     const writtenBookObj = {
+//         //         id: book._id,
+//         //         image: book.image,
+//         //         genre: book.genre,
+//         //         description: book.description,
+//         //         bookTitle: book.bookTitle,
+//         //         chapters: book.chapters
+//         //     }
+// 		// 	res.send(writtenBookObj);
+//         // })
+//         log(chapter)
+//         res.send()
+//     }).catch((error) => {
+//         log(error)
+//         res.status(404).send()
+//     });
+// })
+
+
+// const BookSchema = mongoose.Schema({
+//     bookTitle:type: String,
+//     rating: type: Number,
+//     numOfRate:Number,
+//     user: type: ObjectId
+//     image: type: String,
+//     description:type: String,
+//     genre:type: String,
+//     chapters: [ChapterSchema],
+//     comments: [CommentSchema]
+
+// });
 
 
 // // Set up a POST route to *create* a student
