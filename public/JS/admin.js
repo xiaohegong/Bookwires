@@ -1,6 +1,5 @@
 'use strict';
 const log = console.log;
-let tempUser = fakeUser;//server call that gets real info
 
 async function getAll(url) {
     return fetch(url).then((res) => res.json())
