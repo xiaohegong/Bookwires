@@ -30,8 +30,8 @@ let profileOwner = true;
 // const viewingUser = userCreator("sampleViewer", "sv@domain.com", "123", false);
 
 // button that changes the viewers authentification for testing purposes
-const changeAuthButton = document.querySelector("#change-auth");
-changeAuthButton.addEventListener('click', changeAuthentification);
+// const changeAuthButton = document.querySelector("#change-auth");
+// changeAuthButton.addEventListener('click', changeAuthentification);
 
 // SETTINGS:
 // Settings form elements:
@@ -286,9 +286,10 @@ function setUpUserPage() {
 (function(){
     getUser(url).then(res =>{
         profileUser = res;
-        // profileOwner = getCookie("id") === res.id;
-        log(res);
+        profileOwner = getCookie("id") === profileUser.id;
+
         setUpUserPage();
+        changeAuthentification();
         setUpPic();
     })
 
@@ -719,10 +720,9 @@ function removeWrittenBook(e) {
 /** Changes the view of the page from owner to non-owner.
  * For demonstration purposes.
  */
-function changeAuthentification(e) {
-    e.preventDefault();
+function changeAuthentification() {
     // switch owner value
-    profileOwner = !profileOwner;
+    // profileOwner = !profileOwner;
 
     if (profileOwner) {
         // reveal everything except follow button
@@ -742,7 +742,8 @@ function changeAuthentification(e) {
         newBookButton.style.display = "none";
 
         // set up the follow button based on if they are following the user already or not
-        if (viewingUser.isFollowing(profileUser.name)) {
+
+        if (profileUser.isBeingFollowed) {
             followButton.classList.add("btn-danger");
             followButton.classList.remove("btn-success");
             followButton.innerHTML = "UnFollow";
