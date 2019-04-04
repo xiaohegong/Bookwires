@@ -189,27 +189,19 @@ BookSchema.statics.updateDescription = (req) => {
 
 };
 
-BookSchema.statics.updateImage = ((req) => {
+BookSchema.statics.updateImage = ((id, img) => {
+    return new Promise((resolve,reject) => {
 
-    return new Promise((resolve, reject) => {
+        Book.findByIdAndUpdate(id,{
 
-        Book.findOneAndUpdate({
-            bookTitle: req.query.bookTitle
-        }, {
-            $set: {
-                image: req.body.image
-            }
+            image: img
 
-        }, {
-            returnOriginal: false
         }).then((result) => {
             resolve(result);
-        }, (error) => {
-            reject({code: 404, error});
+        }).catch((error) => {
+            return reject({code: 500, error})
         });
-
     });
-
 
 });
 

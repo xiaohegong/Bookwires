@@ -85,10 +85,12 @@ const newBookDescriptionForm = document.querySelector("#book-description");
 const newBookImgForm = document.querySelector("#book-image-upload");
 const chapterListDiv = document.querySelector("#chapter-list");
 const bookModal = document.querySelector(".book-modal");
+const coverModal = document.querySelector(".cover-modal");
 const chapterModal = document.querySelector("#chapter-modal");
 
 const newBookButton = document.querySelector("#new-book-button");
 const coverUpload = document.querySelector("#uploadCover");
+const coverUploadBtn = document.querySelector("#uploadSubmitBtn");
 
 // book creation buttons:
 const bookCancelButton = document.querySelector("#book-cancelbutton");
@@ -240,7 +242,16 @@ function setUpCarousel(bookList) {
                     bookEditButton.setAttribute("data-toggle", "modal");
                     bookEditButton.setAttribute("data-target", ".book-modal");
                     bookEditButton.onclick = editBook;
+
+                    const uploadCoverButton = document.createElement("button");
+                    uploadCoverButton.innerHTML = "Add Cover";
+                    uploadCoverButton.className = "book-cover";
+                    uploadCoverButton.classList.add("btn", "btn-secondary");
+                    uploadCoverButton.setAttribute("data-toggle", "modal");
+                    uploadCoverButton.setAttribute("data-target", ".cover-modal");
+                    uploadCoverButton.onclick = addBookCover;
                     newLi.appendChild(bookEditButton);
+                    newLi.appendChild(uploadCoverButton);
                 }
 
                 // add elements to page
@@ -297,7 +308,6 @@ function setUpUserPage() {
         log(res);
         setUpUserPage();
         setUpPic();
-        setUpCoverForm();
     })
 
 })();
@@ -840,6 +850,37 @@ function editBook(e) {
     submitBookButton.addEventListener('click', updateBook);
 }
 
+/** Called when want to edit a book that user has created */
+function addBookCover(e) {
+    e.preventDefault();
+    coverModal.bookReference = e.target.parentNode.bookReference;
+
+    const url = "/upload/" + coverModal.bookReference.id;
+    coverUpload.action = url;
+
+    coverUploadBtn.onclick = function() {
+        const url = "/db/books/" + coverModal.bookReference.id + "/update/img";
+        fetch(url, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify({
+                image: "/img/" + coverModal.bookReference.id + ".jpg"
+            })
+        }).then((res) => {
+            if (res.status !== 200) {
+                alert("Error adding book");
+                log(res.status)
+                return;
+            }
+            return res.json();
+        }).catch(error => log(error));
+
+    }
+}
+
+
 /** Create a new chapter for the book that is being edited currently */
 function submitNewChapter(e) {
     // if in editing mode change the current chapter
@@ -1122,11 +1163,5 @@ async function getAvatar() {
             return res.json();
         })
         .catch(error => log(error));
-
-}
-
-function setUpCoverForm(){
-    const url = "/upload/" + profileUser.id;
-    coverUpload.action = url;
 
 }

@@ -141,6 +141,7 @@
     </div>
     <button id="change-auth">Change Authentication (for T.A use to switch between context)</button>
 </div>
+<!----------------------------- The book info form -------------------------------->
 <div class="modal fade book-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
      data-keyboard="false">
     <div class="modal-dialog modal-lg">
@@ -158,14 +159,6 @@
                 <label>Description</label>
                 <textarea maxlength="220" class="form-control" id="book-description" rows="3"></textarea>
             </div>
-            <div class="custom-file">
-                <!--<input type="file" class="custom-file-input" id="book-image-upload">-->
-                <!--<label class="custom-file-label" for="book-image-upload">Choose Cover Image</label>-->
-                <form ref='uploadForm' encType="multipart/form-data" class="" action="" method="post" id="uploadCover">
-                    <input type="file" name="img" value="Choose Cover Image">
-                    <input type="submit" name="" value="Upload">
-                </form>
-            </div>
             <div id="chapter-list">
                 <label>Chapter List</label>
                 <button class="btn btn-secondary" id="add-chapter" data-toggle="modal" data-target="#chapter-modal">New
@@ -180,6 +173,34 @@
                     data-target=".book-modal">Submit
             </button>
         </div>
+
+    </div>
+</div>
+<!----------------------------- The book cover upload form -------------------------------->
+<div class="modal fade cover-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
+     data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="custom-file">
+                <!--<input type="file" class="custom-file-input" id="book-image-upload">-->
+                <!--<label class="custom-file-label" for="book-image-upload">Choose Cover Image</label>-->
+                <form ref='uploadForm' encType="multipart/form-data" class="" action="" method="post" id="uploadCover">
+                    <input type="file" name="img" value="Choose Cover Image">
+                    <input type="submit" name="" value="Upload" id="uploadSubmitBtn">
+                </form>
+            </div>
+            <div id="book-id">
+                <input type="text">
+            </div>
+            <br><br>
+            <button id="cover-cancelbutton" class="btn btn-danger" data-dismiss="modal" data-target=".cover-modal">
+                Cancel
+            </button>
+            <button id="cover-submitbutton" type="button" class="btn btn-primary" data-dismiss="modal"
+                    data-target=".cover-modal">Submit
+            </button>
+        </div>
+
     </div>
 </div>
 <div id="chapter-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
