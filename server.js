@@ -16,7 +16,7 @@ const {mongoose} = require('./app/mongoose.js');
 const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
 app.use(express.static("public"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended:true }))
+app.use(bodyParser.urlencoded({ extended:true }));
 app.use(fileUpload());
 
 
@@ -772,6 +772,26 @@ app.patch('/db/profile/:id/update/img', (req, res) => {
     });
 
 });
+//http://localhost:3000/db/books/5ca2dd8596b8bae92f347036/update/img
+app.patch('/db/books/:id/update/img', (req, res) => {
+    const id = req.params.id;
+    const img = req.body.image;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    Book.updateImage(id, img).then((result) => {
+        if(result){
+            return res.send({resolved: true});
+        }
+        req.flash('success', { msg: 'Saved' });
+        return res.redirect("/index");
+    }).catch((error) => {
+        return res.status(500).send(error);
+    });
+
+});
 
 app.patch('/db/profile/:id/bookshelf/:bookid', (req, res) => {
     const id = req.params.id;
@@ -1089,8 +1109,9 @@ app.post('/upload/:id', function(req, res) {
     image.mv( 'public/img/'+ id + ".jpg" , function(err) {
         if (err) {
             console.log(err);
+            res.redirect("back");
         } else {
-            console.log("uploaded");
+            res.redirect("back");
         }
     })
 });
