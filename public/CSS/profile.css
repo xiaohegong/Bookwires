@@ -1,10 +1,15 @@
-#profileimg {
+.profileimg {
     border-radius: 50%;
     width: 250px;
     height: 250px;
     object-fit: cover;
     border: solid black;
+
 }
+.profileimg:hover {
+    cursor: pointer;
+}
+
 
 .profileimgcontent {
     width: 250px;

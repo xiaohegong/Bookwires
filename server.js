@@ -10,6 +10,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const bodyParser = require('body-parser'); // middleware for parsing HTTP body
 const {ObjectID} = require('mongodb');
+const randomProfile = require('random-profile-generator');
 
 const {mongoose} = require('./app/mongoose.js');
 const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
@@ -705,7 +706,26 @@ app.patch('/db/profile/:id/', (req, res) => {
         return res.status(500).send(error);
     });
 
-})
+});
+
+app.patch('/db/profile/:id/update/img', (req, res) => {
+    const id = req.params.id;
+    const img = req.body.image;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    User.updateProfileImg(id, img).then((result) => {
+        if(result){
+            res.send({resolved: true});
+        }
+    }).catch((error) => {
+        log(error);
+        return res.status(500).send(error);
+    });
+
+});
 
 
 // // Set up a POST route to *create* a student
@@ -765,16 +785,27 @@ app.get('/db/reading/:bid/',(req,res) =>{
     )
 });
 
-app.post('/upload', function(req, res) {
+app.post('/upload/:id', function(req, res) {
+    // const id = req.param.id;
     const image = req.files.img;
     // Use the mv() method to place the file somewhere on the server
-    image.mv( 'public/img/' + image.name , function(err) {
+    image.mv( 'public/img/'  + "1.jpg" , function(err) {
         if (err) {
             console.log(err);
         } else {
             console.log("uploaded");
         }
     })
+});
+
+app.get('/db/randomavatar/',(req,res) =>{
+    const avatar = randomProfile.avatar();
+
+    if (!avatar){
+        res.status(404).send();
+    } else{
+        res.send({avatar: String(avatar)});
+    }
 });
 
 const port = process.env.PORT || 3000;

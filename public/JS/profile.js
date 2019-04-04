@@ -295,6 +295,7 @@ function setUpUserPage() {
         // profileOwner = getCookie("id") === res.id;
         log(res);
         setUpUserPage();
+        setUpPic();
     })
 
 })();
@@ -859,4 +860,44 @@ function clearNotifications(e) {
     }
     profileUser.newMessages = [];
     profileUser.oldMessages = [];
+}
+
+function setUpPic() {
+    // TODO Check if the logged in user is the actual user
+    const profileImg = document.getElementById("profileImage");
+    profileImg.src = profileUser.image;
+    profileImg.onclick = async function () {
+        const newAvatar = (await getAvatar()).avatar;
+
+        profileImg.src = newAvatar;
+
+        const patchUrl = url + "/update/img";
+        log(patchUrl);
+        fetch(patchUrl, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify({
+                image: newAvatar
+            })
+        }).then((res) => {
+            if (res.status !== 200) {
+                alert("Error updating user info");
+                return;
+            }
+            profileUser.img = newAvatar;
+            return res.json();
+
+        }).catch(error => log(error));
+    };
+}
+
+async function getAvatar() {
+    return await fetch("/db/randomavatar/")
+        .then((res) => {
+            return res.json();
+        })
+        .catch(error => log(error));
+
 }
