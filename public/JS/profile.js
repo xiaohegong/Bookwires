@@ -986,37 +986,50 @@ function clearNotifications(e) {
     profileUser.oldMessages = [];
 }
 
+/** Set up the profile picture box. If the user is the profile owner, profile picture changing will be enabled.
+ *  If not, the user will not be able to do anything.
+ *  The change of profile pictures will be randomly generated from the adorable avatars api. */
 function setUpPic() {
-    // TODO Check if the logged in user is the actual user
+    // TODO - Alert boxes if success
+    // First set up the image box to be the user's profile photo in db
     const profileImg = document.getElementById("profileImage");
     profileImg.src = profileUser.image;
-    profileImg.onclick = async function () {
-        const newAvatar = (await getAvatar()).avatar;
+    if (profileOwner){
+        // Enable change of profile image if user is the owner
+        profileImg.onclick = async function () {
+            const newAvatar = (await getAvatar()).avatar;
 
-        profileImg.src = newAvatar;
+            profileImg.src = newAvatar;
 
-        const patchUrl = url + "/update/img";
-        log(patchUrl);
-        fetch(patchUrl, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'PATCH',
-            body: JSON.stringify({
-                image: newAvatar
+            const patchUrl = url + "/update/img";
+            log(patchUrl);
+            fetch(patchUrl, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'PATCH',
+                body: JSON.stringify({
+                    image: newAvatar
+                })
             })
-        }).then((res) => {
-            if (res.status !== 200) {
-                alert("Error updating user info");
-                return;
-            }
-            profileUser.img = newAvatar;
-            return res.json();
+                .then((res) => {
+                if (res.status !== 200) {
+                    alert("Error updating user info");
+                    return;
+                }
+                profileUser.img = newAvatar;
+                return res.json();
 
-        }).catch(error => log(error));
-    };
+            })
+                .catch(error => log(error));
+        };
+    } else {
+        profileImg.classList.remove("hover");
+    }
+
 }
 
+/** A async function to get a avatar from the server. */
 async function getAvatar() {
     return await fetch("/db/randomavatar/")
         .then((res) => {

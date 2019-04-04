@@ -6,7 +6,11 @@
     border: solid black;
 
 }
-.profileimg:hover {
+
+.hover {
+
+}
+.hover:hover {
     cursor: pointer;
 }
 
