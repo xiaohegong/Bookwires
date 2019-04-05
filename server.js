@@ -11,10 +11,11 @@ const app = express();
 const bodyParser = require('body-parser'); // middleware for parsing HTTP body
 const {ObjectID} = require('mongodb');
 const randomProfile = require('random-profile-generator');
-
 const {mongoose} = require('./app/mongoose.js');
 
-const {Book, User, Chapter, Comment} = require('./app/Models/modules.js');
+const {Book, Chapter, Comment} = require('./app/Models/book.js');
+const {User} = require('./app/Models/user.js');
+
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }));
@@ -411,6 +412,10 @@ app.patch('/db/updateReadingChapter', (req, res) => {
     const user = req.body.user;
     const chapter = req.body.chapter_num;
     const book = req.body.book;
+
+    if (!(user && chapter && book && req.session.userId)){
+        return ;
+    }
 
     if (!ObjectID.isValid(user)) {
         return res.status(404).send();
@@ -1229,7 +1234,7 @@ app.delete('/db/profile/:id/newMessages', sessionHandleRequest, (req, res) => {
 // });
 
 //get all the chapter from the book
-app.get('/db/reading/:bid/', sessionHandleRequest, (req,res) =>{
+app.get('/db/reading/:bid/', (req,res) =>{
     const bid = req.params.bid;
     if (!ObjectID.isValid(bid)) {
         return res.status(404).send();
