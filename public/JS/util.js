@@ -63,25 +63,6 @@ function userLoggedIn(username, id, isAdmin) {
     span2.id = "quit";
 
     menu.appendChild(span2);
-
-    // Adding toast when user logged in
-    // if (sampleUser.newMessages.length > 0) {
-    //     toastBody.innerHTML = "You have " + sampleUser.newMessages.length + " new notifications.";
-    //     toast.setAttribute("data-autohide", "false");
-    //     toast.style.display = "block";
-    //     $(document).ready(function () {
-    //         $('.toast').toast('show');
-    //     });
-    //
-    //     sampleUser.moveNewMsgToOld();
-    // }
-
-    // document.querySelector("#bookShelf").style.pointerEvents = "all";
-    // document.querySelector("#searchLogo").style.pointerEvents = "all";
-    // document.querySelector("#leftSideBar").style.pointerEvents = "all";
-    // document.querySelector("#rightSideBar").style.pointerEvents = "all";
-    // document.querySelector("#searchLogo").style.pointerEvents = "all";
-// }
 }
 
 // A search function shared by pages

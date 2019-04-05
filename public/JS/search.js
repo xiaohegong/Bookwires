@@ -10,7 +10,7 @@ if (query && query.length === 2) {
     // Link in the form of <genre=xx>
     if (query[0] === "genre") {
         genre = query[1];
-        if (genre === "Science-Fiction"){
+        if (genre === "Science-Fiction") {
             genre = "Science Fiction";
         }
     }
@@ -20,7 +20,7 @@ if (query && query.length === 2) {
     }
 }
 
-
+// Get all books first from the server
 async function getAllBook(url) {
     return fetch(url).then((res) => res.json())
         .then((bookJson) => {
@@ -28,6 +28,7 @@ async function getAllBook(url) {
         }).catch(error => log(error));
 }
 
+// A server call that fetches books by genre
 if (genre !== "") {
     (function () {
         let data = {
@@ -69,7 +70,6 @@ if (genre !== "") {
 }
 
 
-// getBook().then(res=>log(res.image));
 // A function to generating stars with the given num
 function makeStars(num) {
     if (num > 5 || num < 0) {
@@ -91,6 +91,7 @@ function makeStars(num) {
     return div;
 }
 
+// Fetch from server the list of  books with the given rate
 function searchByRate(rate) {
     if (genre === "") {
         let data = {
@@ -130,7 +131,7 @@ function searchByRate(rate) {
     }
 }
 
-
+// Set up search results from the search bar key words
 function searchBarSearch() {
     const searchBar = document.getElementById('searchBar');
     if (genre === "") {
@@ -188,13 +189,6 @@ function bookSetUp(books) {
         anchor.setAttribute("href", "");
         const parag = document.createElement("p");
         parag.className = "author";
-        // const author = document.createTextNode(book.getAuthor());
-        // parag.appendChild(author);
-        // anchor.appendChild(parag);
-        // authors.appendChild(anchor);
-
-        // Then add book image to the book shelf
-        // booksDisplayed.children[i + (i / 3) >> 0].firstElementChild.src = book.getImage();
 
         // Add books to the ranking section
         const divider = document.createElement("div");
@@ -208,10 +202,11 @@ function bookSetUp(books) {
         const span = document.createElement("span");
         span.className = "bookDisplayText";
         span.appendChild(document.createElement("p").appendChild(document.createTextNode(book.bookTitle)));
+
         //TEMP
-        if(typeof book.user !== 'undefined'){
-            getAllBook("/db/users/"+book.user).then(res=>{
-                if(typeof res !== "undefined"){
+        if (typeof book.user !== 'undefined') {
+            getAllBook("/db/users/" + book.user).then(res => {
+                if (typeof res !== "undefined") {
                     const info = document.createTextNode(res.name + " | " + book.genre);
                     const p = document.createElement("p");
                     p.className = "displayInfo";
@@ -223,7 +218,6 @@ function bookSetUp(books) {
 
             });
         }
-
 
         divider.appendChild(imgContainer);
         divider.appendChild(span);

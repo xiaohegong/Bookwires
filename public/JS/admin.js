@@ -1,6 +1,7 @@
 'use strict';
 const log = console.log;
 
+/* A asynchronous function to get all the request from server for admins */
 async function getAll(url) {
     return fetch(url).then((res) => res.json())
         .then((itemJson) => {
@@ -8,38 +9,41 @@ async function getAll(url) {
         }).catch(error => log(error));
 }
 
+// Get admin information from the document cookie
 if (document.cookie && Cookies.get().admin === "true") {
     const name = document.getElementsByClassName("profileHeader")[0];
     name.innerHTML = Cookies.get().name;
-}else{
-    log(Cookies.get().admin)
+} else {
+    log(Cookies.get().admin);
     location.href = "/index";
 }
 
+// Set up the onclick functions for admin page
 const booksRanking = document.querySelector("#InfoContainer");
 const bookNavButton = document.querySelector("#bookNav");
 bookNavButton.addEventListener('click', function () {
-    getAll("/db/books").then(res=>{
+    getAll("/db/books").then(res => {
         switchToBook(res);
     });
 
 }, false);
 const UserNavButton = document.querySelector("#userNav");
 UserNavButton.addEventListener('click', function () {
-    getAll("/db/users").then(res=>{
+    getAll("/db/users").then(res => {
         switchToUser(res);
     });
 
 }, false);
 
 let curNav = bookNavButton;
-
+// Function to set up the search bar for book
 function searchBarBookSearch() {
     const searchBar = document.getElementsByClassName('searchBar');
     let data = {
         word: searchBar[0].value,
 
     };
+    // Fetch a put request to get the searched key value
     const request = new Request('/db/fuzzySearch', {
         method: 'PUT',
         body: JSON.stringify(data),
@@ -54,12 +58,14 @@ function searchBarBookSearch() {
     });
 }
 
+// Function to set up the search bar for book
 function searchBarUserSearch() {
     const searchBar = document.getElementsByClassName('searchBar');
     let data = {
         word: searchBar[0].value,
 
     };
+    // Fetch a put request to get the searched key value
     const request = new Request('/db/searchUser', {
         method: 'PUT',
         body: JSON.stringify(data),
@@ -74,12 +80,14 @@ function searchBarUserSearch() {
     });
 }
 
+// Modify navigation html element
 function changeActive(elem) {
     curNav.parentElement.classList.remove("active");
     elem.parentElement.classList.add("active");
     curNav = elem;
 }
 
+// Function to set html to switch to book management view
 function switchToBook(res) {
     changeActive(bookNavButton);
     while (booksRanking.firstChild) {
@@ -121,7 +129,7 @@ function switchToBook(res) {
         titleContainer.appendChild(document.createTextNode(book.bookTitle));
         span.appendChild(titleContainer);
         //temp
-        getAll("/db/users/"+book.user).then(res=>{
+        getAll("/db/users/" + book.user).then(res => {
             const info = document.createTextNode(res.name + " | " + book.genre);
             const p = document.createElement("p");
             p.className = "displayInfo";
@@ -140,10 +148,10 @@ function switchToBook(res) {
 
         booksRanking.appendChild(divider);
     }
-
-
 }
 
+
+//  Function to set html to switch to user management view
 function switchToUser(res) {
     changeActive(UserNavButton);
 
@@ -163,96 +171,99 @@ function switchToUser(res) {
     searchButtonContainer.appendChild(searchButton);
     searchButtonContainer.onclick = searchBarUserSearch;
     booksRanking.appendChild(searchButtonContainer);
-        for (let i = 0; i < res.length; i++) {
-            let user = res[i];
-            // First, add authors
-            const anchor = document.createElement("a");
-            anchor.setAttribute("href", "");
-            const parag = document.createElement("p");
-            parag.className = "author";
-            const author = document.createTextNode(user.name);
-            parag.appendChild(author);
-            anchor.appendChild(parag);
+    for (let i = 0; i < res.length; i++) {
+        let user = res[i];
+        // First, add authors
+        const anchor = document.createElement("a");
+        anchor.setAttribute("href", "");
+        const parag = document.createElement("p");
+        parag.className = "author";
+        const author = document.createTextNode(user.name);
+        parag.appendChild(author);
+        anchor.appendChild(parag);
 
-            // Add books to the ranking section
-            const divider = document.createElement("div");
+        // Add books to the ranking section
+        const divider = document.createElement("div");
 
-            divider.className = "bookDisplay";
-            const imgContainer = document.createElement('a');
-            imgContainer.id = user._id;
-            imgContainer.setAttribute('href', "/profile/" + user._id);
-            const img = document.createElement("img");
-            if (user.image == null) {
-                img.src = "img/dog.jpeg";
-            } else {
-                img.src = user.image;
-            }
-            img.className = "userIcon";
-            imgContainer.appendChild(img);
-            const span = document.createElement("span");
-            span.className = "bookDisplayText";
-            span.appendChild(document.createElement("p").appendChild(document.createTextNode(user.name)));
-
-
-            const button = getDeleteButton();
-            button.onclick = deleteUser;
-            divider.appendChild(imgContainer);
-            divider.appendChild(span);
-            divider.appendChild(button);
-
-
-            booksRanking.appendChild(divider);
+        divider.className = "bookDisplay";
+        const imgContainer = document.createElement('a');
+        imgContainer.id = user._id;
+        imgContainer.setAttribute('href', "/profile/" + user._id);
+        const img = document.createElement("img");
+        if (user.image == null) {
+            img.src = "img/dog.jpeg";
+        } else {
+            img.src = user.image;
         }
+        img.className = "userIcon";
+        imgContainer.appendChild(img);
+        const span = document.createElement("span");
+        span.className = "bookDisplayText";
+        span.appendChild(document.createElement("p").appendChild(document.createTextNode(user.name)));
+
+
+        const button = getDeleteButton();
+        button.onclick = deleteUser;
+        divider.appendChild(imgContainer);
+        divider.appendChild(span);
+        divider.appendChild(button);
+
+
+        booksRanking.appendChild(divider);
+    }
 
 }
-getAll("/db/books").then(res=>{
+
+// An asynchronous function to get all the books
+getAll("/db/books").then(res => {
     switchToBook(res);
 });
 
-
+// Function that handles deleting book request from the admin
 function deleteBook(e) {
     e.preventDefault();
     const name = e.target.parentElement.children[1].children[0];
 
-
-
-    const request = new Request('/db/books/'+name.id, {
+    // Fetch server call from the
+    const request = new Request('/db/books/' + name.id, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
         },
     });
+
+    // Get the request from server
     getAll(request).then(res => {
-        log("OUT");
+        log("SUCCESS: The book has been removed");
 
     });
-
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
-
 }
 
+// Function that handles deleting user request from the admin
 function deleteUser(e) {
     e.preventDefault();
     const id = e.target.parentElement.children[0].id;
 
-
-    const request = new Request('/db/users/'+id, {
+    // fetch a delete request from server
+    const request = new Request('/db/users/' + id, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
         },
     });
-    getAll(request).then(res => {
-        log("OUT");
 
+    // Fetch request from server
+    getAll(request).then(res => {
+        log("SUCCESS: The user has been removed");
     });
 
     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
-
 }
 
+// function that will get a delete button html element
 function getDeleteButton() {
     const button = document.createElement("button");
     button.type = "button";
