@@ -380,7 +380,7 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6
+        minlength: 4
     },
     email: {
         type: String,
@@ -414,7 +414,6 @@ const UserSchema = mongoose.Schema({
     bookshelf: [readingHistory],
     bookshelfIds: [ObjectId],
     writtenBook: [{type:Schema.Types.ObjectId,ref:'Book'}],
-    topThreeBooks: [ObjectId],
     following: [ObjectId],
     newMessage: [message],
     oldMessage: [message]

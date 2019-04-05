@@ -62,7 +62,7 @@ function searchBook() {
 const authorHrefURL = "/profile/";
 fetchAuthors().then((a) => {
     const authorsSortedByPop = sortAuthorsByPopularity(allAuthors, numPopAuthors);
-    for (let i = 0; i < numPopAuthors; i++) {
+    for (let i = 0; i < numPopAuthors && i < allAuthors.length; i++) {
         const author = authorsSortedByPop[i];
         const divider = document.createElement("div");
         divider.className = "authorDisplay";
@@ -112,7 +112,7 @@ fetchAuthors().then((a) => {
 // Async function that sets the books array by fetch
     fetchBooks().then((b) => {
         /*********** Code for making <Editor's Pick> section ***********/
-        for (let i = 0; i < numEditorPicks; i++) {
+        for (let i = 0; i < numEditorPicks && i < books.length; i++) {
             if (books.length < 1) {
                 console.log("Not enough books in server");
                 break;
@@ -127,7 +127,7 @@ fetchAuthors().then((a) => {
 
         /*********** Code for making <popular books> section ***********/
         const booksSortedByRate = sortBooksByRate(books, numTopBooks);
-        for (let i = 0; i < numTopBooks; i++) {
+        for (let i = 0; i < numTopBooks && i < books.length; i++) {
             let book = booksSortedByRate[i];
 
             // Add books to the ranking section
