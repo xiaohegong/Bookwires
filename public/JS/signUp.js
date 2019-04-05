@@ -1,6 +1,6 @@
 // const log = console.log;
-//
 
+// Establish html element getter constants
 const signUpForm = document.getElementById('signUpForm');
 const signUpSubmit = document.getElementById("signUpButton");
 const close = document.getElementById("close");
@@ -32,6 +32,7 @@ signUpSubmit.onclick = function tryToSignUp(e) {
     const passWCon = passWConfirmInput.value;
     const userMail = userMailInput.value;
 
+    // Validate the password
     if (passWCon !== passWord) {
         swal({
             title: "Failed to sign up",
@@ -48,7 +49,8 @@ signUpSubmit.onclick = function tryToSignUp(e) {
         });
         return;
     }
-    
+
+    // Fetch request from the server to signup
     const newUserBody = {
         username: userName,
         email: userMail,
@@ -60,8 +62,8 @@ signUpSubmit.onclick = function tryToSignUp(e) {
             'Content-Type': 'application/json'
         }, body: JSON.stringify(newUserBody)
     }).then((response) => {
-
         if (response.status === 200) {
+            // Alert the user on success
             swal({
                 title: "Signed up successfully",
                 text: "Welcome to Bookwires!",
@@ -71,6 +73,7 @@ signUpSubmit.onclick = function tryToSignUp(e) {
                 window.location.href = "/index";
             });
         } else if (response.status === 400) {
+            // Alert the user on error
             swal({
                 title: "Failed to sign up",
                 text: "Please enter valid username and email.\n" +
@@ -78,6 +81,7 @@ signUpSubmit.onclick = function tryToSignUp(e) {
                 icon: "error"
             });
         } else if (error.status !== 200) {
+            // Alert the user on error
             swal({
                 title: "Failed to sign up",
                 text: "Please check your internet connection and try again!",
