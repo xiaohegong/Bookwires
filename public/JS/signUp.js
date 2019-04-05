@@ -40,24 +40,15 @@ signUpSubmit.onclick = function tryToSignUp(e) {
         });
         return;
     }
-    if (passWord.length < 6) {
+    if (passWord.length < 4) {
         swal({
             title: "Failed to sign up",
-            text: "Your password is too short(at least 6 characters), please input again!",
+            text: "Your password is too short(at least 4 characters), please input again!",
             icon: "error"
         });
         return;
     }
-
-    // for (let i = 1; i <= numberOfUsers; i++) {
-    //     if (fakeUser[i - 1].name === userName) {
-    //         alert("This account already exist, please change another userName");
-    //         return;
-    //     }
-    // }
-
-    // fakeUser.push(userCreator(userName, userMail, passWord));
-
+    
     const newUserBody = {
         username: userName,
         email: userMail,
