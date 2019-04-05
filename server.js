@@ -568,13 +568,12 @@ app.get('/profile/:id', sessionCheckLoggedIn, (req, res) => {
 });
 
 class userOwner {
-    constructor(name, description, id, email, isAdmin, token, followers, image, bookshelf, writtenBook, following, newMessage, oldMessage) {
+    constructor(name, description, id, email, isAdmin, followers, image, bookshelf, writtenBook, following, newMessage, oldMessage) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.email = email;
         this.isAdmin = isAdmin;
-        this.token = token;
         this.followers = followers;
         this.image = image;
         this.bookshelf = bookshelf;
@@ -670,7 +669,7 @@ app.get('/db/profile/:id', sessionHandleRequest, (req, res) => {
                 }
                 if(id === req.session.userId.toString()){
                     const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin,
-                        user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo,
+                        user.followers, user.image, bookShelfInfo, writtenBookInfo,
                         followingInfo, user.newMessage, user.oldMessage)
                     res.send(userToSend)
                 }
