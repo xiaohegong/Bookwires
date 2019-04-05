@@ -338,5 +338,4 @@ BookSchema.statics.deleteByAuthor = (author) => {
 const Book = mongoose.model('Book', BookSchema);
 
 
-
 module.exports = {Book, Chapter, Comment};

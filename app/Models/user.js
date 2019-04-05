@@ -22,7 +22,6 @@ const readingHistory = mongoose.Schema({
 });
 
 
-
 /****** The notificaiton message schema *******/
 const message = mongoose.Schema({
     messageString: {
@@ -38,10 +37,6 @@ const message = mongoose.Schema({
         required: true
     }
 });
-
-
-
-
 
 
 /****** The user schema *******/

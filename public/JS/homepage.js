@@ -50,6 +50,7 @@ const numEditorPicks = 12; // total number of books on the shelf
 const numTopBooks = 5; // total number of books on popular books
 const numPopAuthors = 5; // total number of authors on popular authors
 
+// Set up the search pages
 function searchBook() {
     const val = searchVal.value;
     if (val.length > 45) {
@@ -59,6 +60,9 @@ function searchBook() {
     return true;
 }
 
+/* A big function that sets up the homepage html based on asynchronous server fetches.
+*  The server call will get all the authors and books and sort them by request.
+*  It will also set up notifications for the user when he logs in.  */
 const authorHrefURL = "/profile/";
 fetchAuthors().then((a) => {
     const authorsSortedByPop = sortAuthorsByPopularity(allAuthors, numPopAuthors);
@@ -92,6 +96,7 @@ fetchAuthors().then((a) => {
         divider.appendChild(span);
         authors.appendChild(divider);
 
+        // Notifications when user logged in.
         const numMessages = parseInt(getCookie("newnotifications"), 10);
         if (numMessages > 0) {
             toastBody.innerHTML = "You have " + numMessages.toString() + " new notifications.";
