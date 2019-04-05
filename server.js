@@ -116,7 +116,6 @@ app.post('/user/login', (req, res) => {
 
 	User.findByUsernamePassword(username, password).then((user) => {
 		if(!user) {
-            // TODO SEND "invalid username/password error"
 			res.status(404).send()
 		} else {
 			// Add the user to the session cookie that we will
@@ -133,7 +132,6 @@ app.post('/user/login', (req, res) => {
 	},(result) => {
         res.status(404).send()
     }).catch((error) => {
-        // TODO SEND "invalid request error"
 		res.status(400).send()
 	})
 })
@@ -166,24 +164,20 @@ app.post('/user/signup', (req, res) => {
         password: req.body.password,
         email: req.body.email,
         isAdmin: false,
-        token: 0,
         followers: 0,
         image: "/img/avatar.jpg",
         bookshelf: [],
         bookshelfIds: [],
         writtenBook: [],
-        topThreeBooks: [],
         following: [],
         newMessage: [],
         oldMessage: []
     });
 
-    req.session.userId = user._id;
-	req.session.email = user.email;
-
 	// save user to database
 	user.save().then((result) => {
-        //TODO possible validation
+        req.session.userId = user._id;
+	    req.session.email = user.email;
         res.cookie("name", user.name);
         res.cookie("id", user._id.toString());
         res.cookie("admin", user.isAdmin);
@@ -554,7 +548,6 @@ app.patch('/db/books/:id/:chapter_id', (req, res) => {
 
 
 /* Routes for users */
-// TODO - to be edited after User Schema is posted
 app.get('/profile/:id', sessionCheckLoggedIn, (req, res) => {
     const id = req.params.id;
     if(!ObjectID.isValid(id)){
@@ -632,9 +625,6 @@ function getBooksForProfile(bookIdArray){
 app.get('/db/profile/:id', sessionHandleRequest, (req, res) => {
     const id = req.params.id;
     
-
-    // TODO: check if id is session id. send a modified user
-
     if(!ObjectID.isValid(id)){
 		res.status(404).send();
     }
@@ -678,8 +668,6 @@ app.get('/db/profile/:id', sessionHandleRequest, (req, res) => {
                     }
                     followingInfo.push(followUserObj);
                 }
-                // TODO **** if(id === req.session.userId){
-
                 if(id === req.session.userId.toString()){
                     const userToSend = new userOwner(user.name, user.description, user._id, user.email, user.isAdmin,
                         user.token, user.followers, user.image, bookShelfInfo, writtenBookInfo,
