@@ -33,3 +33,6 @@ As an author a user can create a novel on the website and upload the chapters th
 
 
 ![GitHub Logo](/public/img/homepage_view.png)
+
+
+@s-cuneo @beijilang @chengHWang @xiaohegong
