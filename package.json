@@ -27,6 +27,6 @@
     "mongoose-unique-validator": "^2.0.2",
     "path": "^0.12.7",
     "random-profile-generator": "^2.3.0",
-    "validator": "^10.11.0"
+    "validator": "^13.7.0"
   }
 }
